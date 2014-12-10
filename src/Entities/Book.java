@@ -24,6 +24,10 @@ public class Book extends Master {
     private int pubYear;
     public ArrayList<Author> author = new ArrayList();
     public ArrayList<Category> category = new ArrayList();
+    
+    public Book() {
+        
+    }
 
     public Book(int id, String name, int pubYear, String onLoan, String loaner, String origName) {
         this.id = id;
@@ -179,7 +183,7 @@ public class Book extends Master {
             ps.setString(1, this.name);
             ps.setString(2, this.getOrigName());
             ps.setInt(3, this.getPubYear());
-            ps.setBoolean(4, this.getOnLoan() == "Kyllä" ? true : false);
+            ps.setBoolean(4, this.getOnLoan().equals("Kyllä") ? true : false);
             ps.setString(5, this.getLoaner());
             int n1 = ps.executeUpdate();
             if(n1 > 0) {

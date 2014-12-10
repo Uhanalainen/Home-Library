@@ -106,7 +106,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" pref="778" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="863" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -114,7 +114,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="60" max="32767" attributes="0"/>
+                          <EmptySpace pref="165" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -143,7 +143,7 @@
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
-                        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object col[] = {&quot;ID&quot;, &quot;Kirjailija&quot;, &quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;mod = new DefaultTableModel(null, col);"/>
+                        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object col[] = {&quot;ID&quot;, &quot;Kirjailija&quot;, &quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Kategoria&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;mod = new DefaultTableModel(null, col);"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillTable();"/>
                       </AuxValues>
                     </Component>
@@ -224,54 +224,85 @@
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="star2" min="-2" max="-2" attributes="0"/>
-                                              <Component id="star1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="star3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="star4" min="-2" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="star4" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="star3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="star2" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="star1" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jScrollPane2" pref="284" max="32767" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="268" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblAddAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblAddBook" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="star1" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cBoxAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                          <Component id="star1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="lblFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cBoxAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                          <Component id="star2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="lblLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblBookCategory" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cBoxCategory" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="btnAddAuthor" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="lblBookName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtBookName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="star3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="star2" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblLastName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtLastName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblBookCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cBoxCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnAddAuthor" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblBookName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtBookName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="star3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane2" min="-2" pref="78" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -314,7 +345,7 @@
                               <Component id="star5" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblStar" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="184" max="32767" attributes="0"/>
+                          <EmptySpace pref="280" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -557,6 +588,65 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JButton" name="jButton1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton2">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="jTable1">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="4" rowCount="2">
+                            <Column editable="true" title="" type="java.lang.Object"/>
+                            <Column editable="true" title="" type="java.lang.Object"/>
+                            <Column editable="true" title="" type="java.lang.Object"/>
+                            <Column editable="true" title="" type="java.lang.Object"/>
+                          </Table>
+                        </Property>
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                          <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                          </TableColumnModel>
+                        </Property>
+                        <Property name="rowHeight" type="int" value="29"/>
+                        <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="panelEdit">
@@ -571,12 +661,12 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="798" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="883" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="473" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="578" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -593,12 +683,12 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="798" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="883" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="473" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="578" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
