@@ -84,6 +84,30 @@ public class Author extends Master {
         }
         return authors;
     }
+    
+    public int getAuthor(String firstName, String lastName) {
+        
+        String sql = "SELECT id FROM authors WHERE firstName = ? AND lastName = ?";
+        this.conn = DbConn.getConnection();
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            try {
+                ResultSet rs = ps.executeQuery();
+            } catch (Exception e) {
+                System.out.println("Virhe: " + e);
+            }
+        }catch (SQLException e) {
+            System.err.println("Error: " + e);
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+        return this.id;
+    }
 
     public void getAuthor(int id) {
 
@@ -155,6 +179,33 @@ public class Author extends Master {
     public void deleteAuthor() {
 
     }
+    
+    public ArrayList<Book> getBooks() {
+        
+        String sql = "SELECT bookId FROM bookAuthors WHERE authorId = ?";
+        this.conn = DbConn.getConnection();
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, this.id);
+            try (ResultSet rs = ps.executeQuery();) {
+                while (rs.next()) {
+                    Book b = new Book();
+                    b.getBook(rs.getInt("bookId"));
+                    this.books.add(b);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Tapahtui virhe: " + e);
+        } catch (NullPointerException npe) {
+            System.out.println("saasf" + npe);
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
+        return this.books;
+    }
 
     public boolean doIExist() {
 
@@ -178,13 +229,6 @@ public class Author extends Master {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
         return i > 0;
-    }
-
-    /**
-     * @return the books
-     */
-    public ArrayList<Book> getBooks() {
-        return books;
     }
 
     /**

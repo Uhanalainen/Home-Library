@@ -513,12 +513,13 @@ public class Menu extends javax.swing.JFrame {
         String origName = txtOriginalName.getText();
         String pubYear = txtPubYear.getText();
         String loaner = txtLoaner.getText();
-        String onLoan = "Ei";
-        String auth = cBoxAuthor.getSelectedItem().toString();
+        String onLoan;
         String cat = cBoxCategory.getSelectedItem().toString();
+        int authID = authId();
 
-        if(checkLoan.isSelected())
-            onLoan = "Kyllä";
+
+
+        onLoan = checkLoan.isSelected() ? "Kyllä" : "Ei";
         
         if(checkPubYear()) {
             if(!name.isEmpty()){
@@ -543,7 +544,6 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void fillTable() {
-
         ArrayList<Book> books = Book.getBooks();      
         mod.setRowCount(0);
         
@@ -584,7 +584,16 @@ public class Menu extends javax.swing.JFrame {
         browseTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-
+    }
+    
+    private int authId() {
+        Author a = new Author();
+        String auth = cBoxAuthor.getSelectedItem().toString();
+        String[] authName = auth.split(", ");
+        String lName = authName[0];
+        String fName = authName[1];
+        int authId = a.getAuthor(fName, lName);
+        return authId;
     }
         
     private boolean checkPubYear() {

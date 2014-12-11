@@ -73,7 +73,6 @@ public class Book extends Master {
 
     public ArrayList<Author> getAuthors() {
 
-        ArrayList<Author> author = new ArrayList<>();
         String sql = "SELECT authorId FROM bookAuthors WHERE bookId = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
@@ -246,11 +245,6 @@ public class Book extends Master {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
         return i > 0;
-    }
-    
-    public void browse() {
-        
-
     }
 
     /**
