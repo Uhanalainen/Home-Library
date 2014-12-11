@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 package GUI;
+
 import Entities.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-
 
 /**
  *
@@ -21,6 +20,7 @@ public class Menu extends javax.swing.JFrame {
 
     private DefaultTableModel mod;
     private DefaultTableCellRenderer centerRenderer;
+
     /**
      * Creates new form Menu
      */
@@ -471,10 +471,10 @@ public class Menu extends javax.swing.JFrame {
     private void btnAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorActionPerformed
         String name = txtFirstName.getText();
         String lastName = txtLastName.getText();
-      
-        if(!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {          //check that neither field is empty
+
+        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {          //check that neither field is empty
             Author a = new Author(name, lastName);                                  //If they aren't, create a new Author
-            if(!a.doIExist()) {                                                     //check if the author already exists
+            if (!a.doIExist()) {                                                     //check if the author already exists
                 a.addAuthor();                                                      //If not, add him/her to the database
             } else {                                                                //Else inform the user that the author already exists
                 JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
@@ -486,17 +486,17 @@ public class Menu extends javax.swing.JFrame {
         }
         txtFirstName.setText("");                                                   //Clear textfields
         txtLastName.setText("");                                                    //Clear textfields
-        
+
         comboAuthorRefresh();                                                       //Refresh 'author' combobox contents
     }//GEN-LAST:event_btnAddAuthorActionPerformed
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         //Storing whatever is in the txt field to variable
         String name = txtCategory.getText();
-        
-        if(!"".equalsIgnoreCase(name)) {        //check that txt field is not empty
+
+        if (!"".equalsIgnoreCase(name)) {        //check that txt field is not empty
             Category c = new Category(name);    //if it isn't, create a new object
-            if(!c.doesItExist()) {              //check whether the category already exists
+            if (!c.doesItExist()) {              //check whether the category already exists
                 c.addCategory();                //if it doesn't, add it to the database
             } else {                            //otherwise, display error dialog, tell user that the category already exists
                 JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
@@ -514,24 +514,33 @@ public class Menu extends javax.swing.JFrame {
         String pubYear = txtPubYear.getText();
         String loaner = txtLoaner.getText();
         String onLoan;
-        String cat = cBoxCategory.getSelectedItem().toString();
-        int authID = authId();
-
-
+        
+        Author a = getSelectedAuthor();
+        a.getBooks();
+        Category c = getSelectedCategory();
+        
 
         onLoan = checkLoan.isSelected() ? "Kyllä" : "Ei";
-        
-        if(checkPubYear()) {
-            if(!name.isEmpty()){
-            Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
-                if(!b.doesItExist()) {
+
+        if (checkPubYear()) {
+            if (!name.isEmpty()) {
+                boolean bookExists = false;
+                for (Book bo : a.books) {
+                    if (name.equalsIgnoreCase(bo.getName()) && Integer.parseInt(pubYear) == bo.getPubYear()) {
+                        bookExists = true;
+                    }
+                }
+                if (!bookExists) {
+                    Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
+                    b.category.add(c);
+                    b.author.add(a);
                     b.addBook();
                     checkLoan.setSelected(false);
                     clearBoxes();
                 } else {
                     JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
-            } 
+            }
         }
     }//GEN-LAST:event_btnAddBookActionPerformed
 
@@ -544,31 +553,31 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void fillTable() {
-        ArrayList<Book> books = Book.getBooks();      
+        ArrayList<Book> books = Book.getBooks();
         mod.setRowCount(0);
-        
-        for(Book b : books) {
+
+        for (Book b : books) {
             String aName = "";
             b.getAuthors();
             int aCount = 1;
-            for(Author a : b.author) {
+            for (Author a : b.author) {
                 aName += a.getLastName() + ", " + a.getName();
                 aName += aCount < b.author.size() ? " - " : "";
                 aCount++;
             }
-            
+
             String cat = "";
             b.getCategories();
             int bCount = 1;
-            for(Category c : b.category) {
+            for (Category c : b.category) {
                 cat += c.getName();
                 cat += bCount < b.category.size() ? " - " : "";
                 bCount++;
             }
-            mod.addRow(new Object[] {b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
+            mod.addRow(new Object[]{b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
         }
         mod.setRowCount(books.size() + 1);
-        
+
         browseTable.getColumnModel().getColumn(0).setMaxWidth(40);
         browseTable.getColumnModel().getColumn(1).setMinWidth(220);
         browseTable.getColumnModel().getColumn(1).setMaxWidth(220);
@@ -578,29 +587,36 @@ public class Menu extends javax.swing.JFrame {
         browseTable.getColumnModel().getColumn(3).setMaxWidth(90);
         browseTable.getColumnModel().getColumn(4).setMinWidth(130);
         browseTable.getColumnModel().getColumn(4).setMaxWidth(130);
-        
+
         centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         browseTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
     }
-    
-    private int authId() {
+
+    private Author getSelectedAuthor() {
         Author a = new Author();
         String auth = cBoxAuthor.getSelectedItem().toString();
         String[] authName = auth.split(", ");
         String lName = authName[0];
         String fName = authName[1];
-        int authId = a.getAuthor(fName, lName);
-        return authId;
+        a.getAuthor(fName, lName);
+        return a;
     }
-        
+    
+    private Category getSelectedCategory() {
+        Category c  = new Category();
+        String cat = cBoxCategory.getSelectedItem().toString();
+        c.getCategory(cat);
+        return c;        
+    }
+
     private boolean checkPubYear() {
-            
+
         boolean yearOk = false;
-        if(!txtPubYear.getText().isEmpty()) {
-            if(txtPubYear.getText().length() == 4) {
+        if (!txtPubYear.getText().isEmpty()) {
+            if (txtPubYear.getText().length() == 4) {
                 try {
                     int pubYear = Integer.parseInt(txtPubYear.getText());
                     yearOk = true;
@@ -616,29 +632,30 @@ public class Menu extends javax.swing.JFrame {
         }
         return yearOk;
     }
-    
+
     private void clearBoxes() {                                                 //Used to clear all text fields
         txtBookName.setText("");
         txtLoaner.setText("");
         txtPubYear.setText("");
         txtOriginalName.setText("");
     }
-    
+
     private void comboAuthorRefresh() {
         ArrayList<Author> authors = Author.getAuthors();                        //Get an arraylist of all authors
         cBoxAuthor.removeAllItems();                                            //Remove all items from 'author' combobox
-        for(Author a : authors){                                                //For each author in 'authors'-list....
+        for (Author a : authors) {                                                //For each author in 'authors'-list....
             cBoxAuthor.addItem(a.getLastName() + ", " + a.getName());           //...add new author name to combobox
         }
     }
-    
+
     private void comboCatRefresh() {
         ArrayList<Category> categories = Category.getCategories();              //Get an arraylist of all categories
         cBoxCategory.removeAllItems();                                          //Remove all categories from 'categories' combobox
-        for(Category c : categories){                                           //For each category in 'categories'-list...
+        for (Category c : categories) {                                           //For each category in 'categories'-list...
             cBoxCategory.addItem(c.getName());                                  //...add new category to combobox
-        }       
+        }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -653,16 +670,32 @@ public class Menu extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Menu.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Menu.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Menu.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -673,7 +706,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
     }
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class Author extends Master {
 
-    private ArrayList<Book> books;
+    public ArrayList<Book> books = new ArrayList();
     private String lastName;
 
     public Author(String name, String lastName) {
@@ -85,7 +85,7 @@ public class Author extends Master {
         return authors;
     }
     
-    public int getAuthor(String firstName, String lastName) {
+    public void getAuthor(String firstName, String lastName) {
         
         String sql = "SELECT id FROM authors WHERE firstName = ? AND lastName = ?";
         this.conn = DbConn.getConnection();
@@ -97,6 +97,9 @@ public class Author extends Master {
             ps.setString(2, lastName);
             try {
                 ResultSet rs = ps.executeQuery();
+                this.id = rs.getInt(1);
+                this.name = firstName;
+                this.lastName = lastName;
             } catch (Exception e) {
                 System.out.println("Virhe: " + e);
             }
@@ -106,7 +109,6 @@ public class Author extends Master {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
-        return this.id;
     }
 
     public void getAuthor(int id) {
@@ -236,6 +238,10 @@ public class Author extends Master {
      */
     public void setBooks(ArrayList<Book> books) {
         this.books = books;
+    }
+    
+    public int getId(){
+        return this.id;
     }
 
     /**

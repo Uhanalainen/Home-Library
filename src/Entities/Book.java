@@ -28,6 +28,10 @@ public class Book extends Master {
     public Book() {
         
     }
+    
+    public Book(int id) {
+        this.id = id;
+    }
 
     public Book(int id, String name, int pubYear, String onLoan, String loaner, String origName) {
         this.id = id;
@@ -149,7 +153,7 @@ public class Book extends Master {
 
     public void getBook(int id) {
         
-        String sql = "SELECT book FROM books WHERE id = ?";
+        String sql = "SELECT name FROM books WHERE id = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
@@ -168,17 +172,18 @@ public class Book extends Master {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
-
     }
 
     public void addBook() {
         
-        String sql = "INSERT INTO books (name, origName, pubYear, onLoan, loaner) VALUES (?, ?, ?, ?, ?)";
+        String sql1 = "INSERT INTO books (name, origName, pubYear, onLoan, loaner) VALUES (?, ?, ?, ?, ?)";
+        String sql2 = "INSERT INTO bookAuthors (bookId, authorId) VALUES (?, ?)";
+        String sql3 = "INSERT INTO bookCategories (bookId, categoryId) VALUES (?, ?)";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql1);
             ps.setString(1, this.name);
             ps.setString(2, this.getOrigName());
             ps.setInt(3, this.getPubYear());
@@ -186,7 +191,22 @@ public class Book extends Master {
             ps.setString(5, this.getLoaner());
             int n1 = ps.executeUpdate();
             if(n1 > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
                 JOptionPane.showMessageDialog(null, this.name + " on lisätty tietokantaan", "", JOptionPane.PLAIN_MESSAGE);
+                for (Author a : this.author) {
+                    PreparedStatement ps2;
+                    ps2 = conn.prepareStatement(sql2);
+                    ps2.setInt(1, rs.getInt(1));
+                    ps2.setInt(2, a.getId());
+                    ps2.executeUpdate();
+                }
+                for(Category c : this.category) {
+                    PreparedStatement ps3;
+                    ps3 = conn.prepareStatement(sql3);
+                    ps3.setInt(1, rs.getInt(1));
+                    ps3.setInt(2, c.getId());
+                    ps3.executeUpdate();
+                }
             }
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);

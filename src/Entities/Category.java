@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class Category extends Master {
 
-    private ArrayList<Book> books;
+    public ArrayList<Book> books = new ArrayList();
 
     public Category() {
 
@@ -78,6 +78,29 @@ public class Category extends Master {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
         return categories;
+    }
+    
+    public void getCategory(String name) {
+        String sql = "SELECT id FROM categories WHERE name = ?";
+        this.conn = DbConn.getConnection();
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            try {
+                ResultSet rs = ps.executeQuery();
+                this.id = rs.getInt(1);
+                this.name = name;
+            } catch (Exception e) {
+                System.out.println("Virhe" + e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Tapahtui virhe: " + e);
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
     }
 
     public void getCategory(int id) {
@@ -183,5 +206,9 @@ public class Category extends Master {
     
     public String getName() {
         return name;
+    }
+    
+    public int getId() {
+        return this.id;
     }
 }
