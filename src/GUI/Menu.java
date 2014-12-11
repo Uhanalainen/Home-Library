@@ -19,7 +19,10 @@ import javax.swing.table.DefaultTableModel;
 public class Menu extends javax.swing.JFrame {
 
     private DefaultTableModel mod;
+    private DefaultTableModel dtm;
     private DefaultTableCellRenderer centerRenderer;
+    private int authorCounter;
+    private int categoryCounter;
 
     /**
      * Creates new form Menu
@@ -79,10 +82,12 @@ public class Menu extends javax.swing.JFrame {
         lblStar = new javax.swing.JLabel();
         star3 = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAddAuthorToTable = new javax.swing.JButton();
+        btnAddCategoryToTable = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        //Object col[] = {" "," ", " ", " "};
+        dtm = new DefaultTableModel(null, col);
+        addBookTable = new javax.swing.JTable();
         panelEdit = new javax.swing.JPanel();
         panelDelete = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -233,23 +238,20 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText(">>");
-
-        jButton2.setText(">>");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "", "", "", ""
+        btnAddAuthorToTable.setText(">>");
+        btnAddAuthorToTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddAuthorToTableActionPerformed(evt);
             }
-        ));
-        jTable1.setRowHeight(29);
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
+        });
+
+        btnAddCategoryToTable.setText(">>");
+
+        addBookTable.setModel(dtm);
+        addBookTable.setRowHeight(29);
+        jScrollPane2.setViewportView(addBookTable);
+        if (addBookTable.getColumnModel().getColumnCount() > 0) {
+            addBookTable.getColumnModel().getColumn(0).setResizable(false);
         }
 
         for(Author a : authors){
@@ -323,11 +325,11 @@ public class Menu extends javax.swing.JFrame {
                                             .addGroup(panelAddLayout.createSequentialGroup()
                                                 .addComponent(star2)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton2))
+                                                .addComponent(btnAddCategoryToTable))
                                             .addGroup(panelAddLayout.createSequentialGroup()
                                                 .addComponent(star1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton1)))
+                                                .addComponent(btnAddAuthorToTable)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)))))))
                 .addContainerGap())
@@ -345,7 +347,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(star1)
-                                .addComponent(jButton1))
+                                .addComponent(btnAddAuthorToTable))
                             .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(lblFirstName)
                                 .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -355,7 +357,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(star2)
-                                .addComponent(jButton2))
+                                .addComponent(btnAddCategoryToTable))
                             .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(lblLastName)
                                 .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -494,12 +496,16 @@ public class Menu extends javax.swing.JFrame {
         //Storing whatever is in the txt field to variable
         String name = txtCategory.getText();
 
-        if (!"".equalsIgnoreCase(name)) {        //check that txt field is not empty
-            Category c = new Category(name);    //if it isn't, create a new object
-            if (!c.doesItExist()) {              //check whether the category already exists
-                c.addCategory();                //if it doesn't, add it to the database
-            } else {                            //otherwise, display error dialog, tell user that the category already exists
-                JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        if (!"".equalsIgnoreCase(name)) {
+            if (!name.contains(" ")) {
+                Category c = new Category(name);                            //if it isn't, create a new object
+                if (!c.doesItExist()) {                                     //check whether the category already exists
+                    c.addCategory();                                        //if it doesn't, add it to the database
+                } else {                                                    //otherwise, display error dialog, tell user that the category already exists
+                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE); //Inform user that the category text field was left blank
@@ -514,11 +520,10 @@ public class Menu extends javax.swing.JFrame {
         String pubYear = txtPubYear.getText();
         String loaner = txtLoaner.getText();
         String onLoan;
-        
+
         Author a = getSelectedAuthor();
         a.getBooks();
         Category c = getSelectedCategory();
-        
 
         onLoan = checkLoan.isSelected() ? "Kyllä" : "Ei";
 
@@ -551,6 +556,11 @@ public class Menu extends javax.swing.JFrame {
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearBoxes();
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnAddAuthorToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorToTableActionPerformed
+        String auth = cBoxAuthor.getSelectedItem().toString();
+        
+    }//GEN-LAST:event_btnAddAuthorToTableActionPerformed
 
     private void fillTable() {
         ArrayList<Book> books = Book.getBooks();
@@ -604,12 +614,12 @@ public class Menu extends javax.swing.JFrame {
         a.getAuthor(fName, lName);
         return a;
     }
-    
+
     private Category getSelectedCategory() {
-        Category c  = new Category();
+        Category c = new Category();
         String cat = cBoxCategory.getSelectedItem().toString();
         c.getCategory(cat);
-        return c;        
+        return c;
     }
 
     private boolean checkPubYear() {
@@ -670,32 +680,21 @@ public class Menu extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -709,16 +708,17 @@ catch (javax.swing.UnsupportedLookAndFeelException ex) {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable addBookTable;
     private javax.swing.JTable browseTable;
     private javax.swing.JButton btnAddAuthor;
+    private javax.swing.JButton btnAddAuthorToTable;
     private javax.swing.JButton btnAddBook;
     private javax.swing.JButton btnAddCategory;
+    private javax.swing.JButton btnAddCategoryToTable;
     private javax.swing.JButton btnClear;
     private javax.swing.JComboBox cBoxAuthor;
     private javax.swing.JComboBox cBoxCategory;
     private javax.swing.JCheckBox checkLoan;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -728,7 +728,6 @@ catch (javax.swing.UnsupportedLookAndFeelException ex) {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAddAuthor;
     private javax.swing.JLabel lblAddBook;
     private javax.swing.JLabel lblAddCategory;
