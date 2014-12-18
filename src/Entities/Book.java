@@ -50,8 +50,8 @@ public class Book extends Master {
         this.loaner = loaner;
     }
     
-    public void getCategories() {
-        this.setCategory((ArrayList<Category>) new ArrayList());
+    public ArrayList<Category> getCategories() {
+
         String sql = "SELECT categoryId FROM bookCategories WHERE bookID = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
@@ -63,7 +63,7 @@ public class Book extends Master {
                 while(rs.next()) {
                     Category cat = new Category();
                     cat.getCategory(rs.getInt("categoryId"));
-                    this.getCategory().add(cat);
+                    this.category.add(cat);
                 }
             }
         } catch (SQLException e) {
@@ -72,9 +72,9 @@ public class Book extends Master {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
-        
+        return this.category;
     }
-
+    
     public ArrayList<Author> getAuthors() {
 
         String sql = "SELECT authorId FROM bookAuthors WHERE bookId = ?";
@@ -153,7 +153,7 @@ public class Book extends Master {
 
     public void getBook(int id) {
         
-        String sql = "SELECT name, pubyear FROM books WHERE id = ?";
+        String sql = "SELECT name, pubYear, onLoan, loaner, origName FROM books WHERE id = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
@@ -162,9 +162,12 @@ public class Book extends Master {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
-                    this.setId(id);
+                    this.id = id;
                     this.name = rs.getString("name");
                     this.pubYear = rs.getInt("pubYear");
+                    this.onLoan = rs.getString("onLoan");
+                    this.loaner = rs.getString("loaner");
+                    this.origName = rs.getString("origName");
                 }
             }
         } catch (SQLException e) {

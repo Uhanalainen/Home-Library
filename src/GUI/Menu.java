@@ -12,6 +12,8 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -24,10 +26,12 @@ public class Menu extends javax.swing.JFrame {
 
     private DefaultTableModel mod;
     private DefaultTableModel dtm;
+    private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
     private DefaultTableCellRenderer centerRenderer;
     private int authorCounter = 0;
     private int categoryCounter = 0;
+    private int id = 30;
 
     /**
      * Creates new form Menu
@@ -51,7 +55,12 @@ public class Menu extends javax.swing.JFrame {
         panelBrowse = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Object col[] = {"ID", "Kirjailija", "Nimi", "Julkaisuvuosi", "Kategoria", "Lainassa", "Lainaaja", "Alkuperäinen nimi"};
-        mod = new DefaultTableModel(null, col);
+        mod = new DefaultTableModel(null, col) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         browseTable = new javax.swing.JTable();
         filterAuthor = new javax.swing.JTextField();
         lblSearch = new javax.swing.JLabel();
@@ -88,11 +97,21 @@ public class Menu extends javax.swing.JFrame {
         btnClear = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Object cols[] = {"Kirjailija", "Kategoria"};
-        dtm = new DefaultTableModel(null, cols);
+        dtm = new DefaultTableModel(null, cols) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         addManyTable = new javax.swing.JTable();
         btnAuthorToTable = new javax.swing.JButton();
         btnCatToTable = new javax.swing.JButton();
         panelEdit = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Object columns[] = {"Kirjailija", "Kirja", "Julkaisuvuosi", "Kategoria", "Lainassa", "Lainaaja", "Alkuperäinen nimi"};
+        model = new DefaultTableModel(null, columns);
+        editTable = new javax.swing.JTable();
+        btnEdit = new javax.swing.JButton();
         panelDelete = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -122,6 +141,14 @@ public class Menu extends javax.swing.JFrame {
         browseTable.setRowSorter(sorter);
         browseTable.setModel(mod);
         fillTable();
+        browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if(browseTable.getSelectedRow() != -1) {
+                    id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);
+                    System.out.println(browseTable.getSelectedRow());
+                }
+            }
+        });
         jScrollPane1.setViewportView(browseTable);
 
         filterAuthor.getDocument().addDocumentListener(new DocumentListener() {
@@ -147,7 +174,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(panelBrowseLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(panelBrowseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1054, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1034, Short.MAX_VALUE)
                     .addGroup(panelBrowseLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(lblSearch)
@@ -356,7 +383,7 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(star2)
                             .addComponent(star3)
                             .addComponent(star1))))
-                .addContainerGap(527, Short.MAX_VALUE))
+                .addContainerGap(507, Short.MAX_VALUE))
         );
         panelAddLayout.setVerticalGroup(
             panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,10 +409,11 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(lblAddBook)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBookName)
-                    .addComponent(txtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(star2))
+                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(star2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblBookName)
+                        .addComponent(txtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPubYear)
@@ -422,15 +450,31 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Lisää...", panelAdd);
 
+        editTable.setModel(model);
+        fillEditTable();
+        jScrollPane3.setViewportView(editTable);
+
+        btnEdit.setText("Päivitä");
+
         javax.swing.GroupLayout panelEditLayout = new javax.swing.GroupLayout(panelEdit);
         panelEdit.setLayout(panelEditLayout);
         panelEditLayout.setHorizontalGroup(
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1114, Short.MAX_VALUE)
+            .addGroup(panelEditLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEdit)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1054, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelEditLayout.setVerticalGroup(
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 738, Short.MAX_VALUE)
+            .addGroup(panelEditLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEdit)
+                .addContainerGap(543, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Muokkaa...", panelEdit);
@@ -439,7 +483,7 @@ public class Menu extends javax.swing.JFrame {
         panelDelete.setLayout(panelDeleteLayout);
         panelDeleteLayout.setHorizontalGroup(
             panelDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1114, Short.MAX_VALUE)
+            .addGap(0, 1094, Short.MAX_VALUE)
         );
         panelDeleteLayout.setVerticalGroup(
             panelDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,7 +496,10 @@ public class Menu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -588,7 +635,6 @@ public class Menu extends javax.swing.JFrame {
         }
         txtFirstName.setText("");                                                   //Clear textfields
         txtLastName.setText("");                                                    //Clear textfields
-
         comboAuthorRefresh();                                                       //Refresh 'author' combobox contents
     }//GEN-LAST:event_btnAddAuthorActionPerformed
 
@@ -604,7 +650,7 @@ public class Menu extends javax.swing.JFrame {
                 addManyTable.setValueAt(author, authorCounter, 0);
                 authorCounter++;
         } else {
-            JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo listalta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAuthorToTableActionPerformed
 
@@ -620,7 +666,7 @@ public class Menu extends javax.swing.JFrame {
             addManyTable.setValueAt(category, categoryCounter, 1);
             categoryCounter++;
         } else {
-            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo listalta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);          
+            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);          
         }
     }//GEN-LAST:event_btnCatToTableActionPerformed
 
@@ -633,6 +679,14 @@ public class Menu extends javax.swing.JFrame {
         dtm.addRow(new Object[] { "", "" });
         addManyTable.getColumnModel().getColumn(0).setMinWidth(205);
         addManyTable.getColumnModel().getColumn(0).setMaxWidth(205);
+    }
+    
+    private void fillEditTable() {
+        
+        model.setRowCount(0);
+        Book b = new Book();
+        b.getBook(id);
+        model.addRow(new Object[]{b.getId(), b.getAuthors(), b.getName(), b.getPubYear(), b.getCategories(), b.getOnLoan(), b.getLoaner(), b.getOrigName()});
     }
     
     private void fillTable() {
@@ -668,29 +722,12 @@ public class Menu extends javax.swing.JFrame {
         browseTable.getColumnModel().getColumn(3).setMinWidth(90);
         browseTable.getColumnModel().getColumn(3).setMaxWidth(90);
         browseTable.getColumnModel().getColumn(4).setMinWidth(160);
-
+        
         centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         browseTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-    }
-
-    private Author getSelectedAuthor() {
-        Author a = new Author();
-        String auth = cBoxAuthor.getSelectedItem().toString();
-        String[] authName = auth.split(", ");
-        String lName = authName[0];
-        String fName = authName[1];
-        a.getAuthor(fName, lName);
-        return a;
-    }
-
-    private Category getSelectedCategory() {
-        Category c = new Category();
-        String cat = cBoxCategory.getSelectedItem().toString();
-        c.getCategory(cat);
-        return c;
     }
 
     private boolean checkPubYear() {
@@ -729,6 +766,7 @@ public class Menu extends javax.swing.JFrame {
         txtLoaner.setText("");
         txtPubYear.setText("");
         txtOriginalName.setText("");
+        checkLoan.setSelected(false);
         dtm.setRowCount(0);
         dtm.addRow(new Object[] { "", "" });
         dtm.addRow(new Object[] { "", "" });
@@ -806,9 +844,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnAuthorToTable;
     private javax.swing.JButton btnCatToTable;
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JComboBox cBoxAuthor;
     private javax.swing.JComboBox cBoxCategory;
     private javax.swing.JCheckBox checkLoan;
+    private javax.swing.JTable editTable;
     private javax.swing.JTextField filterAuthor;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JMenu jMenu1;
@@ -818,6 +858,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblAddAuthor;
     private javax.swing.JLabel lblAddBook;
