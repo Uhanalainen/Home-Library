@@ -153,7 +153,7 @@ public class Book extends Master {
 
     public void getBook(int id) {
         
-        String sql = "SELECT name FROM books WHERE id = ?";
+        String sql = "SELECT name, pubyear FROM books WHERE id = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
@@ -164,6 +164,7 @@ public class Book extends Master {
                 while (rs.next()) {
                     this.setId(id);
                     this.name = rs.getString("name");
+                    this.pubYear = rs.getInt("pubYear");
                 }
             }
         } catch (SQLException e) {
