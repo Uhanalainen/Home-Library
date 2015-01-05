@@ -162,7 +162,7 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object col[] = {&quot;ID&quot;, &quot;Kirjailija&quot;, &quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Kategoria&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;mod = new DefaultTableModel(null, col) {&#xa;        @Override&#xa;        public boolean isCellEditable(int row, int column) {&#xa;            return false;&#xa;        }&#xa;};"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillTable();&#xa;browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent e) {&#xa;        if(browseTable.getSelectedRow() != -1) {&#xa;            id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);&#xa;            System.out.println(browseTable.getSelectedRow());&#xa;        }&#xa;    }&#xa;});"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillTable();&#xa;browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent e) {&#xa;        if(browseTable.getSelectedRow() != -1) {&#xa;            id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);&#xa;            fillEditBookTable();&#xa;        }&#xa;    }&#xa;});"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="sorter = new TableRowSorter&lt;DefaultTableModel&gt;(mod);&#xa;browseTable.setRowSorter(sorter);"/>
                       </AuxValues>
                     </Component>
@@ -641,21 +641,24 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnEdit" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane3" min="-2" pref="1054" max="-2" attributes="0"/>
+                              <Component id="btnSaveChanges" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPane3" min="-2" pref="476" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="588" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="124" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnEdit" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="543" max="32767" attributes="0"/>
+                          <Component id="btnSaveChanges" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="535" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -668,7 +671,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="editTable">
+                    <Component class="javax.swing.JTable" name="editBookTable">
                       <Properties>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0"/>
@@ -678,17 +681,25 @@
                         </Property>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
-                        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object columns[] = {&quot;Kirjailija&quot;, &quot;Kirja&quot;, &quot;Julkaisuvuosi&quot;, &quot;Kategoria&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;model = new DefaultTableModel(null, columns);"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillEditTable();"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="editTable.setModel(model);"/>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()/*{&#xa;    private static final long serialVersionUID = 719605636099468931L;&#xa;&#xa;    @SuppressWarnings({&quot;rawtypes&quot;, &quot;unchecked&quot;})&#xa;    @Override&#xa;    public Class getColumnClass(int column){&#xa;        switch (column) {&#xa;            case 2:&#xa;            return Boolean.class;&#xa;            default:&#xa;            return String.class;&#xa;        }&#xa;    }&#xa;}*/&#xa;"/>
+                        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object columns[] = {&quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;model = new DefaultTableModel(null, columns){&#xa;        @Override&#xa;        public boolean isCellEditable(int row, int column) {&#xa;            return true;&#xa;        }&#xa;};"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillEditBookTable();"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="editBookTable.setModel(model);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="btnEdit">
+                <Component class="javax.swing.JLabel" name="jLabel1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="P&#xe4;ivit&#xe4;"/>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Tahoma" size="18" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Kirjan muokkaus"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnSaveChanges">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tallenna"/>
                   </Properties>
                 </Component>
               </SubComponents>
