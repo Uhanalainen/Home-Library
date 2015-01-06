@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 public class Book extends Master {
     
     private String origName;
-    private String onLoan;
+    private boolean onLoan;
     private String loaner;
     private int pubYear;
     public ArrayList<Author> author = new ArrayList();
@@ -33,7 +33,7 @@ public class Book extends Master {
         this.id = id;
     }
 
-    public Book(int id, String name, int pubYear, String onLoan, String loaner, String origName) {
+    public Book(int id, String name, int pubYear, boolean onLoan, String loaner, String origName) {
         this.id = id;
         this.name = name;
         this.pubYear = pubYear;
@@ -42,7 +42,7 @@ public class Book extends Master {
         this.origName = origName;
     }
     
-    public Book(String name, String origName, int pubYear, String onLoan, String loaner) {
+    public Book(String name, String origName, int pubYear, boolean onLoan, String loaner) {
         this.name = name;
         this.origName = origName;
         this.pubYear = pubYear;
@@ -94,7 +94,7 @@ public class Book extends Master {
         } catch (SQLException e) {
             System.out.println("Tapahtui virhe: " + e);
         } catch (NullPointerException npe) {
-            System.out.println("saasf" + npe);
+            System.out.println("Something went wrong" + npe);
         } finally {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
@@ -114,7 +114,7 @@ public class Book extends Master {
             try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
                     books.add(new Book(rs.getInt("id"), rs.getString("name"), rs.getInt("pubYear"),
-                            (rs.getBoolean("onLoan") == true ? "Kyllä" : "Ei"), rs.getString("loaner"), rs.getString("origName")));
+                            rs.getBoolean("onLoan"), rs.getString("loaner"), rs.getString("origName")));
                 }
             }
         } catch (SQLException e) {
@@ -139,7 +139,7 @@ public class Book extends Master {
             try (ResultSet rs = ps.executeQuery();) {
                 while (rs.next()) {
                     books.add(new Book(rs.getInt("id"), rs.getString("name"), rs.getInt("pubYear"),
-                            (rs.getBoolean("onLoan") == true ? "Kyllä" : "Ei"), rs.getString("loaner"), rs.getString("origName")));
+                            rs.getBoolean("onLoan"), rs.getString("loaner"), rs.getString("origName")));
                 }
             }
         } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class Book extends Master {
                     this.id = id;
                     this.name = rs.getString("name");
                     this.pubYear = rs.getInt("pubYear");
-                    this.onLoan = rs.getString("onLoan");
+                    this.onLoan = rs.getBoolean("onLoan");
                     this.loaner = rs.getString("loaner");
                     this.origName = rs.getString("origName");
                 }
@@ -191,7 +191,7 @@ public class Book extends Master {
             ps.setString(1, this.name);
             ps.setString(2, this.getOrigName());
             ps.setInt(3, this.getPubYear());
-            ps.setBoolean(4, this.getOnLoan().equals("Kyllä") ? true : false);
+            ps.setBoolean(4, this.getOnLoan());
             ps.setString(5, this.getLoaner());
             int n1 = ps.executeUpdate();
             if(n1 > 0) {
@@ -231,7 +231,7 @@ public class Book extends Master {
             ps.setInt(6, this.getId());
             ps.setString(1, this.name);
             ps.setInt(2, this.getPubYear());
-            ps.setString(3, this.getOnLoan());
+            ps.setBoolean(3, this.getOnLoan());
             ps.setString(4, this.getLoaner());
             ps.setString(5, this.getOrigName());
             ps.executeQuery();
@@ -288,14 +288,14 @@ public class Book extends Master {
     /**
      * @return the onLoan
      */
-    public String getOnLoan() {
+    public boolean getOnLoan() {
         return onLoan;
     }
 
     /**
      * @param onLoan the onLoan to set
      */
-    public void setOnLoan(String onLoan) {
+    public void setOnLoan(boolean onLoan) {
         this.onLoan = onLoan;
     }
 
