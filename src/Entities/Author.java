@@ -160,16 +160,16 @@ public class Author extends Master {
 
     public void updateAuthor() {
 
-        String sql = "UPDATE authors SET (firstName = ?, lastName = ?) WHERE id = ?";
+        String sql = "UPDATE authors SET firstName = ?, lastName = ? WHERE id = ?";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
         try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, this.name);
-            ps.setString(2, this.getLastName());
+            ps.setString(2, this.lastName);
             ps.setInt(3, this.id);
-            ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
