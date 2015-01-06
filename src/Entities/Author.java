@@ -97,9 +97,11 @@ public class Author extends Master {
             ps.setString(2, lastName);
             try {
                 ResultSet rs = ps.executeQuery();
-                this.id = rs.getInt(1);
-                this.name = firstName;
-                this.lastName = lastName;
+                while(rs.next()) {
+                    this.id = rs.getInt(1);
+                    this.name = firstName;
+                    this.lastName = lastName;
+                }
             } catch (Exception e) {
                 System.out.println("Virhe: " + e);
             }

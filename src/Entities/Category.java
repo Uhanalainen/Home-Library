@@ -90,8 +90,10 @@ public class Category extends Master {
             ps.setString(1, name);
             try {
                 ResultSet rs = ps.executeQuery();
-                this.id = rs.getInt(1);
-                this.name = name;
+                while(rs.next()) {
+                    this.id = rs.getInt(1);
+                    this.name = name;
+                }
             } catch (Exception e) {
                 System.out.println("Virhe" + e);
             }
@@ -153,8 +155,9 @@ public class Category extends Master {
 
         try {
             ps = conn.prepareStatement(sql);
+            ps.setString(1, this.name);
             ps.setInt(2, this.id);
-            ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
@@ -210,5 +213,9 @@ public class Category extends Master {
     
     public int getId() {
         return this.id;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 }

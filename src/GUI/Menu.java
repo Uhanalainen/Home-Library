@@ -7,6 +7,7 @@ package GUI;
 
 import Entities.*;
 import java.util.ArrayList;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -83,13 +84,13 @@ public class Menu extends javax.swing.JFrame {
         panelAdd = new javax.swing.JPanel();
         lblFirstName = new javax.swing.JLabel();
         lblLastName = new javax.swing.JLabel();
-        txtFirstName = new javax.swing.JTextField();
-        txtLastName = new javax.swing.JTextField();
+        txtAddAuthorFirstName = new javax.swing.JTextField();
+        txtAddAuthorLastName = new javax.swing.JTextField();
         lblAddAuthor = new javax.swing.JLabel();
         btnAddAuthor = new javax.swing.JButton();
         lblAddCategoryHeader = new javax.swing.JLabel();
         lblAddCategory = new javax.swing.JLabel();
-        txtCategory = new javax.swing.JTextField();
+        txtAddCategory = new javax.swing.JTextField();
         btnAddCategory = new javax.swing.JButton();
         lblAddBook = new javax.swing.JLabel();
         ArrayList<Author> authors = Author.getAuthors();
@@ -133,11 +134,11 @@ public class Menu extends javax.swing.JFrame {
         };
         editBookTable = new javax.swing.JTable()
         ;
-        jLabel1 = new javax.swing.JLabel();
+        lblEditBookHeader = new javax.swing.JLabel();
         btnSaveChanges = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblEditBookName = new javax.swing.JLabel();
+        lblEditBookPubYear = new javax.swing.JLabel();
+        lblEditBookOrigName = new javax.swing.JLabel();
         checkEditLoan = new javax.swing.JCheckBox();
         txtEditBookName = new javax.swing.JTextField();
         txtEditPubYear = new javax.swing.JTextField();
@@ -147,25 +148,25 @@ public class Menu extends javax.swing.JFrame {
         cBoxEditBookAuthor = new javax.swing.JComboBox();
         ArrayList<Category> categories1 = Category.getCategories();
         cBoxEditBookCategory = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        btnClearEditBoxes = new javax.swing.JButton();
         btnEditBookAddAuthor = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        btnEditBookAddCategory = new javax.swing.JButton();
+        btnEditBookDeleteAuthor = new javax.swing.JButton();
+        btnEditBookDeleteCategory = new javax.swing.JButton();
+        lblEditAuthorHeader = new javax.swing.JLabel();
+        lblEditAuthorFirstName = new javax.swing.JLabel();
         ArrayList<Author> authors2 = Author.getAuthors();
         cBoxEditAuthor = new javax.swing.JComboBox();
         txtEditAuthorLastName = new javax.swing.JTextField();
         txtEditAuthorName = new javax.swing.JTextField();
         btnEditAuthor = new javax.swing.JButton();
         btnDeleteAuthor = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lblEditAuthorLastName = new javax.swing.JLabel();
+        lblEditCategoryHeader = new javax.swing.JLabel();
         ArrayList<Category> categories2 = Category.getCategories();
         cBoxEditCategory = new javax.swing.JComboBox();
         txtEditCategory = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        lblEditCategoryName = new javax.swing.JLabel();
         btnEditCategory = new javax.swing.JButton();
         btnDeleteCategory = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -192,6 +193,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        ((JComponent) browseTable.getDefaultRenderer(Boolean.class)).setOpaque(true);
         sorter = new TableRowSorter<DefaultTableModel>(mod);
         browseTable.setAutoCreateRowSorter(true);
         browseTable.setModel(mod);
@@ -361,9 +363,11 @@ public class Menu extends javax.swing.JFrame {
         for(Author a : authors){
             cBoxAuthor.addItem(a.getLastName() + ", " + a.getName());
         }
+        cBoxAuthor.setSelectedIndex(-1);
         for(Category c : categories){
             cBoxCategory.addItem(c.getName());
         }
+        cBoxCategory.setSelectedIndex(-1);
 
         javax.swing.GroupLayout panelAddLayout = new javax.swing.GroupLayout(panelAdd);
         panelAdd.setLayout(panelAddLayout);
@@ -383,8 +387,8 @@ public class Menu extends javax.swing.JFrame {
                                         .addComponent(lblLastName))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                                        .addComponent(txtFirstName)))))
+                                        .addComponent(txtAddAuthorLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                        .addComponent(txtAddAuthorFirstName)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelAddLayout.createSequentialGroup()
@@ -395,7 +399,7 @@ public class Menu extends javax.swing.JFrame {
                                         .addGroup(panelAddLayout.createSequentialGroup()
                                             .addComponent(lblAddCategory)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(panelAddLayout.createSequentialGroup()
                                 .addGap(53, 53, 53)
@@ -454,13 +458,13 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFirstName)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAddAuthorFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblAddCategory)
-                    .addComponent(txtCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLastName)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAddAuthorLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddAuthor)
@@ -513,8 +517,8 @@ public class Menu extends javax.swing.JFrame {
         fillEditBookTable();
         jScrollPane3.setViewportView(editBookTable);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Kirjan muokkaus");
+        lblEditBookHeader.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblEditBookHeader.setText("Kirjan muokkaus");
 
         btnSaveChanges.setText("Tallenna muutokset");
         btnSaveChanges.addActionListener(new java.awt.event.ActionListener() {
@@ -523,14 +527,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("Kirjan nimi");
+        lblEditBookName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditBookName.setText("Kirjan nimi");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("Julkaisuvuosi");
+        lblEditBookPubYear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditBookPubYear.setText("Julkaisuvuosi");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setText("Alkuperäinen nimi");
+        lblEditBookOrigName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditBookOrigName.setText("Alkuperäinen nimi");
 
         checkEditLoan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         checkEditLoan.setText("Lainassa / Lainaaja");
@@ -541,8 +545,14 @@ public class Menu extends javax.swing.JFrame {
         for(Category c : categories1){
             cBoxEditBookCategory.addItem(c.getName());
         }
+        cBoxEditBookCategory.setSelectedIndex(-1);
 
-        jButton1.setText("Tyhjennä");
+        btnClearEditBoxes.setText("Tyhjennä");
+        btnClearEditBoxes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearEditBoxesActionPerformed(evt);
+            }
+        });
 
         btnEditBookAddAuthor.setText("Lisää kirjailija");
         btnEditBookAddAuthor.addActionListener(new java.awt.event.ActionListener() {
@@ -551,19 +561,23 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Lisää kategoria");
+        btnEditBookAddCategory.setText("Lisää kategoria");
 
-        jButton4.setText("Poista kirjailija");
+        btnEditBookDeleteAuthor.setText("Poista kirjailija");
 
-        jButton5.setText("Poista kategoria");
+        btnEditBookDeleteCategory.setText("Poista kategoria");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Kirjailijan muokkaus");
+        lblEditAuthorHeader.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblEditAuthorHeader.setText("Kirjailijan muokkaus");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel6.setText("Etunimi");
+        lblEditAuthorFirstName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditAuthorFirstName.setText("Etunimi");
 
-        cBoxEditAuthor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        cBoxEditAuthor.setModel(new javax.swing.DefaultComboBoxModel());
+        for(Author a : authors2){
+            cBoxEditAuthor.addItem(a.getLastName() + ", " + a.getName());
+        }
+        cBoxEditAuthor.setSelectedIndex(-1);
         cBoxEditAuthor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cBoxEditAuthorActionPerformed(evt);
@@ -579,35 +593,39 @@ public class Menu extends javax.swing.JFrame {
 
         btnDeleteAuthor.setText("Poista kirjailija");
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setText("Sukunimi");
+        lblEditAuthorLastName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditAuthorLastName.setText("Sukunimi");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Kategorian muokkaus");
+        lblEditCategoryHeader.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblEditCategoryHeader.setText("Kategorian muokkaus");
 
-        cBoxEditCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        cBoxEditCategory.setModel(new javax.swing.DefaultComboBoxModel());
         for(Category c : categories2){
             cBoxEditCategory.addItem(c.getName());
         }
+        cBoxEditCategory.setSelectedIndex(-1);
         cBoxEditCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cBoxEditCategoryActionPerformed(evt);
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel9.setText("Nimi");
+        lblEditCategoryName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblEditCategoryName.setText("Nimi");
 
         btnEditCategory.setText("Muokkaa kategoria");
+        btnEditCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditCategoryActionPerformed(evt);
+            }
+        });
 
         btnDeleteCategory.setText("Poista kategoria");
 
         for(Author a : authors1){
             cBoxEditBookAuthor.addItem(a.getLastName() + ", " + a.getName());
         }
-        for(Author a : authors2){
-            cBoxEditAuthor.addItem(a.getLastName() + ", " + a.getName());
-        }
+        cBoxEditBookAuthor.setSelectedIndex(-1);
 
         javax.swing.GroupLayout panelEditLayout = new javax.swing.GroupLayout(panelEdit);
         panelEdit.setLayout(panelEditLayout);
@@ -616,20 +634,20 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(panelEditLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
+                    .addComponent(lblEditBookHeader)
                     .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
                             .addComponent(btnSaveChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnClearEditBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
                             .addComponent(cBoxEditBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cBoxEditBookCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelEditLayout.createSequentialGroup()
                             .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel8))
+                                .addComponent(lblEditAuthorFirstName)
+                                .addComponent(lblEditAuthorLastName))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtEditAuthorLastName)
@@ -638,11 +656,11 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
                             .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(btnEditBookAddAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnEditBookDeleteAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(59, 59, 59)
                             .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnEditBookAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnEditBookDeleteCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelEditLayout.createSequentialGroup()
                         .addComponent(checkEditLoan)
@@ -653,7 +671,7 @@ public class Menu extends javax.swing.JFrame {
                             .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(panelEditLayout.createSequentialGroup()
                                     .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5)
+                                        .addComponent(lblEditAuthorHeader)
                                         .addComponent(cBoxEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
@@ -664,18 +682,18 @@ public class Menu extends javax.swing.JFrame {
                                 .addGap(62, 62, 62)))
                         .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cBoxEditCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblEditCategoryHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                                .addComponent(jLabel9)
+                                .addComponent(lblEditCategoryName)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtEditCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnEditCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnDeleteCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
                         .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(lblEditBookName)
+                            .addComponent(lblEditBookPubYear)
+                            .addComponent(lblEditBookOrigName))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtEditOrigName, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
@@ -688,22 +706,22 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(panelEditLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7))
+                    .addComponent(lblEditAuthorHeader)
+                    .addComponent(lblEditCategoryHeader))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cBoxEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cBoxEditCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(lblEditAuthorFirstName)
                     .addComponent(txtEditAuthorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEditCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                    .addComponent(lblEditCategoryName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEditAuthorLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(lblEditAuthorLastName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditAuthor)
@@ -713,18 +731,18 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(btnDeleteAuthor)
                     .addComponent(btnDeleteCategory))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(lblEditBookHeader)
                 .addGap(18, 18, 18)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(lblEditBookName)
                     .addComponent(txtEditBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(lblEditBookPubYear)
                     .addComponent(txtEditPubYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEditBookOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEditOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -737,17 +755,17 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditBookAddAuthor)
-                    .addComponent(jButton3))
+                    .addComponent(btnEditBookAddCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnEditBookDeleteAuthor)
+                    .addComponent(btnEditBookDeleteCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSaveChanges)
-                    .addComponent(jButton1))
+                    .addComponent(btnClearEditBoxes))
                 .addContainerGap(99, Short.MAX_VALUE))
         );
 
@@ -798,14 +816,18 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnEditBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddAuthorActionPerformed
         String author = cBoxEditBookAuthor.getSelectedItem().toString();
-        for (int i = 0; i < 6; i++) {
-            if (editBookTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                i = 6;
-            } else if (editBookTable.getValueAt(i, 0).toString().length() < 1) {
-                editBookTable.setValueAt(author, i, 0);
-                i = 6;
+        if(editBookTable.getRowCount() > 1) {
+            for (int i = 0; i < 6; i++) {
+                if (editBookTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
+                    JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                    i = 6;
+                } else if (editBookTable.getValueAt(i, 0).toString().length() < 1) {
+                    editBookTable.setValueAt(author, i, 0);
+                    i = 6;
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Valitse ensin selausvalikosta muokattava kirja", "Virhe", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEditBookAddAuthorActionPerformed
 
@@ -910,7 +932,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         //Storing whatever is in the txt field to variable
-        String name = txtCategory.getText();
+        String name = txtAddCategory.getText();
 
         if (!"".equalsIgnoreCase(name)) {
             if (!name.contains(" ")) {
@@ -926,13 +948,13 @@ public class Menu extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE); //Inform user that the category text field was left blank
         }
-        txtCategory.setText("");                //and finally, empty the text field
+        txtAddCategory.setText("");                //and finally, empty the text field
         comboCatRefresh();                      //Refresh 'categories' combobox contents
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private void btnAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorActionPerformed
-        String name = txtFirstName.getText();
-        String lastName = txtLastName.getText();
+        String name = txtAddAuthorFirstName.getText();
+        String lastName = txtAddAuthorLastName.getText();
 
         if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {          //check that neither field is empty
             Author a = new Author(name, lastName);                                  //If they aren't, create a new Author
@@ -946,58 +968,107 @@ public class Menu extends javax.swing.JFrame {
         } else {                                                                    //If the second check failed, inform user that lastName-field was empty
             JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
-        txtFirstName.setText("");                                                   //Clear textfields
-        txtLastName.setText("");                                                    //Clear textfields
+        txtAddAuthorFirstName.setText("");                                                   //Clear textfields
+        txtAddAuthorLastName.setText("");                                                    //Clear textfields
         comboAuthorRefresh();                                                       //Refresh 'author' combobox contents
     }//GEN-LAST:event_btnAddAuthorActionPerformed
 
     private void cBoxEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditAuthorActionPerformed
-        String author = cBoxEditAuthor.getSelectedItem().toString();
-        if(author.length() < 1) {
-          txtEditAuthorLastName.setText("");
-          txtEditAuthorName.setText("");  
-        } else {
-            String[] authName = author.split(", ");
-            String lName = authName[0];
-            String fName = authName[1];
-            txtEditAuthorLastName.setText(lName);
-            txtEditAuthorName.setText(fName);
-        }
+        try {
+            String author = cBoxEditAuthor.getSelectedItem().toString();
+            if(author.length() < 1) {
+              txtEditAuthorLastName.setText("");
+              txtEditAuthorName.setText("");  
+            } else {
+                String[] authName = author.split(", ");
+                String lName = authName[0];
+                String fName = authName[1];
+                txtEditAuthorLastName.setText(lName);
+                txtEditAuthorName.setText(fName);
+            }
+        } catch(Exception e) {}
     }//GEN-LAST:event_cBoxEditAuthorActionPerformed
 
     private void cBoxEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditCategoryActionPerformed
-        String category = cBoxEditCategory.getSelectedItem().toString();
-        if(category.length() < 1) {
-            txtEditCategory.setText("");
-        } else {
-            txtEditCategory.setText(category);
-        }
+        try {
+            String category = cBoxEditCategory.getSelectedItem().toString();
+            if(category.length() < 1) {
+                txtEditCategory.setText("");
+            } else {
+                txtEditCategory.setText(category);
+            }
+        } catch (Exception e) {}
     }//GEN-LAST:event_cBoxEditCategoryActionPerformed
 
     private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
         String author = cBoxEditAuthor.getSelectedItem().toString();
         String[] authName = author.split(", ");
-        String oldName = authName[0];
-        String oldLastName = authName[1];
-        String newName = txtEditAuthorName.getText();
-        String newLastName = txtEditAuthorLastName.getText();
+        String oldName = authName[1];
+        String oldLastName = authName[0];
+        String name = txtEditAuthorName.getText();
+        String lastName = txtEditAuthorLastName.getText();
         
-        if (!"".equalsIgnoreCase(newName) && !"".equalsIgnoreCase(newLastName)) {
+        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
             Author a = new Author(oldName, oldLastName);
             a.getAuthor(oldName, oldLastName);
-            a.setName(newName);
-            a.setLastName(newLastName);
+            a.setName(name);
+            a.setLastName(lastName);
             if(!a.doIExist()) {
                 a.updateAuthor();
+                JOptionPane.showMessageDialog(null, "Kirjailija on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
+                comboAuthorRefresh();
+                txtEditAuthorName.setText("");
+                txtEditAuthorLastName.setText("");
             } else {
                 JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
-        } else if ("".equalsIgnoreCase(newName)) {
+        } else if ("".equalsIgnoreCase(name)) {
             JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEditAuthorActionPerformed
+
+    private void btnEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryActionPerformed
+        String name = txtEditCategory.getText();
+        String oldName = cBoxEditCategory.getSelectedItem().toString();
+
+        if (!"".equalsIgnoreCase(name)) {
+            if (!name.contains(" ")) {
+                Category c = new Category(oldName);
+                c.getCategory(oldName);
+                c.setName(name);
+                if (!c.doesItExist()) {
+                    c.updateCategory();
+                    JOptionPane.showMessageDialog(null, "Kategoria on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
+                    comboCatRefresh();
+                    txtAddCategory.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        }        
+    }//GEN-LAST:event_btnEditCategoryActionPerformed
+
+    private void btnClearEditBoxesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearEditBoxesActionPerformed
+        txtEditAuthorLastName.setText("");
+        txtEditAuthorName.setText("");
+        txtEditBookName.setText("");
+        txtEditCategory.setText("");
+        txtEditLoaner.setText("");
+        txtEditOrigName.setText("");
+        txtEditPubYear.setText("");
+        cBoxEditAuthor.setSelectedIndex(-1);
+        cBoxEditBookAuthor.setSelectedIndex(-1);
+        cBoxEditBookCategory.setSelectedIndex(-1);
+        cBoxEditCategory.setSelectedIndex(-1);
+        model.setRowCount(0);
+        checkEditLoan.setSelected(false);
+    }//GEN-LAST:event_btnClearEditBoxesActionPerformed
 
     private void fillAddManyTable() {
         dtm.addRow(new Object[]{"", ""});
@@ -1128,6 +1199,9 @@ public class Menu extends javax.swing.JFrame {
 
     //Clears all textfields in add-panel
     private void clearBoxes() {
+        txtAddAuthorFirstName.setText("");
+        txtAddAuthorLastName.setText("");
+        txtAddCategory.setText("");
         txtBookName.setText("");
         txtLoaner.setText("");
         txtPubYear.setText("");
@@ -1160,6 +1234,9 @@ public class Menu extends javax.swing.JFrame {
             cBoxEditAuthor.addItem(a.getLastName() + ", " + a.getName());
             cBoxEditBookAuthor.addItem(a.getLastName() + ", " + a.getName());
         }
+        cBoxAuthor.setSelectedIndex(-1);
+        cBoxEditAuthor.setSelectedIndex(-1);
+        cBoxEditBookAuthor.setSelectedIndex(-1);
     }
 
     /*
@@ -1178,6 +1255,9 @@ public class Menu extends javax.swing.JFrame {
             cBoxEditCategory.addItem(c.getName());
             cBoxEditBookCategory.addItem(c.getName());
         }
+        cBoxCategory.setSelectedIndex(-1);
+        cBoxEditCategory.setSelectedIndex(-1);
+        cBoxEditBookCategory.setSelectedIndex(-1);
     }
 
     /**
@@ -1230,10 +1310,14 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnAuthorToTable;
     private javax.swing.JButton btnCatToTable;
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnClearEditBoxes;
     private javax.swing.JButton btnDeleteAuthor;
     private javax.swing.JButton btnDeleteCategory;
     private javax.swing.JButton btnEditAuthor;
     private javax.swing.JButton btnEditBookAddAuthor;
+    private javax.swing.JButton btnEditBookAddCategory;
+    private javax.swing.JButton btnEditBookDeleteAuthor;
+    private javax.swing.JButton btnEditBookDeleteCategory;
     private javax.swing.JButton btnEditCategory;
     private javax.swing.JButton btnSaveChanges;
     private javax.swing.JComboBox cBoxAuthor;
@@ -1246,20 +1330,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkLoan;
     private javax.swing.JTable editBookTable;
     private javax.swing.JTextField filterAuthor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1274,6 +1345,15 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lblAddCategory;
     private javax.swing.JLabel lblAddCategoryHeader;
     private javax.swing.JLabel lblBookName;
+    private javax.swing.JLabel lblEditAuthorFirstName;
+    private javax.swing.JLabel lblEditAuthorHeader;
+    private javax.swing.JLabel lblEditAuthorLastName;
+    private javax.swing.JLabel lblEditBookHeader;
+    private javax.swing.JLabel lblEditBookName;
+    private javax.swing.JLabel lblEditBookOrigName;
+    private javax.swing.JLabel lblEditBookPubYear;
+    private javax.swing.JLabel lblEditCategoryHeader;
+    private javax.swing.JLabel lblEditCategoryName;
     private javax.swing.JLabel lblFirstName;
     private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblOrigName;
@@ -1287,8 +1367,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel star2;
     private javax.swing.JLabel star3;
     private javax.swing.JLabel star4;
+    private javax.swing.JTextField txtAddAuthorFirstName;
+    private javax.swing.JTextField txtAddAuthorLastName;
+    private javax.swing.JTextField txtAddCategory;
     private javax.swing.JTextField txtBookName;
-    private javax.swing.JTextField txtCategory;
     private javax.swing.JTextField txtEditAuthorLastName;
     private javax.swing.JTextField txtEditAuthorName;
     private javax.swing.JTextField txtEditBookName;
@@ -1296,8 +1378,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField txtEditLoaner;
     private javax.swing.JTextField txtEditOrigName;
     private javax.swing.JTextField txtEditPubYear;
-    private javax.swing.JTextField txtFirstName;
-    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtLoaner;
     private javax.swing.JTextField txtOriginalName;
     private javax.swing.JTextField txtPubYear;

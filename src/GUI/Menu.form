@@ -163,7 +163,7 @@
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;"/>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object col[] = {&quot;ID&quot;, &quot;Kirjailija&quot;, &quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Kategoria&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;mod = new DefaultTableModel(null, col) {&#xa;        @Override&#xa;        public boolean isCellEditable(int row, int column) {&#xa;            return false;&#xa;        }&#xa;    @Override&#xa;    public Class getColumnClass(int column){&#xa;        switch (column) {&#xa;            case 0:&#xa;            return Integer.class;&#xa;            case 3:&#xa;            return Integer.class;&#xa;            case 5:&#xa;            return Boolean.class;&#xa;            default:&#xa;            return String.class;&#xa;        }&#xa;    }&#xa;};"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillTable();&#xa;browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent e) {&#xa;        if(browseTable.getSelectedRow() != -1) {&#xa;            id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);&#xa;            fillEditBookTable();&#xa;        }&#xa;    }&#xa;});"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="sorter = new TableRowSorter&lt;DefaultTableModel&gt;(mod);&#xa;browseTable.setAutoCreateRowSorter(true);"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="((JComponent) browseTable.getDefaultRenderer(Boolean.class)).setOpaque(true);&#xa;sorter = new TableRowSorter&lt;DefaultTableModel&gt;(mod);&#xa;browseTable.setAutoCreateRowSorter(true);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -213,8 +213,8 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="txtLastName" pref="98" max="32767" attributes="0"/>
-                                                  <Component id="txtFirstName" max="32767" attributes="0"/>
+                                                  <Component id="txtAddAuthorLastName" pref="98" max="32767" attributes="0"/>
+                                                  <Component id="txtAddAuthorFirstName" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -229,7 +229,7 @@
                                                   <Group type="102" attributes="0">
                                                       <Component id="lblAddCategory" min="-2" max="-2" attributes="0"/>
                                                       <EmptySpace max="32767" attributes="0"/>
-                                                      <Component id="txtCategory" min="-2" pref="82" max="-2" attributes="0"/>
+                                                      <Component id="txtAddCategory" min="-2" pref="82" max="-2" attributes="0"/>
                                                   </Group>
                                                   <Component id="btnAddCategory" min="-2" pref="172" max="-2" attributes="0"/>
                                               </Group>
@@ -314,14 +314,14 @@
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtAddAuthorFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblAddCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCategory" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtAddCategory" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblLastName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtAddAuthorLastName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -397,9 +397,9 @@
                     <Property name="text" type="java.lang.String" value="Sukunimi"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtFirstName">
+                <Component class="javax.swing.JTextField" name="txtAddAuthorFirstName">
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtLastName">
+                <Component class="javax.swing.JTextField" name="txtAddAuthorLastName">
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblAddAuthor">
                   <Properties>
@@ -433,7 +433,7 @@
                     <Property name="text" type="java.lang.String" value="Kategoria"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCategory">
+                <Component class="javax.swing.JTextField" name="txtAddCategory">
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAddCategory">
                   <Properties>
@@ -458,7 +458,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors){&#xa;    cBoxAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors){&#xa;    cBoxAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxAuthor.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors = Author.getAuthors();"/>
                   </AuxValues>
                 </Component>
@@ -469,7 +469,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Category c : categories){&#xa;    cBoxCategory.addItem(c.getName());&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Category c : categories){&#xa;    cBoxCategory.addItem(c.getName());&#xa;}&#xa;cBoxCategory.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories = Category.getCategories();"/>
                   </AuxValues>
                 </Component>
@@ -647,12 +647,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditBookHeader" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="btnSaveChanges" min="-2" pref="157" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButton1" min="-2" pref="176" max="-2" attributes="0"/>
+                                      <Component id="btnClearEditBoxes" min="-2" pref="176" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="cBoxEditBookAuthor" min="-2" pref="157" max="-2" attributes="0"/>
@@ -661,8 +661,8 @@
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblEditAuthorFirstName" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblEditAuthorLastName" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -674,12 +674,12 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Component id="btnEditBookAddAuthor" min="-2" pref="157" max="-2" attributes="0"/>
-                                          <Component id="jButton4" min="-2" pref="157" max="-2" attributes="0"/>
+                                          <Component id="btnEditBookDeleteAuthor" min="-2" pref="157" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jButton3" min="-2" pref="172" max="-2" attributes="0"/>
-                                          <Component id="jButton5" min="-2" pref="172" max="-2" attributes="0"/>
+                                          <Component id="btnEditBookAddCategory" min="-2" pref="172" max="-2" attributes="0"/>
+                                          <Component id="btnEditBookDeleteCategory" min="-2" pref="172" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="jScrollPane3" alignment="1" min="-2" pref="388" max="-2" attributes="0"/>
@@ -694,7 +694,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblEditAuthorHeader" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   <Component id="cBoxEditAuthor" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="62" max="32767" attributes="0"/>
@@ -711,9 +711,9 @@
                                   </Group>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="cBoxEditCategory" max="32767" attributes="0"/>
-                                      <Component id="jLabel7" max="32767" attributes="0"/>
+                                      <Component id="lblEditCategoryHeader" max="32767" attributes="0"/>
                                       <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblEditCategoryName" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="txtEditCategory" min="-2" pref="111" max="-2" attributes="0"/>
                                       </Group>
@@ -723,9 +723,9 @@
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblEditBookName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblEditBookPubYear" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblEditBookOrigName" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -744,8 +744,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditAuthorHeader" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditCategoryHeader" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -754,15 +754,15 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditAuthorFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtEditAuthorName" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtEditCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditCategoryName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtEditAuthorLastName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditAuthorLastName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -775,20 +775,20 @@
                               <Component id="btnDeleteCategory" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblEditBookHeader" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditBookName" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtEditBookName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblEditBookPubYear" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtEditPubYear" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel4" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                              <Component id="lblEditBookOrigName" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="txtEditOrigName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -804,19 +804,19 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnEditBookAddAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEditBookAddCategory" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEditBookDeleteAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEditBookDeleteCategory" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="124" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnSaveChanges" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnClearEditBoxes" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="99" max="32767" attributes="0"/>
                       </Group>
@@ -849,7 +849,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="lblEditBookHeader">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="18" style="0"/>
@@ -865,7 +865,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveChangesActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="lblEditBookName">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -873,7 +873,7 @@
                     <Property name="text" type="java.lang.String" value="Kirjan nimi"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="lblEditBookPubYear">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -881,7 +881,7 @@
                     <Property name="text" type="java.lang.String" value="Julkaisuvuosi"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel4">
+                <Component class="javax.swing.JLabel" name="lblEditBookOrigName">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -912,7 +912,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors1){&#xa;    cBoxEditBookAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors1){&#xa;    cBoxEditBookAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxEditBookAuthor.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors1 = Author.getAuthors();"/>
                   </AuxValues>
                 </Component>
@@ -924,13 +924,16 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories1 = Category.getCategories();"/>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories1){&#xa;    cBoxEditBookCategory.addItem(c.getName());&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories1){&#xa;    cBoxEditBookCategory.addItem(c.getName());&#xa;}&#xa;cBoxEditBookCategory.setSelectedIndex(-1);"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="btnClearEditBoxes">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Tyhjenn&#xe4;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearEditBoxesActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEditBookAddAuthor">
                   <Properties>
@@ -940,22 +943,22 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditBookAddAuthorActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton3">
+                <Component class="javax.swing.JButton" name="btnEditBookAddCategory">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Lis&#xe4;&#xe4; kategoria"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton4">
+                <Component class="javax.swing.JButton" name="btnEditBookDeleteAuthor">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Poista kirjailija"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton5">
+                <Component class="javax.swing.JButton" name="btnEditBookDeleteCategory">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Poista kategoria"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="lblEditAuthorHeader">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="18" style="0"/>
@@ -963,7 +966,7 @@
                     <Property name="text" type="java.lang.String" value="Kirjailijan muokkaus"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel6">
+                <Component class="javax.swing.JLabel" name="lblEditAuthorFirstName">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -974,15 +977,15 @@
                 <Component class="javax.swing.JComboBox" name="cBoxEditAuthor">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;&quot; })" type="code"/>
+                      <Connection code="new javax.swing.DefaultComboBoxModel()" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cBoxEditAuthorActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors2){&#xa;    cBoxEditAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors2 = Author.getAuthors();"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Author a : authors2){&#xa;    cBoxEditAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxEditAuthor.setSelectedIndex(-1);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditAuthorLastName">
@@ -1002,7 +1005,7 @@
                     <Property name="text" type="java.lang.String" value="Poista kirjailija"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="lblEditAuthorLastName">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -1010,7 +1013,7 @@
                     <Property name="text" type="java.lang.String" value="Sukunimi"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel7">
+                <Component class="javax.swing.JLabel" name="lblEditCategoryHeader">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="18" style="0"/>
@@ -1021,7 +1024,7 @@
                 <Component class="javax.swing.JComboBox" name="cBoxEditCategory">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;&quot; })" type="code"/>
+                      <Connection code="new javax.swing.DefaultComboBoxModel()" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -1029,12 +1032,12 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories2 = Category.getCategories();"/>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories2){&#xa;    cBoxEditCategory.addItem(c.getName());&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories2){&#xa;    cBoxEditCategory.addItem(c.getName());&#xa;}&#xa;cBoxEditCategory.setSelectedIndex(-1);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditCategory">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel9">
+                <Component class="javax.swing.JLabel" name="lblEditCategoryName">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -1046,6 +1049,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Muokkaa kategoria"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditCategoryActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnDeleteCategory">
                   <Properties>
