@@ -975,17 +975,24 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_cBoxEditCategoryActionPerformed
 
     private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
-        String name = txtEditAuthorName.getText();
-        String lastName = txtEditAuthorLastName.getText();
+        String author = cBoxEditAuthor.getSelectedItem().toString();
+        String[] authName = author.split(", ");
+        String oldName = authName[0];
+        String oldLastName = authName[1];
+        String newName = txtEditAuthorName.getText();
+        String newLastName = txtEditAuthorLastName.getText();
         
-        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
-            Author a = new Author(name, lastName);
+        if (!"".equalsIgnoreCase(newName) && !"".equalsIgnoreCase(newLastName)) {
+            Author a = new Author(oldName, oldLastName);
+            a.getAuthor(oldName, oldLastName);
+            a.setName(newName);
+            a.setLastName(newLastName);
             if(!a.doIExist()) {
                 a.updateAuthor();
             } else {
                 JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
-        } else if ("".equalsIgnoreCase(name)) {
+        } else if ("".equalsIgnoreCase(newName)) {
             JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
