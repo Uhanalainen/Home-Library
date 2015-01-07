@@ -179,10 +179,6 @@ public class Author extends Master {
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
     }
-
-    public void deleteAuthor() {
-
-    }
     
     public ArrayList<Book> getBooks() {
         

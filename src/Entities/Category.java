@@ -166,10 +166,6 @@ public class Category extends Master {
         }
     }
     
-    public void deleteCategory() {
-
-    }
-    
     public boolean doesItExist() {
 
         String sql = "SELECT count(id) FROM categories WHERE LOWER(name) = LOWER(?)";
