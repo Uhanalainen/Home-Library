@@ -973,7 +973,7 @@ public class Menu extends javax.swing.JFrame {
             categories.add(c);
         }
 
-        if (checkPubYear()) {
+        if (checkPubYear(pubYear)) {
             if (!name.isEmpty()) {
                 boolean bookExists = false;
                 for (Author a : authors) {
@@ -1281,13 +1281,13 @@ public class Menu extends javax.swing.JFrame {
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
     }
 
-    private boolean checkPubYear() {
+    private boolean checkPubYear(String pubYear) {
 
         boolean yearOk = false;
-        if (!txtPubYear.getText().isEmpty()) {
-            if (txtPubYear.getText().length() == 4) {
+        if (!pubYear.isEmpty()) {
+            if (pubYear.length() == 4) {
                 try {
-                    int pubYear = Integer.parseInt(txtPubYear.getText());
+                    int pYear = Integer.parseInt(pubYear);
                     yearOk = true;
                 } catch (NumberFormatException n) {
                     JOptionPane.showMessageDialog(null, "Syötä neljänumeroinen vuosiluku, esim '1994'", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
@@ -1297,7 +1297,7 @@ public class Menu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Syötä neljänumeroinen vuosiluku, esim '1994'", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Vuosiluku-tekstikenttä oli tyhjä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Syötä julkaisuvuosi oli tyhjä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
         return yearOk;
     }
