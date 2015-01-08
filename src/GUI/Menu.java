@@ -820,10 +820,11 @@ public class Menu extends javax.swing.JFrame {
             String author = cBoxEditBookAuthor.getSelectedItem().toString();
             if(editBookTable.getRowCount() > 1) {
                 for (int i = 0; i < 6; i++) {
-                    if (editBookTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
+                    String val = editBookTable.getValueAt(i, 0).toString();
+                    if (val.equalsIgnoreCase(author)) {
                         JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                         i = 6;
-                    } else if (editBookTable.getValueAt(i, 0).toString().length() < 1) {
+                    } else if (val.length() < 1) {
                         editBookTable.setValueAt(author, i, 0);
                         editBookAuthorCounter++;
                         i = 6;
@@ -857,22 +858,30 @@ public class Menu extends javax.swing.JFrame {
         b.author.clear();
         b.category.clear();
         
-        for (int i = 0; i < editBookAuthorCounter; i++) {
-            Author a = new Author();
-            String auth = editBookTable.getValueAt(i, 0).toString();
-            String[] authName = auth.split(", ");
-            String lName = authName[0];
-            String fName = authName[1];
-            a.getAuthor(fName, lName);
-            a.getBooks();
-            authors.add(a);
+        for (int i = 0; i < 6; i++) {
+            String val = editBookTable.getValueAt(i, 0).toString();
+            if(!val.isEmpty()) {
+                Author a = new Author();
+                String[] authName = val.split(", ");
+                String lName = authName[0];
+                String fName = authName[1];
+                a.getAuthor(fName, lName);
+                a.getBooks();
+                authors.add(a);
+            } else {
+                i = 6;
+            }
         }
 
-        for (int i = 0; i < editBookCategoryCounter; i++) {
-            Category c = new Category();
+        for (int i = 0; i < 6; i++) {
             String cat = editBookTable.getValueAt(i, 1).toString();
-            c.getCategory(cat);
-            categories.add(c);
+            if(!cat.isEmpty()) {
+                Category c = new Category();
+                c.getCategory(cat);
+                categories.add(c);
+            } else {
+                i = 6;
+            }
         }
 
         if (checkPubYear(newPubYear)) {
