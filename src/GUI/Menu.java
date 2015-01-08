@@ -991,11 +991,11 @@ public class Menu extends javax.swing.JFrame {
         if(authors.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kirjailija taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             addBook = false;
-        }
-        if (categories.isEmpty()) {
+        } else if (categories.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kategoria taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             addBook = false;
         }
+        
         if (checkPubYear(pubYear)) {
             if (!name.isEmpty()) {
                 for (Author a : authors) {
@@ -1157,11 +1157,12 @@ public class Menu extends javax.swing.JFrame {
             String category = cBoxEditBookCategory.getSelectedItem().toString();
             if(editBookTable.getRowCount() > 1) {
                 for (int i = 0; i < 6; i++) {
+                    String value = editBookTable.getValueAt(i, 1).toString();
                     if (category != null && category.length() != 0 ) {
-                        if (editBookTable.getValueAt(i, 1).toString().equalsIgnoreCase(category)) {
+                        if (value.equalsIgnoreCase(category)) {
                             JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                             i = 6;
-                        } else if (editBookTable.getValueAt(i, 1).toString().length() < 1) {
+                        } else if (value.length() < 1) {
                             editBookTable.setValueAt(category, i, 1);
                             editBookCategoryCounter++;
                             i = 6;
@@ -1181,8 +1182,9 @@ public class Menu extends javax.swing.JFrame {
             int row = editBookTable.getSelectedRow();
             editBookTable.setValueAt("", row, 0);
             for(int i = row+1; i < 6; i++) {
-                if(!editBookTable.getValueAt(i, 0).toString().equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(editBookTable.getValueAt(i, 0), i-1, 0);
+                String value = editBookTable.getValueAt(i, 0).toString();
+                if(!value.equalsIgnoreCase("")) {
+                    editBookTable.setValueAt(value, i-1, 0);
                     editBookTable.setValueAt("", i, 0);
                     editBookAuthorCounter--;
                 }
