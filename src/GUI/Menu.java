@@ -852,9 +852,13 @@ public class Menu extends javax.swing.JFrame {
         ArrayList<Category> categories = new ArrayList();
         
         b.setName(newName);
-        b.setLoaner(newLoaner);
         b.setOnLoan(newOnLoan);
         b.setOrigName(newOrigName);
+        if(newOnLoan) {
+            b.setLoaner(newLoaner);
+        } else {
+            b.setLoaner("");
+        }
         b.author.clear();
         b.category.clear();
         
@@ -889,7 +893,7 @@ public class Menu extends javax.swing.JFrame {
                 boolean bookExists = false;
                 for (Author a : authors) {
                     for (Book bo : a.books) {
-                        if (newName.equalsIgnoreCase(bo.getName()) && Integer.parseInt(newPubYear) == bo.getPubYear()) {
+                        if (newName.equalsIgnoreCase(bo.getName()) && Integer.parseInt(newPubYear) == bo.getPubYear() && bo.getId() != b.getId()) {
                             bookExists = true;
                         }
                     }
@@ -983,17 +987,26 @@ public class Menu extends javax.swing.JFrame {
             categories.add(c);
         }
 
+        boolean addBook = true;
+        if(authors.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kirjailija taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            addBook = false;
+        }
+        if (categories.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kategoria taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            addBook = false;
+        }
         if (checkPubYear(pubYear)) {
             if (!name.isEmpty()) {
-                boolean bookExists = false;
                 for (Author a : authors) {
                     for (Book bo : a.books) {
                         if (name.equalsIgnoreCase(bo.getName()) && Integer.parseInt(pubYear) == bo.getPubYear()) {
-                            bookExists = true;
+                            JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                            addBook = false;
                         }
                     }
                 }
-                if (!bookExists) {
+                if (addBook) {
                     Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
                     for (Category c : categories) {
                         b.category.add(c);
@@ -1004,9 +1017,9 @@ public class Menu extends javax.swing.JFrame {
                     b.addBook();
                     checkLoan.setSelected(false);
                     clearBoxes();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Anna kirjalle nimi", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAddBookActionPerformed
@@ -1274,7 +1287,7 @@ public class Menu extends javax.swing.JFrame {
             }
             mod.addRow(new Object[]{b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
         }
-        mod.setRowCount(books.size() + 1);
+        mod.setRowCount(books.size());
 
         browseTable.getColumnModel().getColumn(0).setMaxWidth(40);
         browseTable.getColumnModel().getColumn(1).setMinWidth(220);
