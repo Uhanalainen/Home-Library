@@ -854,6 +854,8 @@ public class Menu extends javax.swing.JFrame {
         b.setLoaner(newLoaner);
         b.setOnLoan(newOnLoan);
         b.setOrigName(newOrigName);
+        b.author.clear();
+        b.category.clear();
         
         for (int i = 0; i < editBookAuthorCounter; i++) {
             Author a = new Author();
@@ -873,7 +875,7 @@ public class Menu extends javax.swing.JFrame {
             categories.add(c);
         }
 
-        if (checkPubYear()) {
+        if (checkPubYear(newPubYear)) {
             if (!newName.isEmpty()) {
                 boolean bookExists = false;
                 for (Author a : authors) {
@@ -884,18 +886,17 @@ public class Menu extends javax.swing.JFrame {
                     }
                 }
                 if (!bookExists) {
-                    Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
                     for (Category c : categories) {
                         b.category.add(c);
                     }
                     for (Author a : authors) {
                         b.author.add(a);
                     }
-                    b.addBook();
+                    b.updateBook();
                     checkEditLoan.setSelected(false);
                     clearEditBoxes();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Kirjan muokkaus epäonnistui. Tarkasta, ettei jollain kirjailijalla ole jo kyseistä kirjaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

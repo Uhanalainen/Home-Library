@@ -223,6 +223,10 @@ public class Book extends Master {
     public void updateBook() {
         
         String sql = "UPDATE books SET name = ?, pubYear = ?, onLoan = ?, loaner = ?, origName = ? WHERE id = ?";
+        String sql2 = "DELETE FROM bookAuthors WHERE bookId = ?";
+        String sql3 = "INSERT INTO bookAuthors (bookId, authorId) VALUES (?, ?)";
+        String sql4 = "DELETE FROM bookCategories WHERE bookId = ?";
+        String sql5 = "INSERT INTO bookCategories (bookId, categoryId) VALUES (?, ?)";
         this.conn = DbConn.getConnection();
         PreparedStatement ps = null;
 
@@ -234,7 +238,28 @@ public class Book extends Master {
             ps.setBoolean(3, this.getOnLoan());
             ps.setString(4, this.getLoaner());
             ps.setString(5, this.getOrigName());
-            ps.executeQuery();
+            int n1 = ps.executeUpdate();
+            if(n1 > 0) {
+                PreparedStatement ps2 = conn.prepareStatement(sql2);
+                JOptionPane.showMessageDialog(null, "Kirjan muokkaus on tallennettu", "", JOptionPane.PLAIN_MESSAGE);
+                ps2.setInt(1, this.getId());
+                ps2.executeUpdate();
+                for(Author a : this.author) {
+                    PreparedStatement ps3 = conn.prepareStatement(sql3);
+                    ps3.setInt(1, this.getId());
+                    ps3.setInt(2, a.getId());
+                    ps3.executeUpdate();
+                }
+                PreparedStatement ps4 = conn.prepareStatement(sql4);
+                ps4.setInt(1, this.getId());
+                ps4.executeUpdate();
+                for(Category c : this.category) {
+                    PreparedStatement ps5 = conn.prepareStatement(sql5);
+                    ps5.setInt(1, this.getId());
+                    ps5.setInt(2, c.getId());
+                    ps5.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
