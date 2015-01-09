@@ -15,10 +15,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -56,14 +54,18 @@ public class Menu extends javax.swing.JFrame {
 
         jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        TabbedPane = new javax.swing.JTabbedPane();
         panelBrowse = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Object col[] = {"ID", "Kirjailija", "Nimi", "Julkaisuvuosi", "Kategoria", "Lainassa", "Lainaaja", "Alkuperäinen nimi"};
         mod = new DefaultTableModel(null, col) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                if(column == 5) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
             @Override
             public Class getColumnClass(int column){
@@ -111,7 +113,7 @@ public class Menu extends javax.swing.JFrame {
         star1 = new javax.swing.JLabel();
         star2 = new javax.swing.JLabel();
         star4 = new javax.swing.JLabel();
-        lblStar = new javax.swing.JLabel();
+        lblCreateBookObligatory = new javax.swing.JLabel();
         star3 = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -123,9 +125,11 @@ public class Menu extends javax.swing.JFrame {
             }
         };
         addManyTable = new javax.swing.JTable();
-        btnAuthorToTable = new javax.swing.JButton();
-        btnCatToTable = new javax.swing.JButton();
+        btnCreateBookAddAuthor = new javax.swing.JButton();
+        btnCreateBookAddCategory = new javax.swing.JButton();
         star5 = new javax.swing.JLabel();
+        btnCreateBookDeleteAuthor = new javax.swing.JButton();
+        btnCreateBookDeleteCategory = new javax.swing.JButton();
         panelEdit = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         Object columns[] = {"Kirjailija", "Kategoria"};
@@ -170,6 +174,13 @@ public class Menu extends javax.swing.JFrame {
         txtEditCategory = new javax.swing.JTextField();
         lblEditCategoryName = new javax.swing.JLabel();
         btnEditCategory = new javax.swing.JButton();
+        star6 = new javax.swing.JLabel();
+        star7 = new javax.swing.JLabel();
+        star8 = new javax.swing.JLabel();
+        star9 = new javax.swing.JLabel();
+        star10 = new javax.swing.JLabel();
+        lblEditBookObligatory = new javax.swing.JLabel();
+        btnDeleteBook = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -188,15 +199,15 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+        TabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane1MouseClicked(evt);
+                TabbedPaneMouseClicked(evt);
             }
         });
 
         ((JComponent) browseTable.getDefaultRenderer(Boolean.class)).setOpaque(true);
         sorter = new TableRowSorter<DefaultTableModel>(mod);
-        browseTable.setAutoCreateRowSorter(true);
+        browseTable.setRowSorter(sorter);
         browseTable.setModel(mod);
         fillTable();
         browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -232,7 +243,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(panelBrowseLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(panelBrowseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1148, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE)
                     .addGroup(panelBrowseLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(lblSearch)
@@ -249,11 +260,11 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(filterAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Selaa", panelBrowse);
+        TabbedPane.addTab("Selaa", panelBrowse);
 
         lblFirstName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblFirstName.setText("Etunimi");
@@ -327,8 +338,8 @@ public class Menu extends javax.swing.JFrame {
         star4.setText("*");
         star4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        lblStar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lblStar.setText("Tähdellä merkityt ovat pakollisia tietoja");
+        lblCreateBookObligatory.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblCreateBookObligatory.setText("Tähdellä merkityt ovat pakollisia tietoja");
 
         star3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         star3.setForeground(new java.awt.Color(255, 0, 0));
@@ -347,17 +358,17 @@ public class Menu extends javax.swing.JFrame {
         fillAddManyTable();
         jScrollPane2.setViewportView(addManyTable);
 
-        btnAuthorToTable.setText("Lisää kirjailija");
-        btnAuthorToTable.addActionListener(new java.awt.event.ActionListener() {
+        btnCreateBookAddAuthor.setText("Lisää kirjailija");
+        btnCreateBookAddAuthor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAuthorToTableActionPerformed(evt);
+                btnCreateBookAddAuthorActionPerformed(evt);
             }
         });
 
-        btnCatToTable.setText("Lisää kategoria");
-        btnCatToTable.addActionListener(new java.awt.event.ActionListener() {
+        btnCreateBookAddCategory.setText("Lisää kategoria");
+        btnCreateBookAddCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCatToTableActionPerformed(evt);
+                btnCreateBookAddCategoryActionPerformed(evt);
             }
         });
 
@@ -365,6 +376,10 @@ public class Menu extends javax.swing.JFrame {
         star5.setForeground(new java.awt.Color(255, 0, 0));
         star5.setText("*");
         star5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        btnCreateBookDeleteAuthor.setText("Poista kirjailija");
+
+        btnCreateBookDeleteCategory.setText("Poista kategoria");
 
         for(Author a : authors){
             cBoxAuthor.addItem(a.getLastName() + ", " + a.getName());
@@ -382,13 +397,14 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(panelAddLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAddLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(star5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCreateBookObligatory, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAddBook)
                     .addGroup(panelAddLayout.createSequentialGroup()
                         .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createSequentialGroup()
-                                .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createSequentialGroup()
                                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblBookName, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -412,39 +428,40 @@ public class Menu extends javax.swing.JFrame {
                             .addGroup(panelAddLayout.createSequentialGroup()
                                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cBoxAuthor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnAuthorToTable, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
-                                .addGap(15, 15, 15)
+                                    .addComponent(btnCreateBookAddAuthor, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(star4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnCatToTable, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnCreateBookAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                                    .addComponent(cBoxCategory, 0, 173, Short.MAX_VALUE)
+                                    .addComponent(btnCreateBookDeleteCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(panelAddLayout.createSequentialGroup()
-                                .addComponent(star5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblStar, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnAddAuthor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createSequentialGroup()
-                                    .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblFirstName)
-                                        .addComponent(lblLastName))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtAddAuthorLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                                        .addComponent(txtAddAuthorFirstName))))
+                            .addComponent(btnAddAuthor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createSequentialGroup()
+                                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFirstName)
+                                    .addComponent(lblLastName))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtAddAuthorLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                    .addComponent(txtAddAuthorFirstName)))
                             .addGroup(panelAddLayout.createSequentialGroup()
                                 .addComponent(lblAddAuthor)
                                 .addGap(56, 56, 56)
-                                .addComponent(lblAddCategoryHeader)))
+                                .addComponent(lblAddCategoryHeader))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddLayout.createSequentialGroup()
+                                .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(star1)
                             .addComponent(star2)
-                            .addComponent(star3)
-                            .addComponent(star1))))
-                .addContainerGap(776, Short.MAX_VALUE))
+                            .addComponent(star3)))
+                    .addComponent(btnCreateBookDeleteAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(794, Short.MAX_VALUE))
         );
         panelAddLayout.setVerticalGroup(
             panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,11 +487,10 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(lblAddBook)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(star2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblBookName)
-                        .addComponent(txtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBookName)
+                    .addComponent(txtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(star2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPubYear)
@@ -489,29 +505,34 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(checkLoan)
                     .addComponent(txtLoaner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cBoxAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(star4)
-                    .addComponent(star3))
+                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(star4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(star3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cBoxAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAuthorToTable)
-                    .addComponent(btnCatToTable))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(btnCreateBookAddAuthor)
+                    .addComponent(btnCreateBookAddCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateBookDeleteAuthor)
+                    .addComponent(btnCreateBookDeleteCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddBook)
                     .addComponent(btnClear))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblStar)
-                    .addComponent(star5))
-                .addContainerGap(149, Short.MAX_VALUE))
+                    .addComponent(star5)
+                    .addComponent(lblCreateBookObligatory))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Lisää...", panelAdd);
+        TabbedPane.addTab("Lisää...", panelAdd);
 
         editBookTable.setModel(model);
         fillEditBookTable();
@@ -633,6 +654,41 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        star6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        star6.setForeground(new java.awt.Color(255, 0, 0));
+        star6.setText("*");
+        star6.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        star7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        star7.setForeground(new java.awt.Color(255, 0, 0));
+        star7.setText("*");
+        star7.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        star8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        star8.setForeground(new java.awt.Color(255, 0, 0));
+        star8.setText("*");
+        star8.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        star9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        star9.setForeground(new java.awt.Color(255, 0, 0));
+        star9.setText("*");
+        star9.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        star10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        star10.setForeground(new java.awt.Color(255, 0, 0));
+        star10.setText("*");
+        star10.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        lblEditBookObligatory.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblEditBookObligatory.setText("Tähdellä merkityt ovat pakollisia tietoja");
+
+        btnDeleteBook.setText("Poista valittu kirja");
+        btnDeleteBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteBookActionPerformed(evt);
+            }
+        });
+
         for(Author a : authors1){
             cBoxEditBookAuthor.addItem(a.getLastName() + ", " + a.getName());
         }
@@ -644,67 +700,81 @@ public class Menu extends javax.swing.JFrame {
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEditLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblEditBookHeader)
-                    .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                            .addComponent(btnSaveChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClearEditBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                            .addComponent(cBoxEditBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cBoxEditBookCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelEditLayout.createSequentialGroup()
-                            .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEditAuthorFirstName)
-                                .addComponent(lblEditAuthorLastName))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtEditAuthorLastName)
-                                .addComponent(txtEditAuthorName))
-                            .addGap(231, 231, 231))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                            .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnEditBookAddAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnEditBookDeleteAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(59, 59, 59)
-                            .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnEditBookAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnEditBookDeleteCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelEditLayout.createSequentialGroup()
+                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblEditBookHeader)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelEditLayout.createSequentialGroup()
+                                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblEditAuthorHeader)
+                                            .addComponent(cBoxEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                        .addComponent(btnEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(62, 62, 62)))
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cBoxEditCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEditCategoryHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                        .addComponent(lblEditCategoryName)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtEditCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnEditCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(checkEditLoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEditBookPubYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEditBookOrigName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEditBookName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(28, 28, 28)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtEditOrigName, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                        .addComponent(txtEditPubYear)
+                                        .addComponent(txtEditBookName))
+                                    .addComponent(txtEditLoaner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(star10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblEditBookObligatory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                .addComponent(btnSaveChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnClearEditBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
+                                .addComponent(cBoxEditBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(star8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cBoxEditBookCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panelEditLayout.createSequentialGroup()
                                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblEditAuthorHeader)
-                                    .addComponent(cBoxEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lblEditAuthorFirstName)
+                                    .addComponent(lblEditAuthorLastName))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEditAuthorLastName)
+                                    .addComponent(txtEditAuthorName))
+                                .addGap(231, 231, 231))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                                .addComponent(btnEditAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62)))
-                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cBoxEditCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEditCategoryHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                                .addComponent(lblEditCategoryName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtEditCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnEditCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createSequentialGroup()
-                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(checkEditLoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEditBookPubYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEditBookOrigName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEditBookName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(28, 28, 28)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnEditBookAddAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnEditBookDeleteAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(59, 59, 59)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnEditBookAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnEditBookDeleteCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtEditOrigName, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                                .addComponent(txtEditPubYear)
-                                .addComponent(txtEditBookName))
-                            .addComponent(txtEditLoaner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(789, Short.MAX_VALUE))
+                            .addComponent(star6)
+                            .addComponent(star7)
+                            .addComponent(star9))))
+                .addContainerGap(792, Short.MAX_VALUE))
         );
         panelEditLayout.setVerticalGroup(
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -734,25 +804,33 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblEditBookHeader)
                 .addGap(18, 18, 18)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEditBookName)
-                    .addComponent(txtEditBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEditBookPubYear)
-                    .addComponent(txtEditPubYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEditBookOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEditOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkEditLoan)
-                    .addComponent(txtEditLoaner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cBoxEditBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cBoxEditBookCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEditLayout.createSequentialGroup()
+                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEditBookName)
+                            .addComponent(txtEditBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(star6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEditBookPubYear)
+                            .addComponent(txtEditPubYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(star7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelEditLayout.createSequentialGroup()
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblEditBookOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEditOrigName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(checkEditLoan)
+                                    .addComponent(txtEditLoaner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cBoxEditBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cBoxEditBookCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(star9, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(star8, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditBookAddAuthor)
@@ -763,14 +841,20 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(btnEditBookDeleteCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSaveChanges)
                     .addComponent(btnClearEditBoxes))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(star10)
+                    .addComponent(lblEditBookObligatory))
+                .addGap(18, 18, 18)
+                .addComponent(btnDeleteBook)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Muokkaa...", panelEdit);
+        TabbedPane.addTab("Muokkaa...", panelEdit);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -778,12 +862,12 @@ public class Menu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(TabbedPane)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(TabbedPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jMenu1.setText("Tiedosto");
@@ -811,10 +895,219 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+    private void TabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabbedPaneMouseClicked
         fillTable();
-    }//GEN-LAST:event_jTabbedPane1MouseClicked
+    }//GEN-LAST:event_TabbedPaneMouseClicked
 
+    /*
+    *   Method used when user has edited an category and clicks the edit category-button
+    *   
+    *   Gets the old name of the category from the combobox selection, stores it to a variable
+    *   Stores the new name in different variable from the information in the text box
+    *   Checks that textbox is not empty and that it doesn't contain blank spaces
+    *   If not, create a new Category object using the old name
+    *   Use the created category a to get the category id (which is needed to save the new information)
+    *   Use category.java setter to set new name to Category object c
+    *   Checks that this new category doesn't already exist (prevents duplicate categories)
+    *   If not, use the updateCategory method from category.java, which was why the id was
+    *   needed
+    *   Upon update, informs the user via popup that the update was done, refreshes categories combobox
+    *   and empties the textfield
+    *   Else informs what went wrong (Category already exists, there was illegal characters in hte input, or name was empty
+    */
+    private void btnEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryActionPerformed
+        String name = txtEditCategory.getText();
+        String oldName = cBoxEditCategory.getSelectedItem().toString();
+
+        if (!"".equalsIgnoreCase(name)) {
+            if (!name.contains(" ")) {
+                Category c = new Category(oldName);
+                c.getCategory(oldName);
+                c.setName(name);
+                if (!c.doesItExist()) {
+                    c.updateCategory();
+                    JOptionPane.showMessageDialog(null, "Kategoria on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
+                    comboCatRefresh();
+                    txtAddCategory.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditCategoryActionPerformed
+
+    /*
+    *   Method used to get information on what category user wants to edit
+    *   Get information from categories combobox, store which category was selected in a variable
+    *   Stores chosen combobox information in a string
+    *   Puts the name in correct text box for easy editing
+    */
+    private void cBoxEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditCategoryActionPerformed
+        try {
+            String category = cBoxEditCategory.getSelectedItem().toString();
+            txtEditCategory.setText(category);           
+        } catch (Exception e) {}
+    }//GEN-LAST:event_cBoxEditCategoryActionPerformed
+
+    /*
+    *   Method used when user has edited an author and clicks the edit author-button
+    *   
+    *   Gets the old name of the author from the combobox selection, stores it to a variable
+    *   Splits it into parts so that it gets first and lastname separate
+    *   Stores the new names in different variables from the information in the text boxes
+    *   Checks that neither textbox was empty
+    *   If not, create a new Author object using the old names
+    *   Use the created author a to get the author id (which is needed to save the new information)
+    *   Use author.java setters to set new first and last name to Author object a
+    *   Checks that this new author doesn't already exist (prevents duplicate authors)
+    *   If not, use the updateAuthor method from author.java, which was why the id was
+    *   needed
+    *   Upon update, informs the user via popup that the update was done, refreshes authors combobox
+    *   and empties both textfields
+    *   Else informs what went wrong (Author already exists, first name was empty or last name was empty)
+    */
+    private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
+        String author = cBoxEditAuthor.getSelectedItem().toString();
+        String[] authName = author.split(", ");
+        String oldName = authName[1];
+        String oldLastName = authName[0];
+        String name = txtEditAuthorName.getText();
+        String lastName = txtEditAuthorLastName.getText();
+
+        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
+            Author a = new Author(oldName, oldLastName);
+            a.getAuthor(oldName, oldLastName);
+            a.setName(name);
+            a.setLastName(lastName);
+            if(!a.doIExist()) {
+                a.updateAuthor();
+                JOptionPane.showMessageDialog(null, "Kirjailija on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
+                comboAuthorRefresh();
+                txtEditAuthorName.setText("");
+                txtEditAuthorLastName.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if ("".equalsIgnoreCase(name)) {
+            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditAuthorActionPerformed
+
+    /*
+    *   Method used to get information on what author user wants to edit
+    *   Stores chosen combobox information in a string
+    *   Splits the string into parts and removes anything that isn't first- or lastname
+    *   Puts the names in correct text boxes for easy editing
+    */
+    private void cBoxEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditAuthorActionPerformed
+        try {
+            String author = cBoxEditAuthor.getSelectedItem().toString();
+            String[] authName = author.split(", ");
+            String lName = authName[0];
+            String fName = authName[1];
+            txtEditAuthorLastName.setText(lName);
+            txtEditAuthorName.setText(fName);         
+        } catch(Exception e) {}
+    }//GEN-LAST:event_cBoxEditAuthorActionPerformed
+   
+    /*
+    *   Method used when user clicks delete category-button when editing a book
+    *   User must choose which category to delete by selecting a row from the table
+    *   The row number is stored in a variable
+    *   The method deletes the text in the given cell
+    *   Then moves all other categories upwards one row so no empty rows are left
+    *   in the middle of the table
+    *   Displays error popup if user has not selected a row in the table
+    */
+    private void btnEditBookDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteCategoryActionPerformed
+        try {
+            int row = editBookTable.getSelectedRow();
+            editBookTable.setValueAt("", row, 1);
+            for(int i = row+1; i < 6; i++) {
+                if(!editBookTable.getValueAt(i, 1).toString().equalsIgnoreCase("")) {
+                    editBookTable.setValueAt(editBookTable.getValueAt(i, 1), i-1, 1);
+                    editBookTable.setValueAt("", i, 1);
+                    editBookCategoryCounter--;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditBookDeleteCategoryActionPerformed
+
+    /*
+    *   Method used when user clicks delete author-button when editing a book
+    *   User must choose which author to delete by selecting a row from the table
+    *   The row number is stored in a variable
+    *   The method deletes the text in the given cell
+    *   Then moves all other authors upwards one row so no empty rows are left
+    *   in the middle of the table
+    *   Displays error popup if user has not selected a row in the table
+    */
+    private void btnEditBookDeleteAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteAuthorActionPerformed
+        try {
+            int row = editBookTable.getSelectedRow();
+            editBookTable.setValueAt("", row, 0);
+            for(int i = row+1; i < 6; i++) {
+                String value = editBookTable.getValueAt(i, 0).toString();
+                if(!value.equalsIgnoreCase("")) {
+                    editBookTable.setValueAt(value, i-1, 0);
+                    editBookTable.setValueAt("", i, 0);
+                    editBookAuthorCounter--;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse poistettava kirjailija klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditBookDeleteAuthorActionPerformed
+    
+    /*
+    *   Save combobox selection to string variable
+    *   Checks that the category the user wants to add isn't already in the table
+    *   If it's not, enter the category information in the first empty row
+    *   Display error to the user depending on what went wrong (category already in table,
+    *   user has failed to select a book to edit from the browse table, or user
+    *   has failed to choose which category to add from the category combobox
+    */
+    private void btnEditBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddCategoryActionPerformed
+        try {
+            String category = cBoxEditBookCategory.getSelectedItem().toString();
+            if(editBookTable.getRowCount() > 1) {
+                for (int i = 0; i < 6; i++) {
+                    String value = editBookTable.getValueAt(i, 1).toString();
+                    if (category != null && category.length() != 0 ) {
+                        if (value.equalsIgnoreCase(category)) {
+                            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                            i = 6;
+                        } else if (value.length() < 1) {
+                            editBookTable.setValueAt(category, i, 1);
+                            editBookCategoryCounter++;
+                            i = 6;
+                        }
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Valitse ensin selausvalikosta muokattava kirja", "Virhe", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kategoria", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditBookAddCategoryActionPerformed
+
+    /*
+    *   Save combobox selection to string variable
+    *   Checks that the author the user wants to add isn't already in the table
+    *   If it's not, enter the author information in the first empty row
+    *   Display error to the user depending on what went wrong (author already in table,
+    *   user has failed to select a book to edit from the browse table, or user
+    *   has failed to choose which author to add from the author combobox
+    */
     private void btnEditBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddAuthorActionPerformed
         try {
             String author = cBoxEditBookAuthor.getSelectedItem().toString();
@@ -838,19 +1131,52 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEditBookAddAuthorActionPerformed
 
+    /*
+    *   Used to clear all text boxes, to unselect the checkbox, and emptying the
+    *   table in the editBook panel
+    */
+    private void btnClearEditBoxesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearEditBoxesActionPerformed
+        clearEditBoxes();
+    }//GEN-LAST:event_btnClearEditBoxesActionPerformed
+
+    /*
+    *   This method is used whenever the user has made some changes to a book and
+    *   clicks the save changes-button. This is perhaps the most complicated method
+    *   of all methods used.
+    *
+    *   First, create an empty Book object.
+    *   Get the original book information, using the id (which we know since this
+    *   relies on the user selecting a row in the browse table).
+    *   Save all new information to variables
+    *   Create empty arraylists for authors and categories
+    *   Use book.java setter methods to set the new information to the book object
+    *   If the user has checked that the book is on loan, also set loaner name,
+    *   otherwise set loaner name as empty string
+    *   Clear the original authors and categories from the book object, so that
+    *   we can store new authors and categories
+    *   As when adding a book, go through the editBookTable and add every author
+    *   and category to the lists.
+    *   Check publication year, and that the given new name is not empty
+    *   Check that none of the authors has the new book associated with them already,
+    *   based on name and publication year
+    *   If ok, save changes to the book, adding the new associated authors and categories
+    *   Else tell user what went wrong (one of the authors has the book associated already,
+    *   the publication year was faulty, or the new given book name was empty)
+    *   If the update is done, the method will also empty all text boxes, checkboxes and the table
+    */
     private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
         Book b = new Book();
         b.getBook(id);
-        
+
         String newName = txtEditBookName.getText();
         String newPubYear = txtEditPubYear.getText();
         boolean newOnLoan = checkEditLoan.isSelected();
         String newLoaner = txtEditLoaner.getText();
         String newOrigName = txtEditOrigName.getText();
-        
+
         ArrayList<Author> authors = new ArrayList();
         ArrayList<Category> categories = new ArrayList();
-        
+
         b.setName(newName);
         b.setOnLoan(newOnLoan);
         b.setOrigName(newOrigName);
@@ -861,7 +1187,7 @@ public class Menu extends javax.swing.JFrame {
         }
         b.author.clear();
         b.category.clear();
-        
+
         for (int i = 0; i < 6; i++) {
             String val = editBookTable.getValueAt(i, 0).toString();
             if(!val.isEmpty()) {
@@ -911,12 +1237,21 @@ public class Menu extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Kirjan muokkaus epäonnistui. Tarkasta, ettei jollain kirjailijalla ole jo kyseistä kirjaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Kirjan nimi puuttuu", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
     }//GEN-LAST:event_btnSaveChangesActionPerformed
 
-    private void btnCatToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatToTableActionPerformed
+    /*
+    *   Saves combobox selection as string variable
+    *   Checks that category the user wants to add to the table isn't already added
+    *   If it isn't, add category to the table, otherwise tell user what went wrong
+    *   Possible errors: trying to add more than 6 categories, or the category was
+    *   already added to the table
+    */
+    private void btnCreateBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddCategoryActionPerformed
         String category = cBoxCategory.getSelectedItem().toString();
         Boolean addToTable = true;
         if(categoryCounter < 6) {
@@ -934,9 +1269,15 @@ public class Menu extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Kirjalla voi olla korkeintaan kuusi kategoriaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnCatToTableActionPerformed
+    }//GEN-LAST:event_btnCreateBookAddCategoryActionPerformed
 
-    private void btnAuthorToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuthorToTableActionPerformed
+    /*
+    *   Saves combobox selection as a string variable
+    *   Checks that the author the user wants to add to the table isn't already added
+    *   If it isn't, add author to table, otherwise tell user what went wrong
+    *   Also makes sure that there's not more than 6 authors added
+    */
+    private void btnCreateBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddAuthorActionPerformed
         String author = cBoxAuthor.getSelectedItem().toString();
         Boolean addToTable = true;
         if(authorCounter < 6) {
@@ -954,12 +1295,29 @@ public class Menu extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Kirjalla voi olla korkeintaan kuusi kirjailijaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnAuthorToTableActionPerformed
+    }//GEN-LAST:event_btnCreateBookAddAuthorActionPerformed
 
+    //Used to clear all textboxes, checkboxes and table data
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearBoxes();
     }//GEN-LAST:event_btnClearActionPerformed
 
+    /*
+    *   Store all user input from text boxes and checkboxes, and the addManyTable
+    *   Create new arraylists for authors and categories
+    *   Go through the table, adding every author to the authors list
+    *   Do same thing as above for categories
+    *   Check that neither list is empty, if either one is, display error, prompting
+    *   user to add at least one author and category
+    *   Proceed to check publication year and name
+    *   Then, for each author, go through his/her books, so that we don't accidentaly
+    *   add duplicate books if any of them has the same book already entered in
+    *   the database (in which case the user should rather edit that book and add the
+    *   other authors to it).
+    *   If all goes right, makes a Book object containing all given information
+    *   Adds the categories and authors to the book
+    *   Adds the book to the database, and empties all text fields and the table
+    */
     private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
         String name = txtBookName.getText();
         String origName = txtOriginalName.getText();
@@ -995,7 +1353,7 @@ public class Menu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kategoria taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             addBook = false;
         }
-        
+
         if (checkPubYear(pubYear)) {
             if (!name.isEmpty()) {
                 for (Author a : authors) {
@@ -1024,119 +1382,24 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddBookActionPerformed
 
+    /*
+    *   Stores the given category name in variable.
+    *   Checks that given name is not empty
+    *   Checks that the category name doesn't contain blank spaces
+    *   If all is well, create a new Category object with given name
+    *   Check that the category doesn't already exist in the database
+    *   Gives different error popups based on what went wrong
+    *   Empties text box and refreshes category combobox
+    */
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         //Storing whatever is in the txt field to variable
         String name = txtAddCategory.getText();
 
         if (!"".equalsIgnoreCase(name)) {
             if (!name.contains(" ")) {
-                Category c = new Category(name);                            //if it isn't, create a new object
-                if (!c.doesItExist()) {                                     //check whether the category already exists
-                    c.addCategory();                                        //if it doesn't, add it to the database
-                } else {                                                    //otherwise, display error dialog, tell user that the category already exists
-                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE); //Inform user that the category text field was left blank
-        }
-        txtAddCategory.setText("");                //and finally, empty the text field
-        comboCatRefresh();                      //Refresh 'categories' combobox contents
-    }//GEN-LAST:event_btnAddCategoryActionPerformed
-
-    private void btnAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorActionPerformed
-        String name = txtAddAuthorFirstName.getText();
-        String lastName = txtAddAuthorLastName.getText();
-
-        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {          //check that neither field is empty
-            Author a = new Author(name, lastName);                                  //If they aren't, create a new Author
-            if (!a.doIExist()) {                                                     //check if the author already exists
-                a.addAuthor();                                                      //If not, add him/her to the database
-            } else {                                                                //Else inform the user that the author already exists
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if ("".equalsIgnoreCase(name)) {                                     //If the first check failed, inform user that name-field was emtpy
-            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        } else {                                                                    //If the second check failed, inform user that lastName-field was empty
-            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
-        txtAddAuthorFirstName.setText("");                                                   //Clear textfields
-        txtAddAuthorLastName.setText("");                                                    //Clear textfields
-        comboAuthorRefresh();                                                       //Refresh 'author' combobox contents
-    }//GEN-LAST:event_btnAddAuthorActionPerformed
-
-    private void cBoxEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditAuthorActionPerformed
-        try {
-            String author = cBoxEditAuthor.getSelectedItem().toString();
-            if(author.length() < 1) {
-              txtEditAuthorLastName.setText("");
-              txtEditAuthorName.setText("");  
-            } else {
-                String[] authName = author.split(", ");
-                String lName = authName[0];
-                String fName = authName[1];
-                txtEditAuthorLastName.setText(lName);
-                txtEditAuthorName.setText(fName);
-            }
-        } catch(Exception e) {}
-    }//GEN-LAST:event_cBoxEditAuthorActionPerformed
-
-    private void cBoxEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditCategoryActionPerformed
-        try {
-            String category = cBoxEditCategory.getSelectedItem().toString();
-            if(category.length() < 1) {
-                txtEditCategory.setText("");
-            } else {
-                txtEditCategory.setText(category);
-            }
-        } catch (Exception e) {}
-    }//GEN-LAST:event_cBoxEditCategoryActionPerformed
-
-    private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
-        String author = cBoxEditAuthor.getSelectedItem().toString();
-        String[] authName = author.split(", ");
-        String oldName = authName[1];
-        String oldLastName = authName[0];
-        String name = txtEditAuthorName.getText();
-        String lastName = txtEditAuthorLastName.getText();
-        
-        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
-            Author a = new Author(oldName, oldLastName);
-            a.getAuthor(oldName, oldLastName);
-            a.setName(name);
-            a.setLastName(lastName);
-            if(!a.doIExist()) {
-                a.updateAuthor();
-                JOptionPane.showMessageDialog(null, "Kirjailija on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
-                comboAuthorRefresh();
-                txtEditAuthorName.setText("");
-                txtEditAuthorLastName.setText("");
-            } else {
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if ("".equalsIgnoreCase(name)) {
-            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnEditAuthorActionPerformed
-
-    private void btnEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryActionPerformed
-        String name = txtEditCategory.getText();
-        String oldName = cBoxEditCategory.getSelectedItem().toString();
-
-        if (!"".equalsIgnoreCase(name)) {
-            if (!name.contains(" ")) {
-                Category c = new Category(oldName);
-                c.getCategory(oldName);
-                c.setName(name);
+                Category c = new Category(name);
                 if (!c.doesItExist()) {
-                    c.updateCategory();
-                    JOptionPane.showMessageDialog(null, "Kategoria on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
-                    comboCatRefresh();
-                    txtAddCategory.setText("");
+                    c.addCategory();
                 } else {
                     JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1145,71 +1408,58 @@ public class Menu extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }        
-    }//GEN-LAST:event_btnEditCategoryActionPerformed
+        }
+        txtAddCategory.setText("");
+        comboCatRefresh();
+    }//GEN-LAST:event_btnAddCategoryActionPerformed
 
-    private void btnClearEditBoxesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearEditBoxesActionPerformed
-        clearEditBoxes();
-    }//GEN-LAST:event_btnClearEditBoxesActionPerformed
+    /*
+    *   First, saves user input as two strings from the text boxes. Then, checks
+    *   that neither of the boxes were empty. If not, proceeds to create a new Author
+    *   object, with which it can then check that the given author doesn't already
+    *   exist in the database (a.doIExist). If it doesn't, proceeds to add the author
+    *   to the database. Otherwise, tell the user what went wrong (that either name was
+    *   missing, or that the author has already been added. Last but not least,
+    *   the method empties both text boxes and calls for comboAuthorRefresh(), which,
+    *   as the name implies, refreshes author combobox contents.
+    */
+    private void btnAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorActionPerformed
+        String name = txtAddAuthorFirstName.getText();
+        String lastName = txtAddAuthorLastName.getText();
 
-    private void btnEditBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddCategoryActionPerformed
-        try {
-            String category = cBoxEditBookCategory.getSelectedItem().toString();
-            if(editBookTable.getRowCount() > 1) {
-                for (int i = 0; i < 6; i++) {
-                    String value = editBookTable.getValueAt(i, 1).toString();
-                    if (category != null && category.length() != 0 ) {
-                        if (value.equalsIgnoreCase(category)) {
-                            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                            i = 6;
-                        } else if (value.length() < 1) {
-                            editBookTable.setValueAt(category, i, 1);
-                            editBookCategoryCounter++;
-                            i = 6;
-                        }
-                    }
-                }
+        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
+            Author a = new Author(name, lastName);
+            if (!a.doIExist()) {
+                a.addAuthor();
             } else {
-                JOptionPane.showMessageDialog(null, "Valitse ensin selausvalikosta muokattava kirja", "Virhe", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kategoria", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        } else if ("".equalsIgnoreCase(name)) {
+            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnEditBookAddCategoryActionPerformed
+        txtAddAuthorFirstName.setText("");
+        txtAddAuthorLastName.setText("");
+        comboAuthorRefresh();
+    }//GEN-LAST:event_btnAddAuthorActionPerformed
 
-    private void btnEditBookDeleteAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteAuthorActionPerformed
-        try {
-            int row = editBookTable.getSelectedRow();
-            editBookTable.setValueAt("", row, 0);
-            for(int i = row+1; i < 6; i++) {
-                String value = editBookTable.getValueAt(i, 0).toString();
-                if(!value.equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(value, i-1, 0);
-                    editBookTable.setValueAt("", i, 0);
-                    editBookAuthorCounter--;
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kirjailija klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
+    /*
+    *   Simply used to delete a book, this method depends on the user choosing
+    *   a book by clicking a row in the browse table in the browse panel.
+    */
+    private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
+        if(id != 0){ 
+            Book b = new Book();
+            b.deleteBook(id);
+        } else {
+            JOptionPane.showMessageDialog(null, "Valitse ensin poistettava kirja selaus-taulukosta", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnEditBookDeleteAuthorActionPerformed
+    }//GEN-LAST:event_btnDeleteBookActionPerformed
 
-    private void btnEditBookDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteCategoryActionPerformed
-        try {
-            int row = editBookTable.getSelectedRow();
-            editBookTable.setValueAt("", row, 1);
-            for(int i = row+1; i < 6; i++) {
-                if(!editBookTable.getValueAt(i, 1).toString().equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(editBookTable.getValueAt(i, 1), i-1, 1);
-                    editBookTable.setValueAt("", i, 1);
-                    editBookCategoryCounter--;
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnEditBookDeleteCategoryActionPerformed
-
+    /*  Method used to create six empty rows in the small table located in
+    *   add book panel.
+    */
     private void fillAddManyTable() {
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
@@ -1221,6 +1471,14 @@ public class Menu extends javax.swing.JFrame {
         addManyTable.getColumnModel().getColumn(0).setMaxWidth(205);
     }
 
+    /*
+    *   Much like it's neighbor, fillTable(), this is used to fill the small table
+    *   in the edit panel. It only fills it if the id variable is something else than 0,
+    *   though. Because it relies on the user clicking on a row in the browse table
+    *   to get the information to fill in all known information about the book, such
+    *   as authors, categories, book name, publication year etc. If the user hasn't
+    *   selected any book, there's not much point in filling a empty table.
+    */
     private void fillEditBookTable() {
         if (id != 0) {
             model.setRowCount(0);
@@ -1264,7 +1522,15 @@ public class Menu extends javax.swing.JFrame {
             }
         }
     }
-
+    
+    /*
+    *   Method used to fill the browse table. First, it fetches all books in the database.
+    *   Then, it sets the row count for the "mod" table model to 0 (this is a way of clearing
+    *   the table of old information). After that, I use a for-each loop which loops through
+    *   every book in the arraylist, adding the authors and categories to it, then adding
+    *   all this information row by row to the table. At last, I've set some parameters for
+    *   table column widths, and centered some of the table column names.
+    */
     private void fillTable() {
         ArrayList<Book> books = Book.getBooks();
         mod.setRowCount(0);
@@ -1289,7 +1555,6 @@ public class Menu extends javax.swing.JFrame {
             }
             mod.addRow(new Object[]{b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
         }
-        mod.setRowCount(books.size());
 
         browseTable.getColumnModel().getColumn(0).setMaxWidth(40);
         browseTable.getColumnModel().getColumn(1).setMinWidth(220);
@@ -1306,6 +1571,17 @@ public class Menu extends javax.swing.JFrame {
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
     }
 
+    /*
+    * A method for checking if the year of publication submitted by the user
+    * is valid. The number is submitted as a String, because it's easier to verify the
+    * length of a string than it is to check the amount of numbers in an integer.
+    * 1: Check if the box is empty - if it is, notify user that he needs to add publication year
+    * 2: Check the number submitted by the user - if it is anything but 4 letters long, inform user
+    *    that he needs to fix his input to fit our database standard
+    * 3: If, and only if, the number is 4 letters long, try to convert it into an integer.
+    *    This tells us if there's something else than numbers submitted by the user. If there is,
+    *    again, notify the user that he has to correct his input to numbers only.
+    */
     private boolean checkPubYear(String pubYear) {
 
         boolean yearOk = false;
@@ -1327,6 +1603,13 @@ public class Menu extends javax.swing.JFrame {
         return yearOk;
     }
 
+    /*
+    * A simple search filter that enables on-the-fly searching in the
+    * browse table. Makes searching really easy, as it checks every cell
+    * and filters the table based on user search input. I chose this instead
+    * of separate searching possibilities (search by author, book name, year etc)
+    * as I thought this was neater and easier to develop.
+    */
     private void newFilter() {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {
@@ -1337,7 +1620,11 @@ public class Menu extends javax.swing.JFrame {
         sorter.setRowFilter(rf);
     }
 
-    //Clears all textfields in add-panel
+    /*  
+    *   Clears all textfields in add-panel
+    *   Deletes all rows in dtm table model, then creates six empty ones
+    *   Resets authorCounter and categoryCounter to 0
+    */
     private void clearBoxes() {
         txtAddAuthorFirstName.setText("");
         txtAddAuthorLastName.setText("");
@@ -1378,10 +1665,10 @@ public class Menu extends javax.swing.JFrame {
     }
 
     /*
-    * Get an arraylist of all authors
-    * Remove all items from all author-related comboboxes used
-    * For each author in the 'authors' -list...
-    * ...add author name to every author-related combobox
+    *   Fetch an arraylist of all authors
+    *   Remove all items from all author-related comboboxes used
+    *   For each author in the 'authors' -list...
+    *   ...add author name to every author-related combobox
     */
     private void comboAuthorRefresh() {
         ArrayList<Author> authors = Author.getAuthors();
@@ -1399,10 +1686,10 @@ public class Menu extends javax.swing.JFrame {
     }
 
     /*
-    * Fetch an arraylist of all categories in the database
-    * Remove all items from all category-related comboboxes
-    * For each category in 'categories'-list...
-    * ...add category to all category-related comboboxes
+    *   Fetch an arraylist of all categories in the database
+    *   Remove all items from all category-related comboboxes
+    *   For each category in 'categories'-list...
+    *   ...add category to all category-related comboboxes
     */
     private void comboCatRefresh() {
         ArrayList<Category> categories = Category.getCategories();
@@ -1461,15 +1748,19 @@ public class Menu extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane TabbedPane;
     private javax.swing.JTable addManyTable;
     private javax.swing.JTable browseTable;
     private javax.swing.JButton btnAddAuthor;
     private javax.swing.JButton btnAddBook;
     private javax.swing.JButton btnAddCategory;
-    private javax.swing.JButton btnAuthorToTable;
-    private javax.swing.JButton btnCatToTable;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClearEditBoxes;
+    private javax.swing.JButton btnCreateBookAddAuthor;
+    private javax.swing.JButton btnCreateBookAddCategory;
+    private javax.swing.JButton btnCreateBookDeleteAuthor;
+    private javax.swing.JButton btnCreateBookDeleteCategory;
+    private javax.swing.JButton btnDeleteBook;
     private javax.swing.JButton btnEditAuthor;
     private javax.swing.JButton btnEditBookAddAuthor;
     private javax.swing.JButton btnEditBookAddCategory;
@@ -1496,17 +1787,18 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblAddAuthor;
     private javax.swing.JLabel lblAddBook;
     private javax.swing.JLabel lblAddCategory;
     private javax.swing.JLabel lblAddCategoryHeader;
     private javax.swing.JLabel lblBookName;
+    private javax.swing.JLabel lblCreateBookObligatory;
     private javax.swing.JLabel lblEditAuthorFirstName;
     private javax.swing.JLabel lblEditAuthorHeader;
     private javax.swing.JLabel lblEditAuthorLastName;
     private javax.swing.JLabel lblEditBookHeader;
     private javax.swing.JLabel lblEditBookName;
+    private javax.swing.JLabel lblEditBookObligatory;
     private javax.swing.JLabel lblEditBookOrigName;
     private javax.swing.JLabel lblEditBookPubYear;
     private javax.swing.JLabel lblEditCategoryHeader;
@@ -1516,15 +1808,19 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lblOrigName;
     private javax.swing.JLabel lblPubYear;
     private javax.swing.JLabel lblSearch;
-    private javax.swing.JLabel lblStar;
     private javax.swing.JPanel panelAdd;
     private javax.swing.JPanel panelBrowse;
     private javax.swing.JPanel panelEdit;
     private javax.swing.JLabel star1;
+    private javax.swing.JLabel star10;
     private javax.swing.JLabel star2;
     private javax.swing.JLabel star3;
     private javax.swing.JLabel star4;
     private javax.swing.JLabel star5;
+    private javax.swing.JLabel star6;
+    private javax.swing.JLabel star7;
+    private javax.swing.JLabel star8;
+    private javax.swing.JLabel star9;
     private javax.swing.JTextField txtAddAuthorFirstName;
     private javax.swing.JTextField txtAddAuthorLastName;
     private javax.swing.JTextField txtAddCategory;

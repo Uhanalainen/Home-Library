@@ -268,8 +268,22 @@ public class Book extends Master {
         }
     }
     
-    public void deleteBook() {
+    public void deleteBook(int id) {
+        String sql = "DELETE FROM books WHERE id = ?";
+        this.conn = DbConn.getConnection();
+        PreparedStatement ps = null;
         
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Kirja on poistettu", "", JOptionPane.PLAIN_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("Tapahtui virhe: " + e);
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { conn.close(); } catch (Exception e) { /* ignored */ }
+        }
     }
     
     public boolean doesItExist() {
