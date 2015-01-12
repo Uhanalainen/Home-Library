@@ -67,6 +67,10 @@ public class Author extends Master {
         return authors;
     }
     
+    /*
+    *   Placeholder method for searching authors by their last name
+    *   Currently not used, as it was rendered redundant by table filtering
+    
     public static ArrayList<Author> findAuthors(String lastName) {
 
         String sql = "SELECT id, firstName, lastName FROM authors WHERE LOWER(lastName) LIKE LOWER(?)";
@@ -85,11 +89,11 @@ public class Author extends Master {
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
-            try { ps.close(); } catch (Exception e) { /* ignored */ }
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            try { ps.close(); } catch (Exception e) { /* ignored  }
+            try { conn.close(); } catch (Exception e) { /* ignored  }
         }
         return authors;
-    }
+    }*/
     
     /**
      *  Gets author id when only first and last name is known
@@ -193,6 +197,7 @@ public class Author extends Master {
             ps.setString(2, this.lastName);
             ps.setInt(3, this.id);
             ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Kirjailijan tiedot on päivitetty", "", JOptionPane.PLAIN_MESSAGE);
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
@@ -263,6 +268,9 @@ public class Author extends Master {
         this.books = books;
     }
     
+    /**
+     * @return the id
+     */
     public int getId(){
         return this.id;
     }
@@ -281,10 +289,16 @@ public class Author extends Master {
         this.lastName = lastName;
     }
     
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }

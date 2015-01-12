@@ -111,7 +111,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane1" pref="1166" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="1196" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   <Component id="lblSearch" min="-2" max="-2" attributes="0"/>
@@ -211,22 +211,6 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblBookName" min="-2" pref="141" max="-2" attributes="0"/>
-                                              <Component id="lblPubYear" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="txtPubYear" pref="218" max="32767" attributes="0"/>
-                                              <Component id="txtBookName" max="32767" attributes="0"/>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="lblAddCategory" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="txtAddCategory" min="-2" pref="91" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="checkLoan" max="32767" attributes="0"/>
                                               <Component id="lblOrigName" max="32767" attributes="0"/>
@@ -237,23 +221,7 @@
                                               <Component id="txtOriginalName" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="cBoxAuthor" max="32767" attributes="0"/>
-                                              <Component id="btnCreateBookAddAuthor" pref="161" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="star4" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="btnCreateBookAddCategory" pref="173" max="32767" attributes="0"/>
-                                              <Component id="cBoxCategory" pref="173" max="32767" attributes="0"/>
-                                              <Component id="btnCreateBookDeleteCategory" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
                                       <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="btnAddCategory" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                                      <Component id="btnAddAuthor" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="lblFirstName" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -275,6 +243,47 @@
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="btnClear" min="-2" pref="187" max="-2" attributes="0"/>
                                       </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="btnAddAuthor" min="-2" pref="161" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="cBoxAuthor" max="32767" attributes="0"/>
+                                                  <Component id="btnCreateBookAddAuthor" pref="161" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="star4" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="btnCreateBookAddCategory" pref="173" max="32767" attributes="0"/>
+                                                      <Component id="cBoxCategory" pref="173" max="32767" attributes="0"/>
+                                                      <Component id="btnCreateBookDeleteCategory" alignment="0" max="32767" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                                  <Component id="btnAddCategory" min="-2" pref="160" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lblBookName" min="-2" pref="141" max="-2" attributes="0"/>
+                                              <Component id="lblPubYear" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="txtPubYear" pref="218" max="32767" attributes="0"/>
+                                              <Component id="txtBookName" max="32767" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="lblAddCategory" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="txtAddCategory" min="-2" pref="91" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -285,7 +294,7 @@
                               </Group>
                               <Component id="btnCreateBookDeleteAuthor" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="794" max="32767" attributes="0"/>
+                          <EmptySpace pref="824" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -760,7 +769,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="792" max="32767" attributes="0"/>
+                          <EmptySpace pref="822" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

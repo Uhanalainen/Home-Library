@@ -126,6 +126,10 @@ public class Book extends Master {
         return books;
     }
 
+    /*
+    *   This is a placeholder method for searching books by name
+    *   Currently not in use, as it was rendered redundant with the table filter
+    *
     public static ArrayList<Book> findBooks(String name) {
         
         String sql = "SELECT id, name, pubYear, onLoan, loaner, origName FROM books WHERE LOWER(name) LIKE LOWER(?)";
@@ -145,11 +149,11 @@ public class Book extends Master {
         } catch (SQLException e) {
             System.err.println("Something went wrong" + e);
         } finally {
-            try { ps.close(); } catch (Exception e) { /* ignored */ }
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            try { ps.close(); } catch (Exception e) {  ignored  }
+            try { conn.close(); } catch (Exception e) {  ignored  }
         }
         return books;
-    }
+    }*/
 
     public void getBook(int id) {
         
@@ -408,10 +412,16 @@ public class Book extends Master {
         this.id = id;
     }
     
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }

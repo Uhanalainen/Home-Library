@@ -56,6 +56,10 @@ public class Category extends Master {
         return categories;
     }
 
+    /*
+    *   Placeholder method for searching categories by name
+    *   Currently not in use, as it was rendered redundant with the table filter
+    
     public static ArrayList<Category> findCategories(String name) {
 
         String sql = "SELECT id, name FROM categories WHERE LOWER(name) LIKE LOWER(?)";
@@ -74,11 +78,11 @@ public class Category extends Master {
         } catch (SQLException e) {
             System.out.println("Tapahtui virhe: " + e);
         } finally {
-            try { ps.close(); } catch (Exception e) { /* ignored */ }
-            try { conn.close(); } catch (Exception e) { /* ignored */ }
+            try { ps.close(); } catch (Exception e) { /* ignored  }
+            try { conn.close(); } catch (Exception e) { /* ignored  }
         }
         return categories;
-    }
+    }*/
     
     public void getCategory(String name) {
         String sql = "SELECT id FROM categories WHERE name = ?";
@@ -158,6 +162,7 @@ public class Category extends Master {
             ps.setString(1, this.name);
             ps.setInt(2, this.id);
             ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Kategorian tiedot on päivitetty", "", JOptionPane.PLAIN_MESSAGE);
         } catch (SQLException e) {
             System.err.println("Tapahtui virhe: " + e);
         } finally {
@@ -203,15 +208,24 @@ public class Category extends Master {
         this.books = books;
     }
     
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
     
-    public int getId() {
-        return this.id;
-    }
-    
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
+    }
+    
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return this.id;
     }
 }
