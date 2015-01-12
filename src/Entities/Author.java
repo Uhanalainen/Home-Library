@@ -225,7 +225,7 @@ public class Author extends Master {
         } catch (SQLException e) {
             System.out.println("Tapahtui virhe: " + e);
         } catch (NullPointerException npe) {
-            System.out.println("saasf" + npe);
+            System.out.println("Tapahtui virhe" + npe);
         } finally {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }

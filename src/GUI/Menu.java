@@ -939,7 +939,6 @@ public class Menu extends javax.swing.JFrame {
                 c.setName(name);
                 if (!c.doesItExist()) {
                     c.updateCategory();
-                    JOptionPane.showMessageDialog(null, "Kategoria on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
                     comboCatRefresh();
                     txtAddCategory.setText("");
                 } else {
@@ -998,7 +997,6 @@ public class Menu extends javax.swing.JFrame {
             a.setLastName(lastName);
             if(!a.doIExist()) {
                 a.updateAuthor();
-                JOptionPane.showMessageDialog(null, "Kirjailija on päivitetty", "Ilmoitus", JOptionPane.PLAIN_MESSAGE);
                 comboAuthorRefresh();
                 txtEditAuthorName.setText("");
                 txtEditAuthorLastName.setText("");
