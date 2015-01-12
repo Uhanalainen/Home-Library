@@ -32,7 +32,6 @@ public class Menu extends javax.swing.JFrame {
     private DefaultTableCellRenderer centerRenderer;
     private int authorCounter = 0;
     private int categoryCounter = 0;
-    private int editBookCategoryCounter = 0;
     private int id = 0;
 
     /**
@@ -119,7 +118,7 @@ public class Menu extends javax.swing.JFrame {
                 return false;
             }
         };
-        addManyTable = new javax.swing.JTable();
+        addBookTable = new javax.swing.JTable();
         btnCreateBookAddAuthor = new javax.swing.JButton();
         btnCreateBookAddCategory = new javax.swing.JButton();
         star5 = new javax.swing.JLabel();
@@ -349,9 +348,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        addManyTable.setModel(dtm);
+        addBookTable.setModel(dtm);
         fillAddManyTable();
-        jScrollPane2.setViewportView(addManyTable);
+        jScrollPane2.setViewportView(addBookTable);
 
         btnCreateBookAddAuthor.setText("Lisää kirjailija");
         btnCreateBookAddAuthor.addActionListener(new java.awt.event.ActionListener() {
@@ -373,8 +372,18 @@ public class Menu extends javax.swing.JFrame {
         star5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         btnCreateBookDeleteAuthor.setText("Poista kirjailija");
+        btnCreateBookDeleteAuthor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateBookDeleteAuthorActionPerformed(evt);
+            }
+        });
 
         btnCreateBookDeleteCategory.setText("Poista kategoria");
+        btnCreateBookDeleteCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateBookDeleteCategoryActionPerformed(evt);
+            }
+        });
 
         for(Author a : authors){
             cBoxAuthor.addItem(a.getLastName() + ", " + a.getName());
@@ -1034,10 +1043,10 @@ public class Menu extends javax.swing.JFrame {
             int row = editBookTable.getSelectedRow();
             editBookTable.setValueAt("", row, 1);
             for(int i = row+1; i < 6; i++) {
-                if(!editBookTable.getValueAt(i, 1).toString().equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(editBookTable.getValueAt(i, 1), i-1, 1);
+                String value = editBookTable.getValueAt(i, 1).toString();
+                if(!value.equalsIgnoreCase("")) {
+                    editBookTable.setValueAt(value, i-1, 1);
                     editBookTable.setValueAt("", i, 1);
-                    editBookCategoryCounter--;
                 }
             }
         } catch (Exception e) {
@@ -1090,7 +1099,6 @@ public class Menu extends javax.swing.JFrame {
                             i = 6;
                         } else if (value.length() < 1) {
                             editBookTable.setValueAt(category, i, 1);
-                            editBookCategoryCounter++;
                             i = 6;
                         }
                     }
@@ -1259,12 +1267,12 @@ public class Menu extends javax.swing.JFrame {
         Boolean addToTable = true;
         if(categoryCounter < 6) {
             for (int i = 0; i <= categoryCounter; i++) {
-                if (addManyTable.getValueAt(i, 1).toString().equalsIgnoreCase(category)) {
+                if (addBookTable.getValueAt(i, 1).toString().equalsIgnoreCase(category)) {
                     addToTable = false;
                 }
             }
             if (addToTable) {
-                addManyTable.setValueAt(category, categoryCounter, 1);
+                addBookTable.setValueAt(category, categoryCounter, 1);
                 categoryCounter++;
             } else {
                 JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
@@ -1285,12 +1293,12 @@ public class Menu extends javax.swing.JFrame {
         Boolean addToTable = true;
         if(authorCounter < 6) {
             for (int i = 0; i <= authorCounter; i++) {
-                if (addManyTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
+                if (addBookTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
                     addToTable = false;
                 }
             }
             if (addToTable) {
-                addManyTable.setValueAt(author, authorCounter, 0);
+                addBookTable.setValueAt(author, authorCounter, 0);
                 authorCounter++;
             } else {
                 JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
@@ -1332,7 +1340,7 @@ public class Menu extends javax.swing.JFrame {
 
         for (int i = 0; i < authorCounter; i++) {
             Author a = new Author();
-            String auth = addManyTable.getValueAt(i, 0).toString();
+            String auth = addBookTable.getValueAt(i, 0).toString();
             String[] authName = auth.split(", ");
             String lName = authName[0];
             String fName = authName[1];
@@ -1343,7 +1351,7 @@ public class Menu extends javax.swing.JFrame {
 
         for (int i = 0; i < categoryCounter; i++) {
             Category c = new Category();
-            String cat = addManyTable.getValueAt(i, 1).toString();
+            String cat = addBookTable.getValueAt(i, 1).toString();
             c.getCategory(cat);
             categories.add(c);
         }
@@ -1460,6 +1468,38 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteBookActionPerformed
 
+    private void btnCreateBookDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookDeleteCategoryActionPerformed
+        try {
+            int row = addBookTable.getSelectedRow();
+            addBookTable.setValueAt("", row, 1);
+            for(int i = row+1; i < 6; i++) {
+                String value = addBookTable.getValueAt(i, 1).toString();
+                if(!value.equalsIgnoreCase("")) {
+                    addBookTable.setValueAt(value, i-1, 1);
+                    addBookTable.setValueAt("", i, 1);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCreateBookDeleteCategoryActionPerformed
+
+    private void btnCreateBookDeleteAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookDeleteAuthorActionPerformed
+        try {
+            int row = addBookTable.getSelectedRow();
+            addBookTable.setValueAt("", row, 0);
+            for(int i = row+1; i < 6; i++) {
+                String value = addBookTable.getValueAt(i, 0).toString();
+                if(!value.equalsIgnoreCase("")) {
+                    addBookTable.setValueAt(value, i-1, 0);
+                    addBookTable.setValueAt("", i, 0);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse poistettava kirjailija klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCreateBookDeleteAuthorActionPerformed
+
     /*  Method used to create six empty rows in the small table located in
     *   add book panel.
     */
@@ -1470,8 +1510,8 @@ public class Menu extends javax.swing.JFrame {
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
-        addManyTable.getColumnModel().getColumn(0).setMinWidth(205);
-        addManyTable.getColumnModel().getColumn(0).setMaxWidth(205);
+        addBookTable.getColumnModel().getColumn(0).setMinWidth(205);
+        addBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
     }
 
     /*
@@ -1663,7 +1703,6 @@ public class Menu extends javax.swing.JFrame {
         cBoxEditCategory.setSelectedIndex(-1);
         model.setRowCount(0);
         checkEditLoan.setSelected(false);
-        editBookCategoryCounter = 0;
     }
 
     /*
@@ -1751,7 +1790,7 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabbedPane;
-    private javax.swing.JTable addManyTable;
+    private javax.swing.JTable addBookTable;
     private javax.swing.JTable browseTable;
     private javax.swing.JButton btnAddAuthor;
     private javax.swing.JButton btnAddBook;
