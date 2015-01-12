@@ -32,7 +32,6 @@ public class Menu extends javax.swing.JFrame {
     private DefaultTableCellRenderer centerRenderer;
     private int authorCounter = 0;
     private int categoryCounter = 0;
-    private int editBookAuthorCounter = 0;
     private int editBookCategoryCounter = 0;
     private int id = 0;
 
@@ -61,11 +60,7 @@ public class Menu extends javax.swing.JFrame {
         mod = new DefaultTableModel(null, col) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if(column == 5) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
             @Override
             public Class getColumnClass(int column){
@@ -895,6 +890,10 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+    *   Method that empties, then fills the browse table
+    *   Called every time user clicks on the browse tab
+    */
     private void TabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabbedPaneMouseClicked
         fillTable();
     }//GEN-LAST:event_TabbedPaneMouseClicked
@@ -1059,7 +1058,6 @@ public class Menu extends javax.swing.JFrame {
                 if(!value.equalsIgnoreCase("")) {
                     editBookTable.setValueAt(value, i-1, 0);
                     editBookTable.setValueAt("", i, 0);
-                    editBookAuthorCounter--;
                 }
             }
         } catch (Exception e) {
@@ -1119,7 +1117,6 @@ public class Menu extends javax.swing.JFrame {
                         i = 6;
                     } else if (val.length() < 1) {
                         editBookTable.setValueAt(author, i, 0);
-                        editBookAuthorCounter++;
                         i = 6;
                     }
                 }
@@ -1219,7 +1216,8 @@ public class Menu extends javax.swing.JFrame {
                 boolean bookExists = false;
                 for (Author a : authors) {
                     for (Book bo : a.books) {
-                        if (newName.equalsIgnoreCase(bo.getName()) && Integer.parseInt(newPubYear) == bo.getPubYear() && bo.getId() != b.getId()) {
+                        if (newName.equalsIgnoreCase(bo.getName()) && Integer.parseInt(newPubYear) == bo.getPubYear()
+                                && bo.getId() != b.getId()) {
                             bookExists = true;
                         }
                     }
@@ -1660,7 +1658,6 @@ public class Menu extends javax.swing.JFrame {
         cBoxEditCategory.setSelectedIndex(-1);
         model.setRowCount(0);
         checkEditLoan.setSelected(false);
-        editBookAuthorCounter = 0;
         editBookCategoryCounter = 0;
     }
 

@@ -30,6 +30,12 @@ public class Author extends Master {
 
     }
 
+    /**
+     * 
+     * @param id author id
+     * @param name author first name
+     * @param lastName author last name
+     */
     public Author(int id, String name, String lastName) {
         
         this.id = id;
@@ -85,6 +91,11 @@ public class Author extends Master {
         return authors;
     }
     
+    /**
+     *  Gets author id when only first and last name is known
+     * @param firstName first name of author
+     * @param lastName last name of author
+     */
     public void getAuthor(String firstName, String lastName) {
         
         String sql = "SELECT id FROM authors WHERE firstName = ? AND lastName = ?";
@@ -113,6 +124,10 @@ public class Author extends Master {
         }
     }
 
+    /**
+     *  Gets first and last name of author when author ID is known
+     * @param id author id
+     */
     public void getAuthor(int id) {
 
         String sql = "SELECT firstName, lastName FROM authors WHERE id = ?";
@@ -138,6 +153,9 @@ public class Author extends Master {
 
     }
 
+    /**
+     *  Used to add authors to the database
+     */
     public void addAuthor() {
 
         String sql = "INSERT INTO authors (firstName, lastName) VALUES (?, ?)";
@@ -160,6 +178,9 @@ public class Author extends Master {
         }
     }
 
+    /**
+     *  Used to update authors in the database
+     */
     public void updateAuthor() {
 
         String sql = "UPDATE authors SET firstName = ?, lastName = ? WHERE id = ?";
@@ -207,6 +228,10 @@ public class Author extends Master {
         return this.books;
     }
 
+    /**
+     *  Checks if given author already exists in the database
+     * @return any number that's greater than 0
+     */
     public boolean doIExist() {
 
         String sql = "SELECT count(id) FROM authors WHERE LOWER(firstName) = LOWER(?) and LOWER(lastName) = LOWER(?)";
