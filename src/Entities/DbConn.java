@@ -25,10 +25,9 @@ public class DbConn {
     public DbConn() {
         if (conn == null) {
             try {
-                Class.forName("org.sqlite.JDBC");
-                this.conn = DriverManager.getConnection("jdbc:sqlite:src/Database/Library2.sqlite");
+                this.conn = DriverManager.getConnection("jdbc:sqlite:Library2.sqlite");
             } catch (Exception e) {
-                System.out.println("Virhe");
+                throw new RuntimeException("XXTODO: Handle this", e);
             }
         }
     }

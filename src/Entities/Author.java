@@ -59,7 +59,7 @@ public class Author extends Master {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Tapahtui virhe: " + e);
+            throw new RuntimeException("XXTODO: Handle this", e);
         } finally {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
