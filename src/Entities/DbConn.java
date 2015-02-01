@@ -27,7 +27,7 @@ public class DbConn {
             try {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:Library2.sqlite");
             } catch (Exception e) {
-                throw new RuntimeException("XXTODO: Handle this", e);
+                throw new RuntimeException("Tee jotain", e);
             }
         }
     }

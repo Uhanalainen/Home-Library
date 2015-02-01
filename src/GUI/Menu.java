@@ -30,8 +30,6 @@ public class Menu extends javax.swing.JFrame {
     private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
     private DefaultTableCellRenderer centerRenderer;
-    private int authorCounter = 0;
-    private int categoryCounter = 0;
     private int id = 0;
 
     /**
@@ -1261,22 +1259,22 @@ public class Menu extends javax.swing.JFrame {
     *   already added to the table
     */
     private void btnCreateBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddCategoryActionPerformed
-        String category = cBoxCategory.getSelectedItem().toString();
-        Boolean addToTable = true;
-        if(categoryCounter < 6) {
-            for (int i = 0; i <= categoryCounter; i++) {
-                if (addBookTable.getValueAt(i, 1).toString().equalsIgnoreCase(category)) {
-                    addToTable = false;
+        try {
+            String category = cBoxCategory.getSelectedItem().toString();
+            for (int i = 0; i < 6; i++) {
+                String value = addBookTable.getValueAt(i, 1).toString();
+                if (category != null && category.length() != 0 ) {
+                    if (value.equalsIgnoreCase(category)) {
+                        JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                        i = 6;
+                    } else if (value.length() < 1) {
+                        addBookTable.setValueAt(category, i, 1);
+                        i = 6;
+                    }
                 }
             }
-            if (addToTable) {
-                addBookTable.setValueAt(category, categoryCounter, 1);
-                categoryCounter++;
-            } else {
-                JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Kirjalla voi olla korkeintaan kuusi kategoriaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kategoria", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCreateBookAddCategoryActionPerformed
 
@@ -1287,22 +1285,20 @@ public class Menu extends javax.swing.JFrame {
     *   Also makes sure that there's not more than 6 authors added
     */
     private void btnCreateBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddAuthorActionPerformed
-        String author = cBoxAuthor.getSelectedItem().toString();
-        Boolean addToTable = true;
-        if(authorCounter < 6) {
-            for (int i = 0; i <= authorCounter; i++) {
-                if (addBookTable.getValueAt(i, 0).toString().equalsIgnoreCase(author)) {
-                    addToTable = false;
+        try {
+            String author = cBoxAuthor.getSelectedItem().toString();
+            for (int i = 0; i < 6; i++) {
+                String val = addBookTable.getValueAt(i, 0).toString();
+                if (val.equalsIgnoreCase(author)) {
+                    JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                    i = 6;
+                } else if (val.length() < 1) {
+                    addBookTable.setValueAt(author, i, 0);
+                    i = 6;
                 }
             }
-            if (addToTable) {
-                addBookTable.setValueAt(author, authorCounter, 0);
-                authorCounter++;
-            } else {
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Kirjalla voi olla korkeintaan kuusi kirjailijaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kirjailija", "Virhe", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCreateBookAddAuthorActionPerformed
 
@@ -1336,22 +1332,30 @@ public class Menu extends javax.swing.JFrame {
         ArrayList<Author> authors = new ArrayList();
         ArrayList<Category> categories = new ArrayList();
 
-        for (int i = 0; i < authorCounter; i++) {
-            Author a = new Author();
-            String auth = addBookTable.getValueAt(i, 0).toString();
-            String[] authName = auth.split(", ");
-            String lName = authName[0];
-            String fName = authName[1];
-            a.getAuthor(fName, lName);
-            a.getBooks();
-            authors.add(a);
+        for (int i = 0; i < 6; i++) {
+            String val = addBookTable.getValueAt(i, 0).toString();
+            if(!val.isEmpty()) {
+                Author a = new Author();
+                String[] authName = val.split(", ");
+                String lName = authName[0];
+                String fName = authName[1];
+                a.getAuthor(fName, lName);
+                a.getBooks();
+                authors.add(a);
+            } else {
+                i = 6;
+            }
         }
 
-        for (int i = 0; i < categoryCounter; i++) {
-            Category c = new Category();
-            String cat = addBookTable.getValueAt(i, 1).toString();
-            c.getCategory(cat);
-            categories.add(c);
+        for (int i = 0; i < 6; i++) {
+            String cat = editBookTable.getValueAt(i, 1).toString();
+            if(!cat.isEmpty()) {
+                Category c = new Category();
+                c.getCategory(cat);
+                categories.add(c);
+            } else {
+                i = 6;
+            }
         }
 
         boolean addBook = true;
@@ -1682,8 +1686,6 @@ public class Menu extends javax.swing.JFrame {
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
-        authorCounter = 0;
-        categoryCounter = 0;
     }
     
     //Clears all textfields and the table in the edit-panel
