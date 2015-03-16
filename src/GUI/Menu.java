@@ -6,11 +6,9 @@
 package GUI;
 
 import Entities.*;
+import Controllers.*;
 import java.util.ArrayList;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -25,12 +23,12 @@ import javax.swing.table.TableRowSorter;
  */
 public class Menu extends javax.swing.JFrame {
 
-    private DefaultTableModel mod;
-    private DefaultTableModel dtm;
-    private DefaultTableModel model;
-    private TableRowSorter<DefaultTableModel> sorter;
-    private DefaultTableCellRenderer centerRenderer;
-    private int id = 0;
+    public static DefaultTableModel mod;
+    public static DefaultTableModel dtm;
+    public static DefaultTableModel model;
+    public static TableRowSorter<DefaultTableModel> sorter;
+    public static DefaultTableCellRenderer centerRenderer;
+    public static int id = 0;
 
     /**
      * Creates new form Menu
@@ -201,12 +199,12 @@ public class Menu extends javax.swing.JFrame {
         sorter = new TableRowSorter<DefaultTableModel>(mod);
         browseTable.setRowSorter(sorter);
         browseTable.setModel(mod);
-        fillTable();
+        Browse.fillTable();
         browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if(browseTable.getSelectedRow() != -1) {
                     id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);
-                    fillEditBookTable();
+                    Edit.fillEditBookTable();
                 }
             }
         });
@@ -214,13 +212,13 @@ public class Menu extends javax.swing.JFrame {
 
         filterAuthor.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
-                newFilter();
+                Browse.newFilter();
             }
             public void insertUpdate(DocumentEvent e) {
-                newFilter();
+                Browse.newFilter();
             }
             public void removeUpdate(DocumentEvent e) {
-                newFilter();
+                Browse.newFilter();
             }
         });
         filterAuthor.setToolTipText("Kirjoita osa kirjailijan tai kirjan nimestä, tai vuodesta");
@@ -347,7 +345,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         addBookTable.setModel(dtm);
-        fillAddManyTable();
+        Add.fillAddManyTable();
         jScrollPane2.setViewportView(addBookTable);
 
         btnCreateBookAddAuthor.setText("Lisää kirjailija");
@@ -542,7 +540,7 @@ public class Menu extends javax.swing.JFrame {
         TabbedPane.addTab("Lisää...", panelAdd);
 
         editBookTable.setModel(model);
-        fillEditBookTable();
+        Edit.fillEditBookTable();
         jScrollPane3.setViewportView(editBookTable);
 
         lblEditBookHeader.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -786,7 +784,7 @@ public class Menu extends javax.swing.JFrame {
         panelEditLayout.setVerticalGroup(
             panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEditLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(21, 21, 21)
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEditAuthorHeader)
                     .addComponent(lblEditCategoryHeader))
@@ -858,7 +856,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(lblEditBookObligatory))
                 .addGap(18, 18, 18)
                 .addComponent(btnDeleteBook)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         TabbedPane.addTab("Muokkaa...", panelEdit);
@@ -902,850 +900,85 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*
-    *   Method that empties, then fills the browse table
-    *   Called every time user clicks on the browse tab
-    */
     private void TabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabbedPaneMouseClicked
-        fillTable();
+        Browse.fillTable();
     }//GEN-LAST:event_TabbedPaneMouseClicked
 
-    /*
-    *   Method used when user has edited an category and clicks the edit category-button
-    *   
-    *   Gets the old name of the category from the combobox selection, stores it to a variable
-    *   Stores the new name in different variable from the information in the text box
-    *   Checks that textbox is not empty and that it doesn't contain blank spaces
-    *   If not, create a new Category object using the old name
-    *   Use the created category a to get the category id (which is needed to save the new information)
-    *   Use category.java setter to set new name to Category object c
-    *   Checks that this new category doesn't already exist (prevents duplicate categories)
-    *   If not, use the updateCategory method from category.java, which was why the id was
-    *   needed
-    *   Upon update, informs the user via popup that the update was done, refreshes categories combobox
-    *   and empties the textfield
-    *   Else informs what went wrong (Category already exists, there was illegal characters in hte input, or name was empty
-    */
     private void btnEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryActionPerformed
-        String name = txtEditCategory.getText();
-        String oldName = cBoxEditCategory.getSelectedItem().toString();
-
-        if (!"".equalsIgnoreCase(name)) {
-            if (!name.contains(" ")) {
-                Category c = new Category(oldName);
-                c.getCategory(oldName);
-                c.setName(name);
-                if (!c.doesItExist()) {
-                    c.updateCategory();
-                    comboCatRefresh();
-                    txtAddCategory.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.editCategory();
     }//GEN-LAST:event_btnEditCategoryActionPerformed
 
-    /*
-    *   Method used to get information on what category user wants to edit
-    *   Get information from categories combobox, store which category was selected in a variable
-    *   Stores chosen combobox information in a string
-    *   Puts the name in correct text box for easy editing
-    */
     private void cBoxEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditCategoryActionPerformed
-        try {
-            String category = cBoxEditCategory.getSelectedItem().toString();
-            txtEditCategory.setText(category);           
-        } catch (Exception e) {}
+        Edit.getEditAuthor();
     }//GEN-LAST:event_cBoxEditCategoryActionPerformed
 
-    /*
-    *   Method used when user has edited an author and clicks the edit author-button
-    *   
-    *   Gets the old name of the author from the combobox selection, stores it to a variable
-    *   Splits it into parts so that it gets first and lastname separate
-    *   Stores the new names in different variables from the information in the text boxes
-    *   Checks that neither textbox was empty
-    *   If not, create a new Author object using the old names
-    *   Use the created author a to get the author id (which is needed to save the new information)
-    *   Use author.java setters to set new first and last name to Author object a
-    *   Checks that this new author doesn't already exist (prevents duplicate authors)
-    *   If not, use the updateAuthor method from author.java, which was why the id was
-    *   needed
-    *   Upon update, informs the user via popup that the update was done, refreshes authors combobox
-    *   and empties both textfields
-    *   Else informs what went wrong (Author already exists, first name was empty or last name was empty)
-    */
     private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
-        String author = cBoxEditAuthor.getSelectedItem().toString();
-        String[] authName = author.split(", ");
-        String oldName = authName[1];
-        String oldLastName = authName[0];
-        String name = txtEditAuthorName.getText();
-        String lastName = txtEditAuthorLastName.getText();
-
-        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
-            Author a = new Author(oldName, oldLastName);
-            a.getAuthor(oldName, oldLastName);
-            a.setName(name);
-            a.setLastName(lastName);
-            if(!a.doIExist()) {
-                a.updateAuthor();
-                comboAuthorRefresh();
-                txtEditAuthorName.setText("");
-                txtEditAuthorLastName.setText("");
-            } else {
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if ("".equalsIgnoreCase(name)) {
-            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.editAuthor();
     }//GEN-LAST:event_btnEditAuthorActionPerformed
 
-    /*
-    *   Method used to get information on what author user wants to edit
-    *   Stores chosen combobox information in a string
-    *   Splits the string into parts and removes anything that isn't first- or lastname
-    *   Puts the names in correct text boxes for easy editing
-    */
     private void cBoxEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditAuthorActionPerformed
-        try {
-            String author = cBoxEditAuthor.getSelectedItem().toString();
-            String[] authName = author.split(", ");
-            String lName = authName[0];
-            String fName = authName[1];
-            txtEditAuthorLastName.setText(lName);
-            txtEditAuthorName.setText(fName);         
-        } catch(Exception e) {}
+        Edit.getEditAuthor();
     }//GEN-LAST:event_cBoxEditAuthorActionPerformed
-   
-    /*
-    *   Method used when user clicks delete category-button when editing a book
-    *   User must choose which category to delete by selecting a row from the table
-    *   The row number is stored in a variable
-    *   The method deletes the text in the given cell
-    *   Then moves all other categories upwards one row so no empty rows are left
-    *   in the middle of the table
-    *   Displays error popup if user has not selected a row in the table
-    */
+
     private void btnEditBookDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteCategoryActionPerformed
-        try {
-            int row = editBookTable.getSelectedRow();
-            editBookTable.setValueAt("", row, 1);
-            for(int i = row+1; i < 6; i++) {
-                String value = editBookTable.getValueAt(i, 1).toString();
-                if(!value.equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(value, i-1, 1);
-                    editBookTable.setValueAt("", i, 1);
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.deleteCategory();
     }//GEN-LAST:event_btnEditBookDeleteCategoryActionPerformed
 
-    /*
-    *   Method used when user clicks delete author-button when editing a book
-    *   User must choose which author to delete by selecting a row from the table
-    *   The row number is stored in a variable
-    *   The method deletes the text in the given cell
-    *   Then moves all other authors upwards one row so no empty rows are left
-    *   in the middle of the table
-    *   Displays error popup if user has not selected a row in the table
-    */
     private void btnEditBookDeleteAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookDeleteAuthorActionPerformed
-        try {
-            int row = editBookTable.getSelectedRow();
-            editBookTable.setValueAt("", row, 0);
-            for(int i = row+1; i < 6; i++) {
-                String value = editBookTable.getValueAt(i, 0).toString();
-                if(!value.equalsIgnoreCase("")) {
-                    editBookTable.setValueAt(value, i-1, 0);
-                    editBookTable.setValueAt("", i, 0);
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kirjailija klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.deleteAuthor();
     }//GEN-LAST:event_btnEditBookDeleteAuthorActionPerformed
-    
-    /*
-    *   Save combobox selection to string variable
-    *   Checks that the category the user wants to add isn't already in the table
-    *   If it's not, enter the category information in the first empty row
-    *   Display error to the user depending on what went wrong (category already in table,
-    *   user has failed to select a book to edit from the browse table, or user
-    *   has failed to choose which category to add from the category combobox
-    */
+
     private void btnEditBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddCategoryActionPerformed
-        try {
-            String category = cBoxEditBookCategory.getSelectedItem().toString();
-            if(editBookTable.getRowCount() > 1) {
-                for (int i = 0; i < 6; i++) {
-                    String value = editBookTable.getValueAt(i, 1).toString();
-                    if (category != null && category.length() != 0 ) {
-                        if (value.equalsIgnoreCase(category)) {
-                            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                            i = 6;
-                        } else if (value.length() < 1) {
-                            editBookTable.setValueAt(category, i, 1);
-                            i = 6;
-                        }
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Valitse ensin selausvalikosta muokattava kirja", "Virhe", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kategoria", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.addCategoryToEditTable();
     }//GEN-LAST:event_btnEditBookAddCategoryActionPerformed
 
-    /*
-    *   Save combobox selection to string variable
-    *   Checks that the author the user wants to add isn't already in the table
-    *   If it's not, enter the author information in the first empty row
-    *   Display error to the user depending on what went wrong (author already in table,
-    *   user has failed to select a book to edit from the browse table, or user
-    *   has failed to choose which author to add from the author combobox
-    */
     private void btnEditBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookAddAuthorActionPerformed
-        try {
-            String author = cBoxEditBookAuthor.getSelectedItem().toString();
-            if(editBookTable.getRowCount() > 1) {
-                for (int i = 0; i < 6; i++) {
-                    String val = editBookTable.getValueAt(i, 0).toString();
-                    if (val.equalsIgnoreCase(author)) {
-                        JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                        i = 6;
-                    } else if (val.length() < 1) {
-                        editBookTable.setValueAt(author, i, 0);
-                        i = 6;
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Valitse ensin selausvalikosta muokattava kirja", "Virhe", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kirjailija", "Virhe", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.addAuthorToEditTable();
     }//GEN-LAST:event_btnEditBookAddAuthorActionPerformed
 
-    /*
-    *   Used to clear all text boxes, to unselect the checkbox, and emptying the
-    *   table in the editBook panel
-    */
     private void btnClearEditBoxesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearEditBoxesActionPerformed
-        clearEditBoxes();
+        Edit.clearEditBoxes();
     }//GEN-LAST:event_btnClearEditBoxesActionPerformed
 
-    /*
-    *   This method is used whenever the user has made some changes to a book and
-    *   clicks the save changes-button. This is perhaps the most complicated method
-    *   of all methods used.
-    *
-    *   First, create an empty Book object.
-    *   Get the original book information, using the id (which we know since this
-    *   relies on the user selecting a row in the browse table).
-    *   Save all new information to variables
-    *   Create empty arraylists for authors and categories
-    *   Use book.java setter methods to set the new information to the book object
-    *   If the user has checked that the book is on loan, also set loaner name,
-    *   otherwise set loaner name as empty string
-    *   Clear the original authors and categories from the book object, so that
-    *   we can store new authors and categories
-    *   As when adding a book, go through the editBookTable and add every author
-    *   and category to the lists.
-    *   Check publication year, and that the given new name is not empty
-    *   Check that none of the authors has the new book associated with them already,
-    *   based on name and publication year
-    *   If ok, save changes to the book, adding the new associated authors and categories
-    *   Else tell user what went wrong (one of the authors has the book associated already,
-    *   the publication year was faulty, or the new given book name was empty)
-    *   If the update is done, the method will also empty all text boxes, checkboxes and the table
-    */
     private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
-        Book b = new Book();
-        b.getBook(id);
-
-        String newName = txtEditBookName.getText();
-        String newPubYear = txtEditPubYear.getText();
-        boolean newOnLoan = checkEditLoan.isSelected();
-        String newLoaner = txtEditLoaner.getText();
-        String newOrigName = txtEditOrigName.getText();
-
-        ArrayList<Author> authors = new ArrayList();
-        ArrayList<Category> categories = new ArrayList();
-
-        b.setName(newName);
-        b.setOnLoan(newOnLoan);
-        b.setOrigName(newOrigName);
-        if(newOnLoan) {
-            b.setLoaner(newLoaner);
-        } else {
-            b.setLoaner("");
-        }
-        b.author.clear();
-        b.category.clear();
-
-        for (int i = 0; i < 6; i++) {
-            String val = editBookTable.getValueAt(i, 0).toString();
-            if(!val.isEmpty()) {
-                Author a = new Author();
-                String[] authName = val.split(", ");
-                String lName = authName[0];
-                String fName = authName[1];
-                a.getAuthor(fName, lName);
-                a.getBooks();
-                authors.add(a);
-            } else {
-                i = 6;
-            }
-        }
-
-        for (int i = 0; i < 6; i++) {
-            String cat = editBookTable.getValueAt(i, 1).toString();
-            if(!cat.isEmpty()) {
-                Category c = new Category();
-                c.getCategory(cat);
-                categories.add(c);
-            } else {
-                i = 6;
-            }
-        }
-
-        if (checkPubYear(newPubYear)) {
-            if (!newName.isEmpty()) {
-                boolean bookExists = false;
-                for (Author a : authors) {
-                    for (Book bo : a.books) {
-                        if (newName.equalsIgnoreCase(bo.getName()) && Integer.parseInt(newPubYear) == bo.getPubYear()
-                                && bo.getId() != b.getId()) {
-                            bookExists = true;
-                        }
-                    }
-                }
-                if (!bookExists) {
-                    for (Category c : categories) {
-                        b.category.add(c);
-                    }
-                    for (Author a : authors) {
-                        b.author.add(a);
-                    }
-                    b.updateBook();
-                    checkEditLoan.setSelected(false);
-                    clearEditBoxes();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Kirjan muokkaus epäonnistui. Tarkasta, ettei jollain kirjailijalla ole jo kyseistä kirjaa", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Kirjan nimi puuttuu", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
+        Edit.updateBook();
     }//GEN-LAST:event_btnSaveChangesActionPerformed
 
-    /*
-    *   Saves combobox selection as string variable
-    *   Checks that category the user wants to add to the table isn't already added
-    *   If it isn't, add category to the table, otherwise tell user what went wrong
-    *   Possible errors: trying to add more than 6 categories, or the category was
-    *   already added to the table
-    */
     private void btnCreateBookAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddCategoryActionPerformed
-        try {
-            String category = cBoxCategory.getSelectedItem().toString();
-            for (int i = 0; i < 6; i++) {
-                String value = addBookTable.getValueAt(i, 1).toString();
-                if (category != null && category.length() != 0 ) {
-                    if (value.equalsIgnoreCase(category)) {
-                        JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                        i = 6;
-                    } else if (value.length() < 1) {
-                        addBookTable.setValueAt(category, i, 1);
-                        i = 6;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kategoria", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
+        Add.addCategoryToTable();
     }//GEN-LAST:event_btnCreateBookAddCategoryActionPerformed
 
-    /*
-    *   Saves combobox selection as a string variable
-    *   Checks that the author the user wants to add to the table isn't already added
-    *   If it isn't, add author to table, otherwise tell user what went wrong
-    *   Also makes sure that there's not more than 6 authors added
-    */
     private void btnCreateBookAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookAddAuthorActionPerformed
-        try {
-            String author = cBoxAuthor.getSelectedItem().toString();
-            for (int i = 0; i < 6; i++) {
-                String val = addBookTable.getValueAt(i, 0).toString();
-                if (val.equalsIgnoreCase(author)) {
-                    JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                    i = 6;
-                } else if (val.length() < 1) {
-                    addBookTable.setValueAt(author, i, 0);
-                    i = 6;
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse pudotusvalikosta lisättävä kirjailija", "Virhe", JOptionPane.ERROR_MESSAGE);
-        }
+        Add.addAuthorToTable();
     }//GEN-LAST:event_btnCreateBookAddAuthorActionPerformed
 
-    //Used to clear all textboxes, checkboxes and table data
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        clearBoxes();
+        Add.clearBoxes();
     }//GEN-LAST:event_btnClearActionPerformed
 
-    /*
-    *   Store all user input from text boxes and checkboxes, and the addManyTable
-    *   Create new arraylists for authors and categories
-    *   Go through the table, adding every author to the authors list
-    *   Do same thing as above for categories
-    *   Check that neither list is empty, if either one is, display error, prompting
-    *   user to add at least one author and category
-    *   Proceed to check publication year and name
-    *   Then, for each author, go through his/her books, so that we don't accidentaly
-    *   add duplicate books if any of them has the same book already entered in
-    *   the database (in which case the user should rather edit that book and add the
-    *   other authors to it).
-    *   If all goes right, makes a Book object containing all given information
-    *   Adds the categories and authors to the book
-    *   Adds the book to the database, and empties all text fields and the table
-    */
     private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
-        String name = txtBookName.getText();
-        String origName = txtOriginalName.getText();
-        String pubYear = txtPubYear.getText();
-        String loaner = txtLoaner.getText();
-        boolean onLoan = checkLoan.isSelected();
-        ArrayList<Author> authors = new ArrayList();
-        ArrayList<Category> categories = new ArrayList();
-
-        for (int i = 0; i < 6; i++) {
-            String val = addBookTable.getValueAt(i, 0).toString();
-            if(!val.isEmpty()) {
-                Author a = new Author();
-                String[] authName = val.split(", ");
-                String lName = authName[0];
-                String fName = authName[1];
-                a.getAuthor(fName, lName);
-                a.getBooks();
-                authors.add(a);
-            } else {
-                i = 6;
-            }
-        }
-
-        for (int i = 0; i < 6; i++) {
-            String cat = editBookTable.getValueAt(i, 1).toString();
-            if(!cat.isEmpty()) {
-                Category c = new Category();
-                c.getCategory(cat);
-                categories.add(c);
-            } else {
-                i = 6;
-            }
-        }
-
-        boolean addBook = true;
-        if(authors.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kirjailija taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            addBook = false;
-        } else if (categories.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Lisää vähintään yksi kategoria taulukkoon", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            addBook = false;
-        }
-
-        if (checkPubYear(pubYear)) {
-            if (!name.isEmpty()) {
-                for (Author a : authors) {
-                    for (Book bo : a.books) {
-                        if (name.equalsIgnoreCase(bo.getName()) && Integer.parseInt(pubYear) == bo.getPubYear()) {
-                            JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                            addBook = false;
-                        }
-                    }
-                }
-                if (addBook) {
-                    Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
-                    for (Category c : categories) {
-                        b.category.add(c);
-                    }
-                    for (Author a : authors) {
-                        b.author.add(a);
-                    }
-                    b.addBook();
-                    checkLoan.setSelected(false);
-                    clearBoxes();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Anna kirjalle nimi", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        Add.storeBook();
     }//GEN-LAST:event_btnAddBookActionPerformed
 
-    /*
-    *   Stores the given category name in variable.
-    *   Checks that given name is not empty
-    *   Checks that the category name doesn't contain blank spaces
-    *   If all is well, create a new Category object with given name
-    *   Check that the category doesn't already exist in the database
-    *   Gives different error popups based on what went wrong
-    *   Empties text box and refreshes category combobox
-    */
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
-        //Storing whatever is in the txt field to variable
-        String name = txtAddCategory.getText();
-
-        if (!"".equalsIgnoreCase(name)) {
-            if (!name.contains(" ")) {
-                Category c = new Category(name);
-                if (!c.doesItExist()) {
-                    c.addCategory();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Kategorian nimessä ei voi olla välilyöntiä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Tekstilaatikko oli tyhjä!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
-        txtAddCategory.setText("");
-        comboCatRefresh();
+        Add.addCategory();
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
-    /*
-    *   First, saves user input as two strings from the text boxes. Then, checks
-    *   that neither of the boxes were empty. If not, proceeds to create a new Author
-    *   object, with which it can then check that the given author doesn't already
-    *   exist in the database (a.doIExist). If it doesn't, proceeds to add the author
-    *   to the database. Otherwise, tell the user what went wrong (that either name was
-    *   missing, or that the author has already been added. Last but not least,
-    *   the method empties both text boxes and calls for comboAuthorRefresh(), which,
-    *   as the name implies, refreshes author combobox contents.
-    */
     private void btnAddAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAuthorActionPerformed
-        String name = txtAddAuthorFirstName.getText();
-        String lastName = txtAddAuthorLastName.getText();
-
-        if (!"".equalsIgnoreCase(name) && !"".equalsIgnoreCase(lastName)) {
-            Author a = new Author(name, lastName);
-            if (!a.doIExist()) {
-                a.addAuthor();
-            } else {
-                JOptionPane.showMessageDialog(null, "Kirjailija löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if ("".equalsIgnoreCase(name)) {
-            JOptionPane.showMessageDialog(null, "Syötä myös etunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
-        txtAddAuthorFirstName.setText("");
-        txtAddAuthorLastName.setText("");
-        comboAuthorRefresh();
+        Add.addAuthor();
     }//GEN-LAST:event_btnAddAuthorActionPerformed
 
-    /*
-    *   Simply used to delete a book, this method depends on the user choosing
-    *   a book by clicking a row in the browse table in the browse panel.
-    */
     private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
-        if(id != 0){ 
-            Book b = new Book();
-            b.deleteBook(id);
-        } else {
-            JOptionPane.showMessageDialog(null, "Valitse ensin poistettava kirja selaus-taulukosta", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
+        Edit.deleteBook();
     }//GEN-LAST:event_btnDeleteBookActionPerformed
 
     private void btnCreateBookDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookDeleteCategoryActionPerformed
-        try {
-            int row = addBookTable.getSelectedRow();
-            addBookTable.setValueAt("", row, 1);
-            for(int i = row+1; i < 6; i++) {
-                String value = addBookTable.getValueAt(i, 1).toString();
-                if(!value.equalsIgnoreCase("")) {
-                    addBookTable.setValueAt(value, i-1, 1);
-                    addBookTable.setValueAt("", i, 1);
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
+        Add.deleteCategoryFromTable();
     }//GEN-LAST:event_btnCreateBookDeleteCategoryActionPerformed
 
     private void btnCreateBookDeleteAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateBookDeleteAuthorActionPerformed
-        try {
-            int row = addBookTable.getSelectedRow();
-            addBookTable.setValueAt("", row, 0);
-            for(int i = row+1; i < 6; i++) {
-                String value = addBookTable.getValueAt(i, 0).toString();
-                if(!value.equalsIgnoreCase("")) {
-                    addBookTable.setValueAt(value, i-1, 0);
-                    addBookTable.setValueAt("", i, 0);
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Valitse poistettava kirjailija klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
-        }
+        Add.deleteAuthorFromTable();
     }//GEN-LAST:event_btnCreateBookDeleteAuthorActionPerformed
-
-    /*  Method used to create six empty rows in the small table located in
-    *   add book panel.
-    */
-    private void fillAddManyTable() {
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        addBookTable.getColumnModel().getColumn(0).setMinWidth(205);
-        addBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
-    }
-
-    /*
-    *   Much like it's neighbor, fillTable(), this is used to fill the small table
-    *   in the edit panel. It only fills it if the id variable is something else than 0,
-    *   though. Because it relies on the user clicking on a row in the browse table
-    *   to get the information to fill in all known information about the book, such
-    *   as authors, categories, book name, publication year etc. If the user hasn't
-    *   selected any book, there's not much point in filling a empty table.
-    */
-    private void fillEditBookTable() {
-        if (id != 0) {
-            model.setRowCount(0);
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            editBookTable.getColumnModel().getColumn(0).setMinWidth(205);
-            editBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
-
-            Book b = new Book();
-            b.getBook(id);
-            txtEditBookName.setText(b.getName());
-            txtEditPubYear.setText(b.getPubYear() + "");
-            txtEditLoaner.setText(b.getLoaner());
-            txtEditOrigName.setText(b.getOrigName());
-            if (b.getOnLoan()) {
-                checkEditLoan.setSelected(true);
-            } else {
-                checkEditLoan.setSelected(false);
-            }
-
-            b.getAuthors();
-            b.getCategories();
-
-            String authorName = "";
-            int authorCount = 0;
-            for (Author a : b.author) {
-                authorName = a.getLastName() + ", " + a.getName();
-                editBookTable.setValueAt(authorName, authorCount, 0);
-                authorCount++;
-            }
-            String categoryName = "";
-            int categoryCount = 0;
-            for (Category c : b.category) {
-                categoryName = c.getName();
-                editBookTable.setValueAt(categoryName, categoryCount, 1);
-                categoryCount++;
-            }
-        }
-    }
-    
-    /*
-    *   Method used to fill the browse table. First, it fetches all books in the database.
-    *   Then, it sets the row count for the "mod" table model to 0 (this is a way of clearing
-    *   the table of old information). After that, I use a for-each loop which loops through
-    *   every book in the arraylist, adding the authors and categories to it, then adding
-    *   all this information row by row to the table. At last, I've set some parameters for
-    *   table column widths, and centered some of the table column names.
-    */
-    private void fillTable() {
-        ArrayList<Book> books = Book.getBooks();
-        mod.setRowCount(0);
-
-        for (Book b : books) {
-            String aName = "";
-            b.getAuthors();
-            int aCount = 1;
-            for (Author a : b.author) {
-                aName += a.getLastName() + ", " + a.getName();
-                aName += aCount < b.author.size() ? " - " : "";
-                aCount++;
-            }
-
-            String cat = "";
-            b.getCategories();
-            int bCount = 1;
-            for (Category c : b.category) {
-                cat += c.getName();
-                cat += bCount < b.category.size() ? " - " : "";
-                bCount++;
-            }
-            mod.addRow(new Object[]{b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
-        }
-
-        browseTable.getColumnModel().getColumn(0).setMaxWidth(40);
-        browseTable.getColumnModel().getColumn(1).setMinWidth(220);
-        browseTable.getColumnModel().getColumn(2).setMinWidth(200);
-        browseTable.getColumnModel().getColumn(2).setMaxWidth(200);
-        browseTable.getColumnModel().getColumn(3).setMinWidth(90);
-        browseTable.getColumnModel().getColumn(3).setMaxWidth(90);
-        browseTable.getColumnModel().getColumn(4).setMinWidth(160);
-
-        centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        browseTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        browseTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-    }
-
-    /*
-    * A method for checking if the year of publication submitted by the user
-    * is valid. The number is submitted as a String, because it's easier to verify the
-    * length of a string than it is to check the amount of numbers in an integer.
-    * 1: Check if the box is empty - if it is, notify user that he needs to add publication year
-    * 2: Check the number submitted by the user - if it is anything but 4 letters long, inform user
-    *    that he needs to fix his input to fit our database standard
-    * 3: If, and only if, the number is 4 letters long, try to convert it into an integer.
-    *    This tells us if there's something else than numbers submitted by the user. If there is,
-    *    again, notify the user that he has to correct his input to numbers only.
-    */
-    private boolean checkPubYear(String pubYear) {
-
-        boolean yearOk = false;
-        if (!pubYear.isEmpty()) {
-            if (pubYear.length() == 4) {
-                try {
-                    int pYear = Integer.parseInt(pubYear);
-                    yearOk = true;
-                } catch (NumberFormatException n) {
-                    JOptionPane.showMessageDialog(null, "Syötä neljänumeroinen vuosiluku, esim '1994'", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                    yearOk = false;
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Syötä neljänumeroinen vuosiluku, esim '1994'", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Syötä julkaisuvuosi oli tyhjä", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-        }
-        return yearOk;
-    }
-
-    /*
-    * A simple search filter that enables on-the-fly searching in the
-    * browse table. Makes searching really easy, as it checks every cell
-    * and filters the table based on user search input. I chose this instead
-    * of separate searching possibilities (search by author, book name, year etc)
-    * as I thought this was neater and easier to develop.
-    */
-    private void newFilter() {
-        RowFilter<DefaultTableModel, Object> rf = null;
-        try {
-            rf = RowFilter.regexFilter("(?i)" + filterAuthor.getText());
-        } catch (java.util.regex.PatternSyntaxException e) {
-            return;
-        }
-        sorter.setRowFilter(rf);
-    }
-
-    /*  
-    *   Clears all textfields in add-panel
-    *   Deletes all rows in dtm table model, then creates six empty ones
-    *   Resets authorCounter and categoryCounter to 0
-    */
-    private void clearBoxes() {
-        txtAddAuthorFirstName.setText("");
-        txtAddAuthorLastName.setText("");
-        txtAddCategory.setText("");
-        txtBookName.setText("");
-        txtLoaner.setText("");
-        txtPubYear.setText("");
-        txtOriginalName.setText("");
-        checkLoan.setSelected(false);
-        dtm.setRowCount(0);
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-    }
-    
-    //Clears all textfields and the table in the edit-panel
-    private void clearEditBoxes() {
-        txtEditAuthorLastName.setText("");
-        txtEditAuthorName.setText("");
-        txtEditBookName.setText("");
-        txtEditCategory.setText("");
-        txtEditLoaner.setText("");
-        txtEditOrigName.setText("");
-        txtEditPubYear.setText("");
-        cBoxEditAuthor.setSelectedIndex(-1);
-        cBoxEditBookAuthor.setSelectedIndex(-1);
-        cBoxEditBookCategory.setSelectedIndex(-1);
-        cBoxEditCategory.setSelectedIndex(-1);
-        model.setRowCount(0);
-        checkEditLoan.setSelected(false);
-    }
-
-    /*
-    *   Fetch an arraylist of all authors
-    *   Remove all items from all author-related comboboxes used
-    *   For each author in the 'authors' -list...
-    *   ...add author name to every author-related combobox
-    */
-    private void comboAuthorRefresh() {
-        ArrayList<Author> authors = Author.getAuthors();
-        cBoxAuthor.removeAllItems();
-        cBoxEditAuthor.removeAllItems();
-        cBoxEditBookAuthor.removeAllItems();
-        for (Author a : authors) {
-            cBoxAuthor.addItem(a.getLastName() + ", " + a.getName());
-            cBoxEditAuthor.addItem(a.getLastName() + ", " + a.getName());
-            cBoxEditBookAuthor.addItem(a.getLastName() + ", " + a.getName());
-        }
-        cBoxAuthor.setSelectedIndex(-1);
-        cBoxEditAuthor.setSelectedIndex(-1);
-        cBoxEditBookAuthor.setSelectedIndex(-1);
-    }
-
-    /*
-    *   Fetch an arraylist of all categories in the database
-    *   Remove all items from all category-related comboboxes
-    *   For each category in 'categories'-list...
-    *   ...add category to all category-related comboboxes
-    */
-    private void comboCatRefresh() {
-        ArrayList<Category> categories = Category.getCategories();
-        cBoxCategory.removeAllItems();
-        cBoxEditCategory.removeAllItems();
-        cBoxEditBookCategory.removeAllItems();
-        for (Category c : categories) {
-            cBoxCategory.addItem(c.getName());
-            cBoxEditCategory.addItem(c.getName());
-            cBoxEditBookCategory.addItem(c.getName());
-        }
-        cBoxCategory.setSelectedIndex(-1);
-        cBoxEditCategory.setSelectedIndex(-1);
-        cBoxEditBookCategory.setSelectedIndex(-1);
-    }
 
     /**
      * @param args the command line arguments
@@ -1787,11 +1020,10 @@ public class Menu extends javax.swing.JFrame {
         });
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabbedPane;
-    private javax.swing.JTable addBookTable;
-    private javax.swing.JTable browseTable;
+    public static javax.swing.JTable addBookTable;
+    public static javax.swing.JTable browseTable;
     private javax.swing.JButton btnAddAuthor;
     private javax.swing.JButton btnAddBook;
     private javax.swing.JButton btnAddCategory;
@@ -1809,16 +1041,16 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnEditBookDeleteCategory;
     private javax.swing.JButton btnEditCategory;
     private javax.swing.JButton btnSaveChanges;
-    private javax.swing.JComboBox cBoxAuthor;
-    private javax.swing.JComboBox cBoxCategory;
-    private javax.swing.JComboBox cBoxEditAuthor;
-    private javax.swing.JComboBox cBoxEditBookAuthor;
-    private javax.swing.JComboBox cBoxEditBookCategory;
-    private javax.swing.JComboBox cBoxEditCategory;
-    private javax.swing.JCheckBox checkEditLoan;
-    private javax.swing.JCheckBox checkLoan;
-    private javax.swing.JTable editBookTable;
-    private javax.swing.JTextField filterAuthor;
+    public static javax.swing.JComboBox cBoxAuthor;
+    public static javax.swing.JComboBox cBoxCategory;
+    public static javax.swing.JComboBox cBoxEditAuthor;
+    public static javax.swing.JComboBox cBoxEditBookAuthor;
+    public static javax.swing.JComboBox cBoxEditBookCategory;
+    public static javax.swing.JComboBox cBoxEditCategory;
+    public static javax.swing.JCheckBox checkEditLoan;
+    public static javax.swing.JCheckBox checkLoan;
+    public static javax.swing.JTable editBookTable;
+    public static javax.swing.JTextField filterAuthor;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -1862,19 +1094,19 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel star7;
     private javax.swing.JLabel star8;
     private javax.swing.JLabel star9;
-    private javax.swing.JTextField txtAddAuthorFirstName;
-    private javax.swing.JTextField txtAddAuthorLastName;
-    private javax.swing.JTextField txtAddCategory;
-    private javax.swing.JTextField txtBookName;
-    private javax.swing.JTextField txtEditAuthorLastName;
-    private javax.swing.JTextField txtEditAuthorName;
-    private javax.swing.JTextField txtEditBookName;
-    private javax.swing.JTextField txtEditCategory;
-    private javax.swing.JTextField txtEditLoaner;
-    private javax.swing.JTextField txtEditOrigName;
-    private javax.swing.JTextField txtEditPubYear;
-    private javax.swing.JTextField txtLoaner;
-    private javax.swing.JTextField txtOriginalName;
-    private javax.swing.JTextField txtPubYear;
+    public static javax.swing.JTextField txtAddAuthorFirstName;
+    public static javax.swing.JTextField txtAddAuthorLastName;
+    public static javax.swing.JTextField txtAddCategory;
+    public static javax.swing.JTextField txtBookName;
+    public static javax.swing.JTextField txtEditAuthorLastName;
+    public static javax.swing.JTextField txtEditAuthorName;
+    public static javax.swing.JTextField txtEditBookName;
+    public static javax.swing.JTextField txtEditCategory;
+    public static javax.swing.JTextField txtEditLoaner;
+    public static javax.swing.JTextField txtEditOrigName;
+    public static javax.swing.JTextField txtEditPubYear;
+    public static javax.swing.JTextField txtLoaner;
+    public static javax.swing.JTextField txtOriginalName;
+    public static javax.swing.JTextField txtPubYear;
     // End of variables declaration//GEN-END:variables
 }

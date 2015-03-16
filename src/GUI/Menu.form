@@ -162,8 +162,9 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;"/>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object col[] = {&quot;ID&quot;, &quot;Kirjailija&quot;, &quot;Nimi&quot;, &quot;Julkaisuvuosi&quot;, &quot;Kategoria&quot;, &quot;Lainassa&quot;, &quot;Lainaaja&quot;, &quot;Alkuper&#xe4;inen nimi&quot;};&#xa;mod = new DefaultTableModel(null, col) {&#xa;        @Override&#xa;        public boolean isCellEditable(int row, int column) {&#xa;            return false;&#xa;        }&#xa;        @Override&#xa;        public Class getColumnClass(int column){&#xa;            switch (column) {&#xa;                case 0:&#xa;                return Integer.class;&#xa;                case 3:&#xa;                return Integer.class;&#xa;                case 5:&#xa;                return Boolean.class;&#xa;                default:&#xa;                return String.class;&#xa;            }&#xa;        }&#xa;};"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillTable();&#xa;browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent e) {&#xa;        if(browseTable.getSelectedRow() != -1) {&#xa;            id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);&#xa;            fillEditBookTable();&#xa;        }&#xa;    }&#xa;});"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Browse.fillTable();&#xa;browseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent e) {&#xa;        if(browseTable.getSelectedRow() != -1) {&#xa;            id = (Integer) browseTable.getValueAt(browseTable.getSelectedRow(), 0);&#xa;            Edit.fillEditBookTable();&#xa;        }&#xa;    }&#xa;});"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="((JComponent) browseTable.getDefaultRenderer(Boolean.class)).setOpaque(true);&#xa;sorter = new TableRowSorter&lt;DefaultTableModel&gt;(mod);&#xa;browseTable.setRowSorter(sorter);"/>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -173,7 +174,8 @@
                     <Property name="toolTipText" type="java.lang.String" value="Kirjoita osa kirjailijan tai kirjan nimest&#xe4;, tai vuodesta"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="filterAuthor.getDocument().addDocumentListener(new DocumentListener() {&#xa;    public void changedUpdate(DocumentEvent e) {&#xa;        newFilter();&#xa;    }&#xa;    public void insertUpdate(DocumentEvent e) {&#xa;        newFilter();&#xa;    }&#xa;    public void removeUpdate(DocumentEvent e) {&#xa;        newFilter();&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="filterAuthor.getDocument().addDocumentListener(new DocumentListener() {&#xa;    public void changedUpdate(DocumentEvent e) {&#xa;        Browse.newFilter();&#xa;    }&#xa;    public void insertUpdate(DocumentEvent e) {&#xa;        Browse.newFilter();&#xa;    }&#xa;    public void removeUpdate(DocumentEvent e) {&#xa;        Browse.newFilter();&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblSearch">
@@ -401,8 +403,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtAddAuthorFirstName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtAddAuthorLastName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblAddAuthor">
                   <Properties>
@@ -437,6 +445,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtAddCategory">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAddCategory">
                   <Properties>
@@ -463,6 +474,7 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors){&#xa;    cBoxAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxAuthor.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors = Author.getAuthors();"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cBoxCategory">
@@ -474,6 +486,7 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Category c : categories){&#xa;    cBoxCategory.addItem(c.getName());&#xa;}&#xa;cBoxCategory.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories = Category.getCategories();"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblBookName">
@@ -502,12 +515,24 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBookName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtPubYear">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtOriginalName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtLoaner">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAddBook">
                   <Properties>
@@ -525,6 +550,9 @@
                     <Property name="text" type="java.lang.String" value="Lainassa / Lainaaja"/>
                     <Property name="toolTipText" type="java.lang.String" value="Laita rasti ruutuun jos kirja on lainassa"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="star1">
                   <Properties>
@@ -612,7 +640,8 @@
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object cols[] = {&quot;Kirjailija&quot;, &quot;Kategoria&quot;};&#xa;dtm = new DefaultTableModel(null, cols) {&#xa;    @Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;        return false;&#xa;    }&#xa;};"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillAddManyTable();"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Add.fillAddManyTable();"/>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -782,7 +811,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblEditAuthorHeader" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblEditCategoryHeader" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -872,7 +901,7 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnDeleteBook" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="63" max="32767" attributes="0"/>
+                          <EmptySpace pref="72" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -897,8 +926,9 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;"/>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object columns[] = {&quot;Kirjailija&quot;, &quot;Kategoria&quot;};&#xa;model = new DefaultTableModel(null, columns) {&#xa;    @Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;        return true;&#xa;    }&#xa;};"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fillEditBookTable();"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Edit.fillEditBookTable();"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="editBookTable.setModel(model);"/>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -950,14 +980,29 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Lainassa / Lainaaja"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditBookName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditPubYear">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditOrigName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditLoaner">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cBoxEditBookAuthor">
                   <Properties>
@@ -968,6 +1013,7 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="for(Author a : authors1){&#xa;    cBoxEditBookAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxEditBookAuthor.setSelectedIndex(-1);"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors1 = Author.getAuthors();"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cBoxEditBookCategory">
@@ -979,6 +1025,7 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories1 = Category.getCategories();"/>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories1){&#xa;    cBoxEditBookCategory.addItem(c.getName());&#xa;}&#xa;cBoxEditBookCategory.setSelectedIndex(-1);"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnClearEditBoxes">
@@ -1049,11 +1096,18 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Author&gt; authors2 = Author.getAuthors();"/>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Author a : authors2){&#xa;    cBoxEditAuthor.addItem(a.getLastName() + &quot;, &quot; + a.getName());&#xa;}&#xa;cBoxEditAuthor.setSelectedIndex(-1);"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditAuthorLastName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditAuthorName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEditAuthor">
                   <Properties>
@@ -1091,9 +1145,13 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="ArrayList&lt;Category&gt; categories2 = Category.getCategories();"/>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="for(Category c : categories2){&#xa;    cBoxEditCategory.addItem(c.getName());&#xa;}&#xa;cBoxEditCategory.setSelectedIndex(-1);"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtEditCategory">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblEditCategoryName">
                   <Properties>

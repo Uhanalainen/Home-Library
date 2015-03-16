@@ -41,7 +41,6 @@ public class Author extends Master {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
-
     }
 
     public static ArrayList<Author> getAuthors() {
@@ -154,7 +153,6 @@ public class Author extends Master {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { conn.close(); } catch (Exception e) { /* ignored */ }
         }
-
     }
 
     /**
