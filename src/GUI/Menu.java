@@ -126,11 +126,10 @@ public class Menu extends javax.swing.JFrame {
         model = new DefaultTableModel(null, columns) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return true;
+                return false;
             }
         };
-        editBookTable = new javax.swing.JTable()
-        ;
+        editBookTable = new javax.swing.JTable();
         lblEditBookHeader = new javax.swing.JLabel();
         btnSaveChanges = new javax.swing.JButton();
         lblEditBookName = new javax.swing.JLabel();
@@ -471,7 +470,7 @@ public class Menu extends javax.swing.JFrame {
         panelAddLayout.setVerticalGroup(
             panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAddLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(21, 21, 21)
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAddAuthor)
                     .addComponent(lblAddCategoryHeader))
@@ -534,7 +533,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(panelAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(star5)
                     .addComponent(lblCreateBookObligatory))
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         TabbedPane.addTab("Lisää...", panelAdd);

@@ -30,7 +30,7 @@ public class Add extends Menu {
     *   For each author in the 'authors' -list...
     *   ...add author name to every author-related combobox
     */
-    private static void comboAuthorRefresh() {
+    public static void comboAuthorRefresh() {
         ArrayList<Author> authors = Author.getAuthors();
         cBoxAuthor.removeAllItems();
         cBoxEditAuthor.removeAllItems();
