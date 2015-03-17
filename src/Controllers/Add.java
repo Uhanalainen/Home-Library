@@ -47,7 +47,6 @@ public class Add extends Menu {
     
     /*  
     *   Clears all textfields in add-panel
-    *   Deletes all rows in dtm table model, then creates six empty ones
     *   Resets authorCounter and categoryCounter to 0
     */
     public static void clearBoxes() {
@@ -59,15 +58,9 @@ public class Add extends Menu {
         txtPubYear.setText("");
         txtOriginalName.setText("");
         checkLoan.setSelected(false);
-        dtm.setRowCount(0);
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
-        dtm.addRow(new Object[]{"", ""});
+        fillAddManyTable();
     }
-    
+        
     /*
     *   Fetch an arraylist of all categories in the database
     *   Remove all items from all category-related comboboxes
@@ -93,6 +86,7 @@ public class Add extends Menu {
     *   add book panel.
     */
     public static void fillAddManyTable() {
+        dtm.setRowCount(0);
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
@@ -213,6 +207,7 @@ public class Add extends Menu {
     *   Adds the book to the database, and empties all text fields and the table
     */
     public static void storeBook() {
+        boolean addBook = true;
         String name = txtBookName.getText();
         String origName = txtOriginalName.getText();
         String pubYear = txtPubYear.getText();
@@ -247,13 +242,12 @@ public class Add extends Menu {
             }
         }
 
-        boolean addBook = true;
-            if(authors.isEmpty() || categories.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Kirja vaatii vähintään yhden kirjailija ja kategorian", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                addBook = false;
-            }
+        if(authors.isEmpty() || categories.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Kirja vaatii vähintään yhden kirjailija ja kategorian", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+            addBook = false;
+        }
 
-        if(addBook) {
+        while(addBook) {
             if (checkPubYear(pubYear)) {
                 if (!name.isEmpty()) {
                     for (Author a : authors) {
@@ -261,23 +255,26 @@ public class Add extends Menu {
                             if (name.equalsIgnoreCase(bo.getName()) && Integer.parseInt(pubYear) == bo.getPubYear()) {
                                 JOptionPane.showMessageDialog(null, "Kirja löytyy jo tietokannasta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                                 addBook = false;
+                                break;
+                            } else {
+                                Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
+                                for (Category c : categories) {
+                                    b.category.add(c);
+                                }
+                                for (Author aa : authors) {
+                                    b.author.add(aa);
+                                }
+                                b.addBook();
+                                checkLoan.setSelected(false);
+                                Add.clearBoxes();
+                                addBook = false;
+                                break;
                             }
                         }
                     }
-                    if (addBook) {
-                        Book b = new Book(name, origName, Integer.parseInt(pubYear), onLoan, loaner);
-                        for (Category c : categories) {
-                            b.category.add(c);
-                        }
-                        for (Author a : authors) {
-                            b.author.add(a);
-                        }
-                        b.addBook();
-                        checkLoan.setSelected(false);
-                        Add.clearBoxes();
-                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Anna kirjalle nimi", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                    break;
                 }
             }
         }

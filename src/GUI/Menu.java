@@ -5,8 +5,9 @@
  */
 package GUI;
 
-import Entities.*;
 import Controllers.*;
+import Entities.Author;
+import Entities.Category;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
@@ -908,7 +909,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditCategoryActionPerformed
 
     private void cBoxEditCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxEditCategoryActionPerformed
-        Edit.getEditAuthor();
+        Edit.getEditCategory();
     }//GEN-LAST:event_cBoxEditCategoryActionPerformed
 
     private void btnEditAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAuthorActionPerformed
@@ -986,7 +987,7 @@ public class Menu extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

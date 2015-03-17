@@ -5,10 +5,10 @@
  */
 package Controllers;
 
-import GUI.Menu;
 import Entities.Author;
 import Entities.Book;
 import Entities.Category;
+import GUI.Menu;
 import static GUI.Menu.checkEditLoan;
 import static GUI.Menu.editBookTable;
 import static GUI.Menu.model;
@@ -38,6 +38,11 @@ public class Edit extends Menu {
         cBoxEditBookAuthor.setSelectedIndex(-1);
         cBoxEditBookCategory.setSelectedIndex(-1);
         cBoxEditCategory.setSelectedIndex(-1);
+        checkEditLoan.setSelected(false);
+        setEditTableProperties();
+    }
+
+    public static void setEditTableProperties() {
         model.setRowCount(0);
         model.addRow(new Object[]{"", ""});
         model.addRow(new Object[]{"", ""});
@@ -45,29 +50,17 @@ public class Edit extends Menu {
         model.addRow(new Object[]{"", ""});
         model.addRow(new Object[]{"", ""});
         model.addRow(new Object[]{"", ""});
-        checkEditLoan.setSelected(false);
+        editBookTable.getColumnModel().getColumn(0).setMinWidth(205);
+        editBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
     }
 
-    /*
-     *   Much like it's neighbor, fillTable(), this is used to fill the small table
-     *   in the edit panel. It only fills it if the id variable is something else than 0,
-     *   though. Because it relies on the user clicking on a row in the browse table
-     *   to get the information to fill in all known information about the book, such
-     *   as authors, categories, book name, publication year etc. If the user hasn't
-     *   selected any book, there's not much point in filling a empty table.
+    /**
+     *  Fills edit book table if a book is selected
      */
     public static void fillEditBookTable() {
-        if (id != 0) {
-            model.setRowCount(0);
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            model.addRow(new Object[]{"", ""});
-            editBookTable.getColumnModel().getColumn(0).setMinWidth(205);
-            editBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
+        setEditTableProperties();
 
+        if (id != 0) {
             Book b = new Book();
             b.getBook(id);
             txtEditBookName.setText(b.getName());
@@ -90,6 +83,7 @@ public class Edit extends Menu {
                 editBookTable.setValueAt(authorName, authorCount, 0);
                 authorCount++;
             }
+
             String categoryName = "";
             int categoryCount = 0;
             for (Category c : b.category) {
@@ -102,7 +96,7 @@ public class Edit extends Menu {
 
     /*
      *   Method used when user has edited an author and clicks the edit author-button
-     *   
+     *
      *   Gets the old name of the author from the combobox selection, stores it to a variable
      *   Splits it into parts so that it gets first and lastname separate
      *   Stores the new names in different variables from the information in the text boxes
@@ -144,22 +138,25 @@ public class Edit extends Menu {
             JOptionPane.showMessageDialog(null, "Syötä myös sukunimi!", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    /*
-     *   Method used when user has edited an category and clicks the edit category-button
-     *   
-     *   Gets the old name of the category from the combobox selection, stores it to a variable
-     *   Stores the new name in different variable from the information in the text box
-     *   Checks that textbox is not empty and that it doesn't contain blank spaces
-     *   If not, create a new Category object using the old name
-     *   Use the created category a to get the category id (which is needed to save the new information)
-     *   Use category.java setter to set new name to Category object c
-     *   Checks that this new category doesn't already exist (prevents duplicate categories)
-     *   If not, use the updateCategory method from category.java, which was why the id was
-     *   needed
-     *   Upon update, informs the user via popup that the update was done, refreshes categories combobox
-     *   and empties the textfield
-     *   Else informs what went wrong (Category already exists, there was illegal characters in hte input, or name was empty
+
+    /**
+     *  Edit selected category.
+     *
+     *  <p>
+     *  Stores user input and combobox selection in two
+     *  separate strings, then compares the new category name with the old
+     *  one. Also ensures that there is no blank spaces in the new name, and
+     *  that the attempted category name is not already stored in the database.
+     *  </p>
+     *
+     *  <p>
+     *  Notifies user of all possible errors:
+     *  </p>
+     *  <ul>
+     *  <li>Category already exists</li>
+     *  <li>Name contains spaces</li>
+     *  <li>No category name was given</li>
+     *  </ul>
      */
     public static void editCategory() {
         String name = txtEditCategory.getText();
@@ -173,7 +170,7 @@ public class Edit extends Menu {
                 if (!c.doesItExist()) {
                     c.updateCategory();
                     Add.comboCatRefresh();
-                    txtAddCategory.setText("");
+                    txtEditCategory.setText("");
                 } else {
                     JOptionPane.showMessageDialog(null, "Kategoria löytyy jo tietokannasta.", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
                 }
@@ -185,14 +182,13 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Method used when user clicks delete category-button when editing a book
-     *   User must choose which category to delete by selecting a row from the table
-     *   The row number is stored in a variable
-     *   The method deletes the text in the given cell
-     *   Then moves all other categories upwards one row so no empty rows are left
-     *   in the middle of the table
-     *   Displays error popup if user has not selected a row in the table
+    /**
+     *  Deletes selected category from the <code>editBookTable</code>.
+     *
+     *  <p>
+     *  A category must be selected by clicking the desired row in the table.
+     *  If no category has been selected, notifies user with a popup.
+     *  </p>
      */
     public static void deleteCategory() {
         try {
@@ -210,14 +206,14 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Method used when user clicks delete author-button when editing a book
-     *   User must choose which author to delete by selecting a row from the table
-     *   The row number is stored in a variable
-     *   The method deletes the text in the given cell
-     *   Then moves all other authors upwards one row so no empty rows are left
-     *   in the middle of the table
-     *   Displays error popup if user has not selected a row in the table
+    /**
+     *  Deletes selected author from the <code>editBookTable</code>.
+     *
+     *  <p>
+     *  An author must be selected by clicking the desired row in the
+     *  <code>browseTable</code>. If no author has been selected, notifies
+     *  user with a popup.
+     *  </p>
      */
     public static void deleteAuthor() {
         try {
@@ -235,43 +231,59 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Simply used to delete a book, this method depends on the user choosing
-     *   a book by clicking a row in the browse table in the browse panel.
+    /**
+     *  Deletes the selected book.
+     *
+     *  <p>
+     *  A book must be selected by clicking the desired row in the
+     *  <code>browseTable</code>. If no book is selected, notifies the
+     *  user with a popup.
+     *  </p>
      */
     public static void deleteBook() {
         if (id != 0) {
             Book b = new Book();
             b.deleteBook(id);
+            clearEditBoxes();
         } else {
             JOptionPane.showMessageDialog(null, "Valitse ensin poistettava kirja selaus-taulukosta", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    /*
-     *   This method is used whenever the user has made some changes to a book and
-     *   clicks the save changes-button. This is perhaps the most complicated method
-     *   of all methods used.
+    /**
+     *  Update an existing book with new information.
      *
-     *   First, create an empty Book object.
-     *   Get the original book information, using the id (which we know since this
-     *   relies on the user selecting a row in the browse table).
-     *   Save all new information to variables
-     *   Create empty arraylists for authors and categories
-     *   Use book.java setter methods to set the new information to the book object
-     *   If the user has checked that the book is on loan, also set loaner name,
-     *   otherwise set loaner name as empty string
-     *   Clear the original authors and categories from the book object, so that
-     *   we can store new authors and categories
-     *   As when adding a book, go through the editBookTable and add every author
-     *   and category to the lists.
-     *   Check publication year, and that the given new name is not empty
-     *   Check that none of the authors has the new book associated with them already,
-     *   based on name and publication year
-     *   If ok, save changes to the book, adding the new associated authors and categories
-     *   Else tell user what went wrong (one of the authors has the book associated already,
-     *   the publication year was faulty, or the new given book name was empty)
-     *   If the update is done, the method will also empty all text boxes, checkboxes and the table
+     *  <p>
+     *  Creates a new Book object, and fetches the existing data by book id.
+     *  Then stores all new information into variables, and creates empty
+     *  arraylists for authors and categories. Then proceeds to set all new
+     *  information to the book object. If the user has checked the
+     *  <code>checkEditLoan</code> checkbox, also sets the loaner name.
+     *  Otherwise, resets the loaner name to empty.
+     *  </p>
+     * 
+     *  <p>
+     *  Clears the original authors and categories from the book object, then
+     *  checks the <code>editBookTable</code> for new data, entering all new
+     *  authors and categories to respective lists. Then checks whether the
+     *  given publication year fits the standard. If it does, proceeds to check
+     *  that the new book name is not an empty string. If not, it loops through
+     *  all books by all authors associated with this new book, and checks
+     *  that none of the authors already has the book. Upon completion, clears
+     *  all text fields, resets the checkbox and the <code>editBookTable</code>.
+     *  </p>
+     * 
+     *  <p>
+     *  Possible errors:
+     *  </p>
+     *  <ul>
+     *  <li>
+     *  Book already exists
+     *  </li>
+     *  <li>
+     *  Given book name was empty
+     *  </li>
+     *  </ul>
      */
     public static void updateBook() {
         Book b = new Book();
@@ -353,13 +365,23 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Save combobox selection to string variable
-     *   Checks that the author the user wants to add isn't already in the table
-     *   If it's not, enter the author information in the first empty row
-     *   Display error to the user depending on what went wrong (author already in table,
-     *   user has failed to select a book to edit from the browse table, or user
-     *   has failed to choose which author to add from the author combobox
+    /**
+     *  Add selected author to the <code>editBookTable</code>.
+     *
+     *  <p>
+     *  A book must be selected in the <code>browseTable</code>. The
+     *  <code>editBookTable</code> is then populated with the author(s) and
+     *  categories associated with it.
+     *  </p>
+     *
+     *  <p>
+     *  Notifies user of possible errors:
+     *  </p>
+     *  <ul>
+     *  <li>Author is already in the table</li>
+     *  <li>No book has been selected from the <code>browseTable</code></li>
+     *  <li>No author has been selected from the combobox</li>
+     *  </ul>
      */
     public static void addAuthorToEditTable() {
         try {
@@ -383,13 +405,23 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Save combobox selection to string variable
-     *   Checks that the category the user wants to add isn't already in the table
-     *   If it's not, enter the category information in the first empty row
-     *   Display error to the user depending on what went wrong (category already in table,
-     *   user has failed to select a book to edit from the browse table, or user
-     *   has failed to choose which category to add from the category combobox
+    /**
+     *  Add selected category to <code>editBookTable</code>.
+     *
+     *  <p>
+     *  A book must be selected in the <code>browseTable</code>. The
+     *  <code>editBookTable</code> will be populated with the author(s) and
+     *  categories associated with it.
+     *  </p>
+     *
+     *  <p>
+     *  Notifies user of possible errors:
+     *  </p>
+     *  <ul>
+     *  <li>Category is already in the table</li>
+     *  <li>No book has been selected in the <code>browseTable</code></li>
+     *  <li>No category has been selected from the combobox</li>
+     *  </ul>
      */
     public static void addCategoryToEditTable() {
         try {
@@ -397,14 +429,12 @@ public class Edit extends Menu {
             if (editBookTable.getRowCount() > 1) {
                 for (int i = 0; i < 6; i++) {
                     String value = editBookTable.getValueAt(i, 1).toString();
-                    if (category != null && category.length() != 0) {
-                        if (value.equalsIgnoreCase(category)) {
-                            JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
-                            i = 6;
-                        } else if (value.length() < 1) {
-                            editBookTable.setValueAt(category, i, 1);
-                            i = 6;
-                        }
+                    if (value.equalsIgnoreCase(category)) {
+                        JOptionPane.showMessageDialog(null, "Kategoria löytyy jo taulukosta", "Virhe lisätessä", JOptionPane.ERROR_MESSAGE);
+                        i = 6;
+                    } else if (value.length() < 1) {
+                        editBookTable.setValueAt(category, i, 1);
+                        i = 6;
                     }
                 }
             } else {
@@ -415,11 +445,14 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Method used to get information on what author user wants to edit
-     *   Stores chosen combobox information in a string
-     *   Splits the string into parts and removes anything that isn't first- or lastname
-     *   Puts the names in correct text boxes for easy editing
+    /**
+     *  Fill author name text fields for easy editing.
+     *
+     *  <p>
+     *  Stores chosen combobox information in a string, splits it and removes
+     *  spaces and non-alphabetic characters, then puts the names in the
+     *  text fields to allow easy editing.
+     *  </p>
      */
     public static void getEditAuthor() {
         try {
@@ -429,21 +462,21 @@ public class Edit extends Menu {
             String fName = authName[1];
             txtEditAuthorLastName.setText(lName);
             txtEditAuthorName.setText(fName);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 
-    /*
-     *   Method used to get information on what category user wants to edit
-     *   Get information from categories combobox, store which category was selected in a variable
-     *   Stores chosen combobox information in a string
-     *   Puts the name in correct text box for easy editing
+    /**
+     *  Fill category text field for easy editing.
+     *
+     *  <p>
+     *  Stores chosen combobox information in a string and puts it in the
+     *  category text field to allow easy editing.
+     *  </p>
      */
     public static void getEditCategory() {
         try {
             String category = cBoxEditCategory.getSelectedItem().toString();
             txtEditCategory.setText(category);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 }
