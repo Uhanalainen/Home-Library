@@ -25,14 +25,32 @@ public class Book extends Master {
     public ArrayList<Author> author = new ArrayList();
     public ArrayList<Category> category = new ArrayList();
     
+    /**
+     *  Creates an empty book object without parameters.
+     */
     public Book() {
         
     }
     
+    /**
+     *  Creates an empty book object with id only.
+     * @param id
+     */
     public Book(int id) {
         this.id = id;
     }
 
+    /**
+     *  Creates an empty Book object with id, name, publication year, if it is
+     *  on loan, who has loaned it and its original name.
+     * 
+     * @param id
+     * @param name
+     * @param pubYear
+     * @param onLoan
+     * @param loaner
+     * @param origName
+     */
     public Book(int id, String name, int pubYear, boolean onLoan, String loaner, String origName) {
         this.id = id;
         this.name = name;
@@ -42,6 +60,16 @@ public class Book extends Master {
         this.origName = origName;
     }
     
+    /**
+     *  Creates an empty Book object with name, publication year, if it is
+     *  on loan, who has loaned it and its original name.
+     *
+     * @param name
+     * @param origName
+     * @param pubYear
+     * @param onLoan
+     * @param loaner
+     */
     public Book(String name, String origName, int pubYear, boolean onLoan, String loaner) {
         this.name = name;
         this.origName = origName;
@@ -50,6 +78,14 @@ public class Book extends Master {
         this.loaner = loaner;
     }
     
+    /**
+     *  Get all categories associated with one specific book.
+     * 
+     *  <p>If book id is known, this method can get all associated categories
+     *  from the database and store them in a list.
+     *
+     *  @return category arraylist
+     */
     public ArrayList<Category> getCategories() {
 
         String sql = "SELECT categoryId FROM bookCategories WHERE bookID = ?";
@@ -75,6 +111,14 @@ public class Book extends Master {
         return this.category;
     }
     
+    /**
+     *  Get all authors associated with a specific book.
+     * 
+     *  <p>If book id is known, this method gets all authors associated with
+     *  that book from the database and stores them in an arraylist.
+     *
+     * @return a list of all authors in the database
+     */
     public ArrayList<Author> getAuthors() {
 
         String sql = "SELECT authorId FROM bookAuthors WHERE bookId = ?";
@@ -102,6 +146,11 @@ public class Book extends Master {
         return this.author;
     }
 
+    /**
+     *  Return a list of all books in the database.
+     *  
+     * @return a list of all books
+     */
     public static ArrayList<Book> getBooks() {
 
         String sql = "SELECT * FROM books";
@@ -126,35 +175,14 @@ public class Book extends Master {
         return books;
     }
 
-    /*
-    *   This is a placeholder method for searching books by name
-    *   Currently not in use, as it was rendered redundant with the table filter
-    *
-    public static ArrayList<Book> findBooks(String name) {
-        
-        String sql = "SELECT id, name, pubYear, onLoan, loaner, origName FROM books WHERE LOWER(name) LIKE LOWER(?)";
-        Connection conn = DbConn.getConnection();
-        PreparedStatement ps = null;
-
-        ArrayList<Book> books = new ArrayList<>();
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, name);
-            try (ResultSet rs = ps.executeQuery();) {
-                while (rs.next()) {
-                    books.add(new Book(rs.getInt("id"), rs.getString("name"), rs.getInt("pubYear"),
-                            rs.getBoolean("onLoan"), rs.getString("loaner"), rs.getString("origName")));
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Something went wrong" + e);
-        } finally {
-            try { ps.close(); } catch (Exception e) {  ignored  }
-            try { conn.close(); } catch (Exception e) {  ignored  }
-        }
-        return books;
-    }*/
-
+    /**
+     *  Get all information of a a specific book when book id is known.
+     * 
+     *  <p>Fetches book name, publication year, if it is on loan, who has
+     *  loaned it and the books original name.
+     *
+     * @param id the id of the book to get
+     */
     public void getBook(int id) {
         
         String sql = "SELECT name, pubYear, onLoan, loaner, origName FROM books WHERE id = ?";
@@ -182,6 +210,16 @@ public class Book extends Master {
         }
     }
 
+    /**
+     *  Adds a book to the database.
+     * 
+     *  <p>This method is broken into three parts: first, insert all book
+     *  information into the books-table. Second, insert book and author id
+     *  into the bookAuthors-table. Lastly, insert book and category id into
+     *  the bookCategories-table. These last two are used so that a book can
+     *  have multiple authors and categories.
+     *
+     */
     public void addBook() {
         
         String sql1 = "INSERT INTO books (name, origName, pubYear, onLoan, loaner) VALUES (?, ?, ?, ?, ?)";
@@ -224,6 +262,13 @@ public class Book extends Master {
         }
     }
 
+    /**
+     *  Update a book already stored in the database.
+     * 
+     *  <p>Updates all book data. Then deletes all data from bookAuthors and
+     *  bookCategories-tables, and inserts new data. This ensures that the
+     *  references to book in bookAuthors and bookCategories are up to date.
+     */
     public void updateBook() {
         
         String sql = "UPDATE books SET name = ?, pubYear = ?, onLoan = ?, loaner = ?, origName = ? WHERE id = ?";
@@ -272,6 +317,11 @@ public class Book extends Master {
         }
     }
     
+    /**
+     *  Deletes book from the database.
+     *
+     * @param id the id of the book to be deleted
+     */
     public void deleteBook(int id) {
         String sql = "DELETE FROM books WHERE id = ?";
         this.conn = DbConn.getConnection();
@@ -290,6 +340,15 @@ public class Book extends Master {
         }
     }
     
+    /**
+     *  Checks if the given book already exists in the database.
+     *
+     *  <p>To prevent duplicate entries of the same book, this method checks
+     *  whether there's already a book with the same name, released in the same
+     *  year in the database already.
+     * 
+     *  @return boolean
+     */
     public boolean doesItExist() {
 
         String sql = "SELECT count(id) FROM books WHERE LOWER(name) = LOWER(?) AND pubYear = ?";

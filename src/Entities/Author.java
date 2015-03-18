@@ -21,16 +21,26 @@ public class Author extends Master {
     public ArrayList<Book> books = new ArrayList();
     private String lastName;
 
+    /**
+     *  Create a new Author object with name and last name.
+     *
+     * @param name first name of the author
+     * @param lastName last name of the author
+     */
     public Author(String name, String lastName) {
         this.name = name;
         this.lastName = lastName;
     }
 
+    /**
+     *  Create a new, empty Author object without parameters.
+     */
     public Author() {
 
     }
 
     /**
+     *  Create a new Author object with id, name and last name as parameters.
      * 
      * @param id author id
      * @param name author first name
@@ -43,6 +53,14 @@ public class Author extends Master {
         this.lastName = lastName;
     }
 
+    /**
+     *  Gets a list of all authors in the database.
+     * 
+     *  <p>Fetches an arraylist of all authors in the database, and orders them
+     *  by their last name.
+     *
+     * @return a list of all authors
+     */
     public static ArrayList<Author> getAuthors() {
 
         String sql = "SELECT id, firstName, lastName FROM authors ORDER BY lastName";
@@ -66,36 +84,9 @@ public class Author extends Master {
         return authors;
     }
     
-    /*
-    *   Placeholder method for searching authors by their last name
-    *   Currently not used, as it was rendered redundant by table filtering
-    
-    public static ArrayList<Author> findAuthors(String lastName) {
-
-        String sql = "SELECT id, firstName, lastName FROM authors WHERE LOWER(lastName) LIKE LOWER(?)";
-        Connection conn = DbConn.getConnection();
-        PreparedStatement ps = null;
-
-        ArrayList<Author> authors = new ArrayList<>();
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, lastName);
-            try (ResultSet rs = ps.executeQuery();) {
-                while (rs.next()) {
-                    authors.add(new Author(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName")));
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Tapahtui virhe: " + e);
-        } finally {
-            try { ps.close(); } catch (Exception e) { /* ignored  }
-            try { conn.close(); } catch (Exception e) { /* ignored  }
-        }
-        return authors;
-    }*/
-    
     /**
      *  Gets author id when only first and last name is known
+     * 
      * @param firstName first name of author
      * @param lastName last name of author
      */
@@ -129,6 +120,7 @@ public class Author extends Master {
 
     /**
      *  Gets first and last name of author when author ID is known
+     * 
      * @param id author id
      */
     public void getAuthor(int id) {
@@ -156,7 +148,7 @@ public class Author extends Master {
     }
 
     /**
-     *  Used to add authors to the database
+     *  Adds an author to the database.
      */
     public void addAuthor() {
 
@@ -181,7 +173,7 @@ public class Author extends Master {
     }
 
     /**
-     *  Used to update authors in the database
+     *  Updates author data.
      */
     public void updateAuthor() {
 
@@ -204,6 +196,11 @@ public class Author extends Master {
         }
     }
     
+    /**
+     *  Gets all books by a specific author.
+     *
+     * @return a list of books
+     */
     public ArrayList<Book> getBooks() {
         
         String sql = "SELECT bookId FROM bookAuthors WHERE authorId = ?";
@@ -232,8 +229,12 @@ public class Author extends Master {
     }
 
     /**
-     *  Checks if given author already exists in the database
-     * @return any number that's greater than 0
+     *  Checks if given author already exists in the database.
+     *
+     *  <p>To prevent duplicate entries of the same author, this method checks
+     *  whether there's already an author with the same name in the database.
+     * 
+     *  @return boolean
      */
     public boolean doIExist() {
 

@@ -25,8 +25,15 @@ import javax.swing.JOptionPane;
  */
 public class Edit extends Menu {
 
-    //Clears all textfields and the table in the edit-panel
-    public static void clearEditBoxes() {
+    /**
+     *  Empties all text fields and resets checkbox selections on the edit
+     *  panel.
+     *
+     *  <p>Also sets every combobox selection to show up as empty selection,
+     *  and uses <code>setTableProperties</code> to empty the
+     *  <code>editBookTable</code>.
+     */
+        public static void clearEditBoxes() {
         txtEditAuthorLastName.setText("");
         txtEditAuthorName.setText("");
         txtEditBookName.setText("");
@@ -39,10 +46,16 @@ public class Edit extends Menu {
         cBoxEditBookCategory.setSelectedIndex(-1);
         cBoxEditCategory.setSelectedIndex(-1);
         checkEditLoan.setSelected(false);
-        setEditTableProperties();
+        setTableProperties();
     }
 
-    public static void setEditTableProperties() {
+    /**
+     *  Set the <code>editBookTable</code> row and column properties.
+     *
+     *  <p>Sets row count to zero, then adds six new rows. Fixes first column
+     *  width.
+     */
+    public static void setTableProperties() {
         model.setRowCount(0);
         model.addRow(new Object[]{"", ""});
         model.addRow(new Object[]{"", ""});
@@ -55,10 +68,14 @@ public class Edit extends Menu {
     }
 
     /**
-     *  Fills edit book table if a book is selected
+     *  Fills the <code>editBookTable</code> if a book is selected.
+     *
+     *  <p>Calls <code>setTableProperties</code> to make six empty rows in
+     *  the <code>editBookTable</code>. Unless no book is selected, enters all
+     *  book data in the table.
      */
     public static void fillEditBookTable() {
-        setEditTableProperties();
+        setTableProperties();
 
         if (id != 0) {
             Book b = new Book();
@@ -94,22 +111,19 @@ public class Edit extends Menu {
         }
     }
 
-    /*
-     *   Method used when user has edited an author and clicks the edit author-button
+    /**
+     *  Edit selected author.
      *
-     *   Gets the old name of the author from the combobox selection, stores it to a variable
-     *   Splits it into parts so that it gets first and lastname separate
-     *   Stores the new names in different variables from the information in the text boxes
-     *   Checks that neither textbox was empty
-     *   If not, create a new Author object using the old names
-     *   Use the created author a to get the author id (which is needed to save the new information)
-     *   Use author.java setters to set new first and last name to Author object a
-     *   Checks that this new author doesn't already exist (prevents duplicate authors)
-     *   If not, use the updateAuthor method from author.java, which was why the id was
-     *   needed
-     *   Upon update, informs the user via popup that the update was done, refreshes authors combobox
-     *   and empties both textfields
-     *   Else informs what went wrong (Author already exists, first name was empty or last name was empty)
+     *  <p>Stores user input two separate strings, then splits combobox
+     *  selection and removes anything that is not the name. Then compares the
+     *  new author name with the old one. Also ensures that the author is not
+     *  already stored in the database.
+     *
+     *  <p>Notifies user of all possible errors:
+     *  <ul>
+     *  <li>Author already exists</li>
+     *  <li>First or last name is missing</li>
+     *  </ul>
      */
     public static void editAuthor() {
         String author = cBoxEditAuthor.getSelectedItem().toString();
@@ -142,16 +156,12 @@ public class Edit extends Menu {
     /**
      *  Edit selected category.
      *
-     *  <p>
-     *  Stores user input and combobox selection in two
-     *  separate strings, then compares the new category name with the old
-     *  one. Also ensures that there is no blank spaces in the new name, and
-     *  that the attempted category name is not already stored in the database.
-     *  </p>
+     *  <p>Stores user input and combobox selection in two separate strings,
+     *  then compares the new category name with the old one. Also ensures that
+     *  there is no blank spaces in the new name, and that the attempted
+     *  category name is not already stored in the database.
      *
-     *  <p>
-     *  Notifies user of all possible errors:
-     *  </p>
+     *  <p>Notifies user of all possible errors:
      *  <ul>
      *  <li>Category already exists</li>
      *  <li>Name contains spaces</li>
@@ -185,10 +195,8 @@ public class Edit extends Menu {
     /**
      *  Deletes selected category from the <code>editBookTable</code>.
      *
-     *  <p>
-     *  A category must be selected by clicking the desired row in the table.
-     *  If no category has been selected, notifies user with a popup.
-     *  </p>
+     *  <p>A category must be selected by clicking the desired row in the
+     *  table. If no category has been selected, notifies user with a popup.
      */
     public static void deleteCategory() {
         try {
@@ -209,11 +217,9 @@ public class Edit extends Menu {
     /**
      *  Deletes selected author from the <code>editBookTable</code>.
      *
-     *  <p>
-     *  An author must be selected by clicking the desired row in the
+     *  <p>An author must be selected by clicking the desired row in the
      *  <code>browseTable</code>. If no author has been selected, notifies
      *  user with a popup.
-     *  </p>
      */
     public static void deleteAuthor() {
         try {
@@ -234,11 +240,9 @@ public class Edit extends Menu {
     /**
      *  Deletes the selected book.
      *
-     *  <p>
-     *  A book must be selected by clicking the desired row in the
-     *  <code>browseTable</code>. If no book is selected, notifies the
-     *  user with a popup.
-     *  </p>
+     *  <p>A book must be selected by clicking the desired row in the
+     *  <code>browseTable</code>. If no book is selected, notifies the user
+     *  with a popup.
      */
     public static void deleteBook() {
         if (id != 0) {
@@ -253,36 +257,27 @@ public class Edit extends Menu {
     /**
      *  Update an existing book with new information.
      *
-     *  <p>
-     *  Creates a new Book object, and fetches the existing data by book id.
-     *  Then stores all new information into variables, and creates empty
-     *  arraylists for authors and categories. Then proceeds to set all new
-     *  information to the book object. If the user has checked the
-     *  <code>checkEditLoan</code> checkbox, also sets the loaner name.
-     *  Otherwise, resets the loaner name to empty.
-     *  </p>
-     * 
-     *  <p>
-     *  Clears the original authors and categories from the book object, then
-     *  checks the <code>editBookTable</code> for new data, entering all new
-     *  authors and categories to respective lists. Then checks whether the
+     *  <p>Creates a new Book object, and fetches the existing data by book id.
+     *  Then stores all new data into variables, and creates empty arraylists
+     *  for authors and categories. Then proceeds to set all new data to the
+     *  book object. If the user has checked the <code>checkEditLoan</code>
+     *  checkbox, also sets the loaner name. Otherwise, resets the loaner name
+     *  to empty.
+     *
+     *  <p>Clears the original authors and categories from the book object,
+     *  then checks the <code>editBookTable</code> for new data, entering all
+     *  new authors and categories to respective lists. Then checks whether the
      *  given publication year fits the standard. If it does, proceeds to check
      *  that the new book name is not an empty string. If not, it loops through
      *  all books by all authors associated with this new book, and checks
      *  that none of the authors already has the book. Upon completion, clears
-     *  all text fields, resets the checkbox and the <code>editBookTable</code>.
-     *  </p>
-     * 
-     *  <p>
-     *  Possible errors:
-     *  </p>
+     *  all text fields, resets the checkbox and the
+     *  <code>editBookTable</code>.
+     *
+     *  <p>Possible errors:
      *  <ul>
-     *  <li>
-     *  Book already exists
-     *  </li>
-     *  <li>
-     *  Given book name was empty
-     *  </li>
+     *  <li>Book already exists</li>
+     *  <li>Given book name was empty</li>
      *  </ul>
      */
     public static void updateBook() {
@@ -368,15 +363,11 @@ public class Edit extends Menu {
     /**
      *  Add selected author to the <code>editBookTable</code>.
      *
-     *  <p>
-     *  A book must be selected in the <code>browseTable</code>. The
+     *  <p>A book must be selected in the <code>browseTable</code>. The
      *  <code>editBookTable</code> is then populated with the author(s) and
      *  categories associated with it.
-     *  </p>
      *
-     *  <p>
-     *  Notifies user of possible errors:
-     *  </p>
+     *  <p>Notifies user of possible errors:
      *  <ul>
      *  <li>Author is already in the table</li>
      *  <li>No book has been selected from the <code>browseTable</code></li>
@@ -408,15 +399,11 @@ public class Edit extends Menu {
     /**
      *  Add selected category to <code>editBookTable</code>.
      *
-     *  <p>
-     *  A book must be selected in the <code>browseTable</code>. The
+     *  <p>A book must be selected in the <code>browseTable</code>. The
      *  <code>editBookTable</code> will be populated with the author(s) and
      *  categories associated with it.
-     *  </p>
      *
-     *  <p>
-     *  Notifies user of possible errors:
-     *  </p>
+     *  <p>Notifies user of possible errors:
      *  <ul>
      *  <li>Category is already in the table</li>
      *  <li>No book has been selected in the <code>browseTable</code></li>
@@ -448,11 +435,9 @@ public class Edit extends Menu {
     /**
      *  Fill author name text fields for easy editing.
      *
-     *  <p>
-     *  Stores chosen combobox information in a string, splits it and removes
-     *  spaces and non-alphabetic characters, then puts the names in the
-     *  text fields to allow easy editing.
-     *  </p>
+     *  <p>Stores chosen combobox information in a string, splits it and
+     *  removes spaces and non-alphabetic characters, then puts the names in
+     *  the text fields to allow easy editing.
      */
     public static void getEditAuthor() {
         try {
@@ -468,10 +453,8 @@ public class Edit extends Menu {
     /**
      *  Fill category text field for easy editing.
      *
-     *  <p>
-     *  Stores chosen combobox information in a string and puts it in the
+     *  <p>Stores chosen combobox information in a string and puts it in the
      *  category text field to allow easy editing.
-     *  </p>
      */
     public static void getEditCategory() {
         try {

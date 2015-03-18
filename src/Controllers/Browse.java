@@ -23,15 +23,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Juha
  */
 public class Browse extends Menu {
+
+    /**
+     *  Fill browse-panel table with data on all books and authors.
+     * 
+     *  <p>Fetches an arraylist of all books, then resets the row count to
+     *  zero. Gets all authors and all categories for every book and then
+     *  stores the information in the <code>browseTable</code>.
+     */
     
-    /*
-    *   Method used to fill the browse table. First, it fetches all books in the database.
-    *   Then, it sets the row count for the "mod" table model to 0 (this is a way of clearing
-    *   the table of old information). After that, I use a for-each loop which loops through
-    *   every book in the arraylist, adding the authors and categories to it, then adding
-    *   all this information row by row to the table. At last, I've set some parameters for
-    *   table column widths, and centered some of the table column names.
-    */
     public static void fillTable() {
         ArrayList<Book> books = Book.getBooks();
         mod.setRowCount(0);
@@ -56,7 +56,18 @@ public class Browse extends Menu {
             }
             mod.addRow(new Object[]{b.getId(), aName, b.getName(), b.getPubYear(), cat, b.getOnLoan(), b.getLoaner(), b.getOrigName()});
         }
-
+        
+        setBrowseTableProperties();        
+    }
+    
+    /**
+     *  Sets the column widths and centers some cell header texts.
+     * 
+     *  <p>Used for setting minimum and maximum column width to ensure that all
+     *  data is visible at all times even when the window has been resized.
+     *  Also centers some of the smaller cell header texts.
+     */
+    public static void setBrowseTableProperties() {
         browseTable.getColumnModel().getColumn(0).setMaxWidth(40);
         browseTable.getColumnModel().getColumn(1).setMinWidth(220);
         browseTable.getColumnModel().getColumn(2).setMinWidth(200);
@@ -72,13 +83,13 @@ public class Browse extends Menu {
         browseTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
     }
     
-    /*
-    * A simple search filter that enables on-the-fly searching in the
-    * browse table. Makes searching really easy, as it checks every cell
-    * and filters the table based on user search input. I chose this instead
-    * of separate searching possibilities (search by author, book name, year etc)
-    * as I thought this was neater and easier to develop.
-    */
+    /**
+     *  Search filter that enables on-the-fly filtering of the data in the
+     *  browse table.
+     * 
+     *  <p>Simplifies searching by monitoring every cell and filtering the
+     *  table based on user search input.
+     */
     public static void newFilter() {
         RowFilter<DefaultTableModel, Object> rf = null;
         try {

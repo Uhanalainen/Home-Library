@@ -16,18 +16,26 @@ public class DbConn {
 
     private Connection conn;
 
+    /**
+     *  Connects to the database.
+     *
+     * @return Connection
+     */
     public static Connection getConnection() {
         DbConn conn = new DbConn();
 
         return conn.conn;
     }
 
+    /**
+     *  Attempts to load database driver and connect to the database.
+     */
     public DbConn() {
         if (conn == null) {
             try {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:Library2.sqlite");
             } catch (Exception e) {
-                throw new RuntimeException("Tee jotain", e);
+                throw new RuntimeException("Something is wrong", e);
             }
         }
     }

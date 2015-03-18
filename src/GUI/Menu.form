@@ -640,7 +640,7 @@
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object cols[] = {&quot;Kirjailija&quot;, &quot;Kategoria&quot;};&#xa;dtm = new DefaultTableModel(null, cols) {&#xa;    @Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;        return false;&#xa;    }&#xa;};"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Add.fillAddManyTable();"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Add.setAddBookTableProperties();"/>
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                       </AuxValues>
                     </Component>

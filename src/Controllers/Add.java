@@ -24,12 +24,13 @@ import javax.swing.JOptionPane;
  */
 public class Add extends Menu {
     
-    /*
-    *   Fetch an arraylist of all authors
-    *   Remove all items from all author-related comboboxes used
-    *   For each author in the 'authors' -list...
-    *   ...add author name to every author-related combobox
-    */
+    /**
+     *  Refresh the combobox after database addition.
+     *  
+     *  <p>Fetches a list of all authors, then removes all items from all
+     *  author-related comboboxes and repopulates them. Resets selected author
+     *  to empty selection.
+     */
     public static void comboAuthorRefresh() {
         ArrayList<Author> authors = Author.getAuthors();
         cBoxAuthor.removeAllItems();
@@ -44,29 +45,16 @@ public class Add extends Menu {
         cBoxEditAuthor.setSelectedIndex(-1);
         cBoxEditBookAuthor.setSelectedIndex(-1);
     }
-    
-    /*  
-    *   Clears all textfields in add-panel
-    *   Resets authorCounter and categoryCounter to 0
-    */
-    public static void clearBoxes() {
-        txtAddAuthorFirstName.setText("");
-        txtAddAuthorLastName.setText("");
-        txtAddCategory.setText("");
-        txtBookName.setText("");
-        txtLoaner.setText("");
-        txtPubYear.setText("");
-        txtOriginalName.setText("");
-        checkLoan.setSelected(false);
-        fillAddManyTable();
-    }
-        
-    /*
-    *   Fetch an arraylist of all categories in the database
-    *   Remove all items from all category-related comboboxes
-    *   For each category in 'categories'-list...
-    *   ...add category to all category-related comboboxes
-    */
+
+    /**
+     *  Refresh the combobox after database addition.
+     * 
+     *  <p>
+     *  Fetches a list of all categories, then removes all items from all
+     *  category-related comboboxes and repopulates them. Resets selected
+     *  category to empty selection.
+     *  </p>
+     */
     public static void comboCatRefresh() {
         ArrayList<Category> categories = Category.getCategories();
         cBoxCategory.removeAllItems();
@@ -82,10 +70,32 @@ public class Add extends Menu {
         cBoxEditBookCategory.setSelectedIndex(-1);
     }
     
-    /*  Method used to create six empty rows in the small table located in
-    *   add book panel.
-    */
-    public static void fillAddManyTable() {
+    /**
+     *  Empties all text fields and resets checkbox selections on the add
+     *  panel.
+     * 
+     *  <p>Also calls <code>setAddBookTableProperties</code> to empty the
+     *  <code>addBookTable</code>.
+     */
+    public static void clearBoxes() {
+        txtAddAuthorFirstName.setText("");
+        txtAddAuthorLastName.setText("");
+        txtAddCategory.setText("");
+        txtBookName.setText("");
+        txtLoaner.setText("");
+        txtPubYear.setText("");
+        txtOriginalName.setText("");
+        checkLoan.setSelected(false);
+        setAddBookTableProperties();
+    }
+    
+    /**
+     *  Set the <code>addBookTable</code> row and column properties.
+     *
+     *  <p>Sets row count to zero, then adds six new rows. Fixes first column
+     *  width.
+     */
+    public static void setAddBookTableProperties() {
         dtm.setRowCount(0);
         dtm.addRow(new Object[]{"", ""});
         dtm.addRow(new Object[]{"", ""});
@@ -97,16 +107,18 @@ public class Add extends Menu {
         addBookTable.getColumnModel().getColumn(0).setMaxWidth(205);
     }
     
-    /*
-    *   First, saves user input as two strings from the text boxes. Then, checks
-    *   that neither of the boxes were empty. If not, proceeds to create a new Author
-    *   object, with which it can then check that the given author doesn't already
-    *   exist in the database (a.doIExist). If it doesn't, proceeds to add the author
-    *   to the database. Otherwise, tell the user what went wrong (that either name was
-    *   missing, or that the author has already been added. Last but not least,
-    *   the method empties both text boxes and calls for comboAuthorRefresh(), which,
-    *   as the name implies, refreshes author combobox contents.
-    */
+    /**
+     *  Add a new author to the database.
+     * 
+     *  <p>Stores given author name in two string variables, creates a new
+     *  author object, and adds the author to the database.
+     * 
+     *  <p>Possible errors:
+     *  <ul>
+     *  <li>Author already exists in the database</li>
+     *  <li>First or last name is missing</li>
+     *  </ul>
+     */
     public static void addAuthor() {
         String name = txtAddAuthorFirstName.getText();
         String lastName = txtAddAuthorLastName.getText();
@@ -128,15 +140,19 @@ public class Add extends Menu {
         comboAuthorRefresh();
     }
     
-    /*
-    *   Stores the given category name in variable.
-    *   Checks that given name is not empty
-    *   Checks that the category name doesn't contain blank spaces
-    *   If all is well, create a new Category object with given name
-    *   Check that the category doesn't already exist in the database
-    *   Gives different error popups based on what went wrong
-    *   Empties text box and refreshes category combobox
-    */
+    /**
+     *  Add a new category to the database.
+     * 
+     *  <p>Stores given category name in a string variable, creates a new
+     *  category object, and adds the category to the database.
+     * 
+     *  <p>Possible errors:
+     *  <ul>
+     *  <li>Category already exists in the database</li>
+     *  <li>Category name contains blank spaces</li>
+     *  <li>Given category name is empty</li>
+     *  </ul>
+     */
     public static void addCategory() {
         String name = txtAddCategory.getText();
 
@@ -158,6 +174,12 @@ public class Add extends Menu {
         comboCatRefresh();
     }
     
+    /**
+     *  Deletes selected author from the <code>addBookTable</code>.
+     *
+     *  <p>An author must be selected by clicking the desired row in the table.
+     *  If no category has been selected, notifies user with a popup.
+     */
     public static void deleteAuthorFromTable() {
         try {
             int row = addBookTable.getSelectedRow();
@@ -174,6 +196,12 @@ public class Add extends Menu {
         }
     }
     
+    /**
+     *  Deletes selected category from the <code>addBookTable</code>.
+     *
+     *  <p>A category must be selected by clicking the desired row in the
+     *  table. If no category has been selected, notifies user with a popup.
+     */
     public static void deleteCategoryFromTable() {
         try {
             int row = addBookTable.getSelectedRow();
@@ -189,23 +217,24 @@ public class Add extends Menu {
             JOptionPane.showMessageDialog(null, "Valitse poistettava kategoria klikkaamalla haluttua riviä taulukossa", "Virhe poistettaessa", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    /*
-    *   Store all user input from text boxes and checkboxes, and the addManyTable
-    *   Create new arraylists for authors and categories
-    *   Go through the table, adding every author to the authors list
-    *   Do same thing as above for categories
-    *   Check that neither list is empty, if either one is, display error, prompting
-    *   user to add at least one author and category
-    *   Proceed to check publication year and name
-    *   Then, for each author, go through his/her books, so that we don't accidentaly
-    *   add duplicate books if any of them has the same book already entered in
-    *   the database (in which case the user should rather edit that book and add the
-    *   other authors to it).
-    *   If all goes right, makes a Book object containing all given information
-    *   Adds the categories and authors to the book
-    *   Adds the book to the database, and empties all text fields and the table
-    */
+
+    /**
+     *  Add a new book the the database.
+     * 
+     *  <p>Stores user input from textfields, the <code>addBookTable</code> and
+     *  the checkbox. Creates empty arraylists for authors and categories.
+     *  Loops through the <code>addBookTable</code> and stores all authors and
+     *  categories in respective lists. Creates new book object with given
+     *  parameters and adds it to the database.
+     * 
+     *  <p>Notifies user of possible errors:
+     *  <ul>
+     *  <li>No authors or categories has been added to the table</li>
+     *  <li>The book already exists in the database</li>
+     *  <li>No book name was given</li>
+     *  <li>Publication year was erroneous or empty</li>
+     *  </ul>
+     */    
     public static void storeBook() {
         boolean addBook = true;
         String name = txtBookName.getText();
@@ -279,18 +308,24 @@ public class Add extends Menu {
             }
         }
     }
-    
-    /*
-    * A method for checking if the year of publication submitted by the user
-    * is valid. The number is submitted as a String, because it's easier to verify the
-    * length of a string than it is to check the amount of numbers in an integer.
-    * 1: Check if the box is empty - if it is, notify user that he needs to add publication year
-    * 2: Check the number submitted by the user - if it is anything but 4 letters long, inform user
-    *    that he needs to fix his input to fit our database standard
-    * 3: If, and only if, the number is 4 letters long, try to convert it into an integer.
-    *    This tells us if there's something else than numbers submitted by the user. If there is,
-    *    again, notify the user that he has to correct his input to numbers only.
-    */
+
+    /**
+     *  Checks if publication year given by the user is valid.
+     * 
+     *  <p>Gets pubYear as String parameter. First, check that it is not empty.
+     *  Then, ensure that the length is four digits. If it is, proceed to try
+     *  and parse it to an integer. If that succeeds, return true.
+     *  
+     *  <p>Notifies user of possible errors:
+     *  <ul>
+     *  <li>Given input contains anything else than numbers</li>
+     *  <li>Given input is not four digits</li>
+     *  <li>No input was given</li>
+     *  </ul>
+     * 
+     *  @param pubYear the year to be checked
+     *  @return boolean yearOk
+     */
     public static boolean checkPubYear(String pubYear) {
 
         boolean yearOk = false;
@@ -312,13 +347,18 @@ public class Add extends Menu {
         return yearOk;
     }
     
-    /*
-    *   Saves combobox selection as string variable
-    *   Checks that category the user wants to add to the table isn't already added
-    *   If it isn't, add category to the table, otherwise tell user what went wrong
-    *   Possible errors: trying to add more than 6 categories, or the category was
-    *   already added to the table
-    */
+    /**
+     *  Add selected category to the <code>addBookTable</code>.
+     * 
+     *  <p>Stores selected category name to a string variable and puts it in
+     *  the <code>addBookTable</code>.
+     *  
+     *  <p>Notifies user of possible errors:
+     *  <ul>
+     *  <li>Category is already in the table</li>
+     *  <li>No category has been selected from the combobox</li>
+     *  </ul>
+     */
     public static void addCategoryToTable() {
         try {
             String category = cBoxCategory.getSelectedItem().toString();
@@ -339,12 +379,18 @@ public class Add extends Menu {
         }
     }
     
-    /*
-    *   Saves combobox selection as a string variable
-    *   Checks that the author the user wants to add to the table isn't already added
-    *   If it isn't, add author to table, otherwise tell user what went wrong
-    *   Also makes sure that there's not more than 6 authors added
-    */
+    /**
+     *  Add selected author to the <code>addBookTable</code>.
+     *
+     *  <p>Stores selected author name to a string variable and puts it in the
+     *  <code>addBookTable</code>.
+     *
+     *  <p>Notifies user of possible errors:
+     *  <ul>
+     *  <li>Author is already in the table</li>
+     *  <li>No author has been selected from the combobox</li>
+     *  </ul>
+     */
     public static void addAuthorToTable() {
         try {
             String author = cBoxAuthor.getSelectedItem().toString();

@@ -345,7 +345,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         addBookTable.setModel(dtm);
-        Add.fillAddManyTable();
+        Add.setAddBookTableProperties();
         jScrollPane2.setViewportView(addBookTable);
 
         btnCreateBookAddAuthor.setText("Lisää kirjailija");
